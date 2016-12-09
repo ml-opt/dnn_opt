@@ -32,7 +32,7 @@ Also, is very easy to include more benchmark functions. I'll provide a specific 
 
 ## The `tiny_dnn::core::solutions::network`
 
-This is a special solution that models the dnn optimization surface. A dnn can be created in several ways and parameters as stacked layers of procesing units and dnn_opt provides a way to accomplish this. Lts see what features you may find intresting.
+This is a special solution that models the dnn optimization surface. A dnn can be created in several ways and using parameters as stacked layers of procesing units and dnn_opt provides a way to accomplish this. Lets see what features you may find intresting.
 
 ### Activation functions.
 
@@ -122,7 +122,7 @@ int main()
 
     for( int i = 0; i < 10; i++ )
     {
-      auto net        = dnn_opt::core::solutions::network::make( true, sampler, error, generator );
+      auto net      = dnn_opt::core::solutions::network::make( true, sampler, error, generator );
 
       ( *net ) << dnn_opt::core::layers::fully_connected::make( 11, 10, dnn_opt::core::activation_functions::tan_h::make() )
                << dnn_opt::core::layers::fully_connected::make( 10, 10, dnn_opt::core::activation_functions::tan_h::make() )

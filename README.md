@@ -101,6 +101,7 @@ In this example we will train a multi-layer perceptron with the firefly algorith
 
 ````c++
 #include <iostream>
+#include <memory>
 
 #include "src/io/file_reader.h"
 #include "src/core/sampler.h"
@@ -128,7 +129,7 @@ int main()
                << dnn_opt::core::layers::fully_connected::make( 10, 10, dnn_opt::core::activation_functions::tan_h::make() )
                << dnn_opt::core::layers::fully_connected::make( 10, 1, dnn_opt::core::activation_functions::tan_h::make() )
 
-      solutions->add( net );
+      solutions->add( std::move( net ) ;
     }
 
     solutions->init();
@@ -141,7 +142,7 @@ int main()
     }
 
     /* This is the average MSE error of the entire population */
-    cout << algorithm->get_solutions()->fitness();
+    std::cout << algorithm->get_solutions()->fitness();
 }
 
 ````

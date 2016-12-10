@@ -115,36 +115,38 @@ In this example we will train a multi-layer perceptron with the firefly algorith
 #include "src/model/activation_function/tan_h.h"
 #include "src/model/parameter_generator/uniform.h"
 
+using dnn_opt::core;
+
 int main()
 {
-    auto reader     = dnn_opt::distributed::io::file_reader::make( "./winequality-white.csv" );
-    auto generator  = dnn_opt::core::parameter_generators::normal::make( 0, 1 );
-    auto sampler    = dnn_opt::core::sampler::make( 0, reader->get_input_data(), reader->get_output_data() );
-    auto error      = dnn_opt::core::error_functions::mse::make();
-    auto solutions  = dnn_opt::core::solution_set::make(10);
+  auto reader     = io::file_reader::make( "./winequality-white.csv" );
+  auto generator  = parameter_generators::normal::make( 0, 1 );
+  auto sampler    = sampler::make( 0, reader->get_input_data(), reader->get_output_data() );
+  auto error      = error_functions::mse::make();
+  auto solutions  = solution_set::make(10);
 
-    for( int i = 0; i < 10; i++ )
-    {
-      auto net      = dnn_opt::core::solutions::network::make( true, sampler, error, generator );
+  for( int i = 0; i < 10; i++ )
+  {
+    auto net      = solutions::network::make( true, sampler, error, generator );
 
-      ( *net ) << dnn_opt::core::layers::fully_connected::make( 11, 10, dnn_opt::core::activation_functions::tan_h::make() )
-               << dnn_opt::core::layers::fully_connected::make( 10, 10, dnn_opt::core::activation_functions::tan_h::make() )
-               << dnn_opt::core::layers::fully_connected::make( 10, 1, dnn_opt::core::activation_functions::tan_h::make() )
+    ( *net ) << layers::fully_connected::make( 11, 10, activation_functions::tan_h::make() )
+             << layers::fully_connected::make( 10, 10, activation_functions::tan_h::make() )
+             << layers::fully_connected::make( 10, 1, activation_functions::tan_h::make() )
 
-      solutions->add( std::move( net ) ;
-    }
+    solutions->add( std::move( net ) ;
+  }
 
-    solutions->init();
+  solutions->init();
 
-    auto algorithm  = dnn_opt::core::algorithms::firefly::make(0.5, 0.75, 0.35, std::move( solutions ) );
+  auto algorithm  = algorithms::firefly::make(0.5, 0.75, 0.35, std::move( solutions ) );
 
-    for( int i = 0; i < 50; i++ )
-    {
-        algorithm->optimize( 10 );
-    }
+  for( int i = 0; i < 50; i++ )
+  {
+      algorithm->optimize( 10 );
+  }
 
-    /* This is the average MSE error of the entire population */
-    std::cout << algorithm->get_solutions()->fitness();
+  /* This is the average MSE error of the entire population */
+  std::cout << algorithm->get_solutions()->fitness();
 }
 
 ````

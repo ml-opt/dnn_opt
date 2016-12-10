@@ -1,10 +1,12 @@
-#Welcome to dnn_opt!
+[![Build Status](https://travis-ci.org/jairodelgado/dnn_opt.svg?branch=master)](https://travis-ci.org/jairodelgado/dnn_opt)
+
+![DNN_OPT logo](docs/img/logo.png)
 
 Welcome to dnn_opt, which states for deep neural network optimization. This is a C++11 header only library for high dimensional optimization and specifically for deep neural network optimization. High dimensional optimization is difficult to accomplish due to curse of dimensionality and high temporal and space complexity. Training a deep neural network is in fact an NP-hard optimization problem. 
 
 For the moment, we are only providing basic library functionalities, but in the future dnn_opt will support multicore, GPU and distributed implementations for all the features, which for the moment only include sequential implementations. Keep reading to find out what you can currently do.
 
-## Optimization algorithms
+# Optimization algorithms
 
 dnn_opt include some optimization algorithms that derive from the class `dnn_opt::core::algorithm` and are under the namespace `dnn_opt::core::algorithms::`. For the moment you can use the following optimization algorithms:
 
@@ -15,7 +17,7 @@ dnn_opt include some optimization algorithms that derive from the class `dnn_opt
 
 You can also find intresting how easely a new population-based meta-heuristic algorithm can be included. I'll create a doc section for this in the future.
 
-## Benchmark function for test optimization algorithms
+# Benchmark function for test optimization algorithms
 
 dnn_opt include some functions to run tests and do some benchmarking in high dimensional optimization. All the test functions are derived from a base class called `dnn_opt::core::solution` and reside under the namespace `dnn_opt::core::solutions::`. You are free to use:
 
@@ -30,11 +32,11 @@ dnn_opt include some functions to run tests and do some benchmarking in high dim
 
 Also, is very easy to include more benchmark functions. I'll provide a specific doc section for this too. As you may expect, there are also a special solution that stands for a dnn model which is: `dnn_opt::core::solutions::network`.
 
-## The `tiny_dnn::core::solutions::network`
+# The `tiny_dnn::core::solutions::network`
 
 This is a special solution that models the dnn optimization surface. A dnn can be created in several ways and using parameters as stacked layers of procesing units and dnn_opt provides a way to accomplish this. Lets see what features you may find intresting.
 
-### Activation functions.
+## Activation functions.
 
 dnn_opt provides several activation functions that can be used by the processing units in a network. All activation functions derive from a base class called `dnn_opt::core::activation_function` and reside under the namespace `dnn_opt::core::activation_functions::`. You are free to use:
 
@@ -45,7 +47,7 @@ dnn_opt provides several activation functions that can be used by the processing
 5. `dnn_opt::core::activation_functions::tan_h`
 6. `dnn_opt::core::activation_functions::softmax`
 
-### Layers
+## Layers
 
 Common dnn applications make use of several types of layers. dnn_opt provides several of them. All layers derive from a base class called `dnn_opt::core::layer` and reside under the namespace `dnn_opt::core::layers::`. You can use:
 
@@ -57,7 +59,7 @@ Common dnn applications make use of several types of layers. dnn_opt provides se
 
 Extending new layers is straight-forward. I'll include more documentation about the currently implemented layers and how to create new layers in the future. If you have any question please refer to the documentation in the code, everything is in there.
 
-### Parameter generators
+## Parameter generators
 
 Many population-based optimization methods require to randomly initialize its population. dnn_opt provides a mechanism for determine how to randomly generate the parameters of the solutions. All the parameter generators derive form the base class `dnn_opt::core::parameter_generator` and reside under the namespace `dnn_opt::core::parameter_generators::`. You are free to use the followings:
 
@@ -66,7 +68,7 @@ Many population-based optimization methods require to randomly initialize its po
 
 Extending new paramter generators is straight-forward too. I'll include more documentation about this but until that, you can refer to the documentation in the code.
 
-### Error functions
+## Error functions
 
 There are several ways to measure the error of a dnn. dnn_opt provides several error functions to accomplish this. All error functions derive from the base class `dnn_opt::core::error_function` and reside under the namespace `dnn_opt::core::activation_functions::`. For the moment, you can use the followings:
 
@@ -75,7 +77,7 @@ There are several ways to measure the error of a dnn. dnn_opt provides several e
 
 Extending new error functions is straight-forward. I'll include more documentation about this but until that, you can refer to the documentation in the code.
 
-## Input readers
+# Input readers
 
 Training a dnn requires training patterns. dnn_opt load training patterns via classes that derives from `dnn_opt::core::reader` and recide under the namespace `dnn_opt::core::io::`. For the moment we only provide a single class to do this job:
 
@@ -83,15 +85,15 @@ Training a dnn requires training patterns. dnn_opt load training patterns via cl
 
 Extending new readers is straight-forward. I'll include more documentation about this but until that, you can refer to the documentation in the code.
 
-## Samplers
+# Samplers
 
 This is an experimental feature and it will be documented in the future. Please just refer to the examples and see how to use it.
 
-## Examples
+# Examples
 
 In this section you can see a basic example of how to use dnn_opt.
 
-### Multi-layer perceptron with Firefly Algorithm
+## Multi-layer perceptron with Firefly Algorithm
 
 In this example we will train a multi-layer perceptron with the firefly algorithm. Please make sure to provide the library with the correct format for the input file and a regresion problem. Also, tune the hyper-parameters of the Firefly Algorithm correctly.  See the code documentation for the `dnn_opt::core::io::file_reader` class to find out the correct input file format. You can use some of the following prepared files that are modified from the [UCI repository for machine learning](http://archive.ics.uci.edu/ml/datasets.html):
 
@@ -147,6 +149,6 @@ int main()
 
 ````
 
-## How to contribute
+# How to contribute
 
 For the moment I won't be accepting contributions. First I'll complete some documentation, prepare some design guidelines and code standards. Any way, if you still want to contribute here is my [blog](https://jairodelgado.github.io) and the contact information is there. Thank you very much for reading. Enjoy!

@@ -131,7 +131,7 @@ int main()
 
     ( *net ) << layers::fully_connected::make( 11, 10, activation_functions::tan_h::make() )
              << layers::fully_connected::make( 10, 10, activation_functions::tan_h::make() )
-             << layers::fully_connected::make( 10, 1, activation_functions::tan_h::make() )
+             << layers::fully_connected::make( 10, 1, activation_functions::tan_h::make() );
 
     solutions->add( std::move( net ) ;
   }

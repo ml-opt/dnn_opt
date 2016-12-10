@@ -115,7 +115,7 @@ In this example we will train a multi-layer perceptron with the firefly algorith
 #include "src/model/activation_function/tan_h.h"
 #include "src/model/parameter_generator/uniform.h"
 
-using dnn_opt::core;
+using namespace dnn_opt::core;
 
 int main()
 {

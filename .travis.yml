@@ -1,6 +1,20 @@
- language: cpp
- compilter: gcc
- branches:
-  only: master
- notifications:
-  email: rojas.delgad.91@gmail.com 
+sudo: required
+dist: trusty
+
+language: cpp
+
+os: linux
+
+compilter: gcc
+
+branches:
+  only: 
+    - master
+
+notifications:
+  email: rojas.delgado.91@gmail.com 
+
+script:
+  - mkdir build
+  - cd build
+  - cmake .. && make

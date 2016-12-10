@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/jairodelgado/dnn_opt.svg?branch=master)](https://travis-ci.org/jairodelgado/dnn_opt)
 
-![DNN_OPT logo](docs/img/logo.png)
+# Welcome to DNN_OPT
 
 Welcome to dnn_opt, which states for deep neural network optimization. This is a C++11 header only library for high dimensional optimization and specifically for deep neural network optimization. High dimensional optimization is difficult to accomplish due to curse of dimensionality and high temporal and space complexity. Training a deep neural network is in fact an NP-hard optimization problem. 
 

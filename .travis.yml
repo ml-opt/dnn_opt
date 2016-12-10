@@ -1,5 +1,4 @@
  language: cpp
- script: scons
  compilter: gcc
  branches:
   only: master

@@ -1,0 +1,7 @@
+ language: cpp
+ script: scons
+ compilter: gcc
+ branches:
+  only: master
+ notifications:
+  email: rojas.delgad.91@gmail.com 

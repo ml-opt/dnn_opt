@@ -1,7 +1,25 @@
 sudo: required
 dist: trusty
 
+branches:
+  except:
+    - gh-pages
+
 language: cpp
+
+env:
+  global:
+    - GH_REPO_NAME: dnn_opt
+    - DOXYFILE: $TRAVIS_BUILD_DIR/DOXYFILE
+    - GH_REPO_REF: github.com/jairodelgado/dnn_opt.git
+
+addons:
+  apt:
+    packages:
+      - doxygen
+      - doxygen-doc
+      - doxygen-gui
+      - graphviz
 
 os: linux
 

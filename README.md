@@ -7,7 +7,7 @@
 
 DNN_OPT is a C++11 header only library for high dimensional optimization and specifically for deep neural network optimization. High dimensional optimization is difficult to accomplish due to curse of dimensionality and high temporal and space complexity. Training a deep neural network (dnn) is an NP-hard optimization problem.
 
-The goal of this project is to provide an extensible, fully-documented and efficient framework for dnn training via meta-heuristic and other optimization methods. Right, we are not yet there, but we will. Due to the increase in the number of parameters on dnns and the spatial and temporal complexity of training, it is beleived that such training can be executed in highly parallel environments.
+The goal of this project is to provide an extensible, fully-documented and efficient framework for dnn training via meta-heuristic and other optimization methods. Right, we are not yet there, but we will. Due to the increase in the number of parameters on dnns and the spatial and temporal complexity of training, it is beleived that such training can only be executed in highly parallel environments.
 
 For the moment, we are only providing basic library functionalities, but in the future dnn_opt will support multicore, GPU and distributed implementations for all the features, which for the moment only include sequential implementations. Keep reading to find out what you can currently do.
 

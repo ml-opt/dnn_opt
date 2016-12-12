@@ -1,8 +1,13 @@
 [![Build Status](https://travis-ci.org/jairodelgado/dnn_opt.svg?branch=master)](https://travis-ci.org/jairodelgado/dnn_opt)
+[![Code Climate](https://codeclimate.com/github/jairodelgado/dnn_opt/badges/gpa.svg)](https://codeclimate.com/github/jairodelgado/dnn_opt)
+[![Test Coverage](https://codeclimate.com/github/jairodelgado/dnn_opt/badges/coverage.svg)](https://codeclimate.com/github/jairodelgado/dnn_opt/coverage)
+[![Issue Count](https://codeclimate.com/github/jairodelgado/dnn_opt/badges/issue_count.svg)](https://codeclimate.com/github/jairodelgado/dnn_opt)
 
 # Welcome to DNN_OPT
 
-Welcome to dnn_opt, which states for deep neural network optimization. This is a C++11 header only library for high dimensional optimization and specifically for deep neural network optimization. High dimensional optimization is difficult to accomplish due to curse of dimensionality and high temporal and space complexity. Training a deep neural network is in fact an NP-hard optimization problem. 
+DNN_OPT is a C++11 header only library for high dimensional optimization and specifically for deep neural network optimization. High dimensional optimization is difficult to accomplish due to curse of dimensionality and high temporal and space complexity. Training a deep neural network (dnn) is an NP-hard optimization problem.
+
+The goal of this project is to provide an extensible, fully-documented and efficient framework for dnn training via meta-heuristic and other optimization methods. Right, we are not yet there, but we will. Due to the increase in the number of parameters on dnns and the spatial and temporal complexity of training, it is beleived that such training can be executed in highly parallel environments.
 
 For the moment, we are only providing basic library functionalities, but in the future dnn_opt will support multicore, GPU and distributed implementations for all the features, which for the moment only include sequential implementations. Keep reading to find out what you can currently do.
 
@@ -17,7 +22,7 @@ dnn_opt include some optimization algorithms that derive from the class `dnn_opt
 
 You can also find intresting how easely a new population-based meta-heuristic algorithm can be included. I'll create a doc section for this in the future.
 
-# Benchmark function for test optimization algorithms
+# Benchmark functions
 
 dnn_opt include some functions to run tests and do some benchmarking in high dimensional optimization. All the test functions are derived from a base class called `dnn_opt::core::solution` and reside under the namespace `dnn_opt::core::solutions::`. You are free to use:
 
@@ -25,16 +30,16 @@ dnn_opt include some functions to run tests and do some benchmarking in high dim
 2. `dnn_opt::core::solutions::de_jung` which is the De Jung function.
 3. `dnn_opt::core::solutions::rastrigin` which is the Rastrigin function.
 4. `dnn_opt::core::solutions::griewangk` which is the Griewangk function.
-5. `dnn_opt::core::solutions::michaleicks` which is the Michalewicks function.
+5. `dnn_opt::core::solutions::michalewicks` which is the Michalewicks function.
 6. `dnn_opt::core::solutions::rosenbrock` which is the Rosenbrock function.
 7. `dnn_opt::core::solutions::schwefel` which is the Schwefel function.
 8. `dnn_opt::core::solutions::styblinski_tang` which is the Styblinski-Tang function.
 
 Also, is very easy to include more benchmark functions. I'll provide a specific doc section for this too. As you may expect, there are also a special solution that stands for a dnn model which is: `dnn_opt::core::solutions::network`.
 
-# The `tiny_dnn::core::solutions::network`
+# The `network` class
 
-This is a special solution that models the dnn optimization surface. A dnn can be created in several ways and using parameters as stacked layers of procesing units and dnn_opt provides a way to accomplish this. Lets see what features you may find intresting.
+This is a special `solution` that models a dnn optimization surface. A dnn can be created in several ways and using parameters as stacked layers of procesing units and dnn_opt provides a way to accomplish this. Lets see what features you may find intresting.
 
 ## Activation functions.
 
@@ -120,20 +125,20 @@ using namespace dnn_opt::core;
 int main()
 {
   auto reader     = io::file_reader::make( "./winequality-white.csv" );
-  auto generator  = parameter_generators::normal::make( 0, 1 );
   auto sampler    = sampler::make( 0, reader->get_input_data(), reader->get_output_data() );
+  auto generator  = parameter_generators::normal::make( 0, 1 );
   auto error      = error_functions::mse::make();
-  auto solutions  = solution_set::make(10);
+  auto solutions  = solution_set::make( 10 );
 
   for( int i = 0; i < 10; i++ )
   {
-    auto net      = solutions::network::make( true, sampler, error, generator );
+    auto net      = solutions::network::make( false, sampler, error, generator );
 
     ( *net ) << layers::fully_connected::make( 11, 10, activation_functions::tan_h::make() )
              << layers::fully_connected::make( 10, 10, activation_functions::tan_h::make() )
              << layers::fully_connected::make( 10, 1, activation_functions::tan_h::make() );
 
-    solutions->add( std::move( net ) ;
+    solutions->add( std::move( net ) );
   }
 
   solutions->init();

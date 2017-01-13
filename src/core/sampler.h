@@ -56,11 +56,11 @@ namespace core
         /**
          * @brief Returns a shared_ptr of a sampler instance.
          *
-         * @param size the number of training patterns to include in the random subset.
+         * @param sample_size the number of training patterns to include in the random subset.
          * @param input the full set of input training patterns.
          * @param output the full set of output training patterns.
          */
-        static shared_ptr< sampler > make( int size, const vector< vector< float > > &input, const vector< vector< float > > &output )
+        static shared_ptr< sampler > make( int sample_size, const vector< vector< float > > &input, const vector< vector< float > > &output )
         {
             return shared_ptr< sampler >( new sampler( size, input, output ) );
         }
@@ -116,11 +116,12 @@ namespace core
          */
         int sample_size() const
         {
-            return _size;
+            return _sample_size;
         }
 
         /**
-         * @brief sample forces the re-generation of the random sample.
+         * @brief Generates a sub-sample of training patterns. This method has
+         * to be called in order to use @see sample_input() and @see sample_output().
          */
         void sample( )
         {
@@ -131,7 +132,7 @@ namespace core
             _sample_input.clear();
             _sample_output.clear();
 
-            for( int i = 0; i < _size; i++ )
+            for( int i = 0; i < _sample_size; i++ )
             {
 
                 int selection = selector( generator );
@@ -147,23 +148,21 @@ namespace core
          * @brief Creates a sampler object with a random subset with the given number of training
          * patterns from the original training data.
          *
-         * @param size the number of training patterns to include in the random subset.
+         * @param sample_size the number of training patterns to include in the random subset.
          * @param input the full set of input training patterns.
          * @param output the full set of output training patterns.
          *
          * @throws assertion if input and output does not have the same size or if the size of the
          * subset is bigger than the number of training patterns.
          */
-        sampler( int size, const vector< vector< float > > &input, const vector< vector< float > > &output )
+        sampler( int sample_size, const vector< vector< float > > &input, const vector< vector< float > > &output )
         {
             assert( input.size() == output.size() );
             assert( size < input.size() );
 
-            _input      = input;
-            _output     = output;
-            _size       = size;
-
-            sample( );
+            _input      	= input;
+            _output     	= output;
+            _sample_size    = size;
         }
 
     protected:
@@ -174,7 +173,7 @@ namespace core
         vector< vector< float > >   _sample_input;
         vector< vector< float > >   _sample_output;
 
-        int                         _size;
+        int                         _sample_size;
     };
 }
 }

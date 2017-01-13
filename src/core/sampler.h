@@ -62,8 +62,6 @@ namespace core
          */
         static shared_ptr< sampler > make( int size, const vector< vector< float > > &input, const vector< vector< float > > &output )
         {
-
-
             return shared_ptr< sampler >( new sampler( size, input, output ) );
         }
 

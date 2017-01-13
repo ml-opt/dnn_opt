@@ -7,12 +7,6 @@ branches:
 
 language: cpp
 
-env:
-  global:
-    - GH_REPO_NAME: dnn_opt
-    - DOXYFILE: $TRAVIS_BUILD_DIR/DOXYFILE
-    - GH_REPO_REF: github.com/jairodelgado/dnn_opt.git
-
 addons:
   apt:
     packages:
@@ -36,8 +30,3 @@ script:
   - mkdir build
   - cd build
   - cmake .. && make
-
-after_success:
-  - cd $TRAVIS_BUILD_DIR
-  - chmod +x doc-generator.sh
-  - ./doc-generator.sh

@@ -1,6 +1,4 @@
 [![Build Status](https://travis-ci.org/jairodelgado/dnn_opt.svg?branch=master)](https://travis-ci.org/jairodelgado/dnn_opt)
-[![Code Climate](https://codeclimate.com/github/jairodelgado/dnn_opt/badges/gpa.svg)](https://codeclimate.com/github/jairodelgado/dnn_opt)
-[![Test Coverage](https://codeclimate.com/github/jairodelgado/dnn_opt/badges/coverage.svg)](https://codeclimate.com/github/jairodelgado/dnn_opt/coverage)
 [![Issue Count](https://codeclimate.com/github/jairodelgado/dnn_opt/badges/issue_count.svg)](https://codeclimate.com/github/jairodelgado/dnn_opt)
 
 # Welcome to DNN_OPT

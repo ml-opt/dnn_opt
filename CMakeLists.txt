@@ -1,22 +1,62 @@
-CMAKE_MINIMUM_REQUIRED (VERSION 3.1)
-PROJECT (DNN_OPT)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+PROJECT(dnn_opt)
 
-########################################### CORE SETTINGS ############################################ 
+SET(ENABLE_CORE ON)
+SET(ENABLE_COPT OFF)
+SET(ENABLE_CUDA ON)
 
-INCLUDE (CheckIncludeFile)
-INCLUDE (CheckIncludeFileCXX)
-INCLUDE (CheckIncludeFiles)
-INCLUDE (ExternalProject)
+SET(ENABLE_EXAMPLE ON)
 
-INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR})
+############################## CORE SETTINGS #################################
 
-FILE(GLOB_RECURSE INC_ALL "src/*.h")
+IF(ENABLE_CORE)
+  ADD_DEFINITIONS(-DENABLE_CORE)
+  INCLUDE_DIRECTORIES(src)
 
-ADD_LIBRARY(DNN_OPT SHARED ${INC_ALL})
-SET_TARGET_PROPERTIES(DNN_OPT PROPERTIES CXX_STANDARD 11 CXXSTANDARD_REQUIRED YES)
-SET_TARGET_PROPERTIES(DNN_OPT PROPERTIES LINKER_LANGUAGE CXX)
+  FILE(GLOB_RECURSE CORE_SRC "src/core/*.cpp" "src/core/*.h")
+  ADD_LIBRARY(dnn_opt_core ${CORE_SRC})
 
-############################################ MPI SETTINGS ############################################
+  SET_TARGET_PROPERTIES(dnn_opt_core PROPERTIES CXX_STANDARD 11 CXXSTANDARD_REQUIRED YES)
+  SET_TARGET_PROPERTIES(dnn_opt_core PROPERTIES LINKER_LANGUAGE CXX)
+ENDIF(ENABLE_CORE)
+
+############################# BLAS SETTINGS #################################
+
+IF(ENABLE_COPT)
+  ADD_DEFINITIONS(-DENABLE_BLAS)
+  FIND_PACKAGE(BLAS REQUIRED)
+
+  INCLUDE_DIRECTORIES(${BLAS_INCLUDE_DIR} ${LAPACK_INCLUDE_DIR})
+  SET(CMAKE_CXX_LINK_FLAGS ${CMAKE_CXX_LINK_FLAGS} ${BLAS_LINKER_FLAGS})
+
+  FILE(GLOB_RECURSE COPT_SRC "src/copt/*.cpp" "src/copt/*.h")
+  ADD_LIBRARY(dnn_opt_copt ${COPT_SRC})
+
+  TARGET_LINK_LIBRARIES(dnn_opt_copt ${BLAS_LIBRARIES})
+
+  SET_TARGET_PROPERTIES(dnn_opt_copt PROPERTIES CXX_STANDARD 11 CXXSTANDARD_REQUIRED YES)
+  SET_TARGET_PROPERTIES(dnn_opt_copt PROPERTIES LINKER_LANGUAGE CXX)
+ENDIF(ENABLE_COPT)
+
+############################## CUDA SETTINGS #################################
+
+IF(ENABLE_CUDA)
+  ADD_DEFINITIONS(-DENABLE_CUDA)
+  FIND_PACKAGE(CUDA REQUIRED)
+
+  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+
+  # This is because a cuda-7 bug when using gcc-5
+  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_MWAITXINTRIN_H_INCLUDED")
+
+  FILE(GLOB_RECURSE CUDA_SRC "src/cuda/*.cu")
+  CUDA_COMPILE(CUDA ${CUDA_SRC})
+
+  CUDA_ADD_LIBRARY(dnn_opt_cuda main.cpp ${CUDA})
+  TARGET_LINK_LIBRARIES(dnn_opt_cuda -lcurand -lcublas)
+ENDIF(ENABLE_CUDA)
+
+############################### MPI SETTINGS #################################
 
 #FIND_PACKAGE(MPI REQUIRED)
 
@@ -26,3 +66,29 @@ SET_TARGET_PROPERTIES(DNN_OPT PROPERTIES LINKER_LANGUAGE CXX)
 #INCLUDE_DIRECTORIES(${MPI_INCLUDE_PATH})
 
 #TARGET_LINK_LIBRARIES(DNN_OPT ${MPI_LIBRARIES})
+
+################################# EXAMPLES ###################################
+
+IF(ENABLE_EXAMPLE)
+
+  INCLUDE_DIRECTORIES(examples)
+
+  ADD_EXECUTABLE(benchmark examples/benchmark.cpp)
+  ADD_EXECUTABLE(hpo examples/hpo.cpp)
+
+  IF(ENABLE_CORE)
+      TARGET_LINK_LIBRARIES(benchmark dnn_opt_core)
+      TARGET_LINK_LIBRARIES(hpo dnn_opt_core)
+  ENDIF(ENABLE_CORE)
+
+  IF(ENABLE_BLAS)
+      TARGET_LINK_LIBRARIES(benchmark dnn_opt_blas)
+      TARGET_LINK_LIBRARIES(hpo dnn_opt_blas)
+  ENDIF(ENABLE_BLAS)
+
+  IF(ENABLE_CUDA)
+    TARGET_LINK_LIBRARIES(benchmark dnn_opt_cuda)
+    TARGET_LINK_LIBRARIES(hpo dnn_opt_cuda)
+  ENDIF(ENABLE_CUDA)
+
+ENDIF(ENABLE_EXAMPLE)

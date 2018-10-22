@@ -1,159 +1,157 @@
-[![Build Status](https://travis-ci.org/jairodelgado/dnn_opt.svg?branch=master)](https://travis-ci.org/jairodelgado/dnn_opt)
-[![Issue Count](https://codeclimate.com/github/jairodelgado/dnn_opt/badges/issue_count.svg)](https://codeclimate.com/github/jairodelgado/dnn_opt)
 
-# Welcome to DNN_OPT
+# Welcome to `dnn_opt`
 
-DNN_OPT is a C++11 header only library for high dimensional optimization and specifically for deep neural network optimization. High dimensional optimization is difficult to accomplish due to curse of dimensionality and high temporal and space complexity. Training a deep neural network (dnn) is an NP-hard optimization problem.
+Welcome to `dnn_opt`, which states for deep neural network optimization. This is a C++11 library for high dimensional optimization and specifically for deep neural network optimization. However, it can be used for any kind of optimization problem.
 
-The goal of this project is to provide an extensible, fully-documented and efficient framework for dnn training via meta-heuristic and other optimization methods. Right, we are not yet there, but we will. Due to the increase in the number of parameters on dnns and the spatial and temporal complexity of training, it is beleived that such training can only be executed in highly parallel environments.
-
-For the moment, we are only providing basic library functionalities, but in the future dnn_opt will support multicore, GPU and distributed implementations for all the features, which for the moment only include sequential implementations. Keep reading to find out what you can currently do.
+`dnn_opt` support sequential, multicore and GPU implementations for all the features. Keep reading to find out what you can currently do.
 
 # Optimization algorithms
 
-dnn_opt include some optimization algorithms that derive from the class `dnn_opt::core::algorithm` and are under the namespace `dnn_opt::core::algorithms::`. For the moment you can use the following optimization algorithms:
+`dnn_opt` include some optimization algorithms that derive from the class `::algorithm` and are under the namespace `::algorithms::`. For the moment you can use the following optimization algorithms:
 
-1. `dnn_opt::core::algorithms::firefly` which is the Firefly Algorithm
-2. `dnn_opt::core::algorithms::pso` which is the Particle Swarm Optimization.
-3. `dnn_opt::core::algorithms::cuckoo` which is the Cuckoo Search.
-4. `dnn_opt::core::algorithms::gray_wolf` which is the Gray Wolf Optimization.
+1. `::algorithms::firefly` which is the Firefly Algorithm
+2. `::algorithms::pso` which is the Particle Swarm Optimization.
+3. `::algorithms::cuckoo` which is the Cuckoo Search.
 
 You can also find intresting how easely a new population-based meta-heuristic algorithm can be included. I'll create a doc section for this in the future.
 
-# Benchmark functions
+# Benchmark function for test optimization algorithms
 
-dnn_opt include some functions to run tests and do some benchmarking in high dimensional optimization. All the test functions are derived from a base class called `dnn_opt::core::solution` and reside under the namespace `dnn_opt::core::solutions::`. You are free to use:
+`dnn_opt` include some functions to run tests and do some benchmarking in high dimensional optimization. All the test functions are derived from a base class called `::solution` and reside under the namespace `::solutions::`. You are free to use:
 
-1. `dnn_opt::core::solutions::ackley` which is the Ackley function.
-2. `dnn_opt::core::solutions::de_jung` which is the De Jung function.
-3. `dnn_opt::core::solutions::rastrigin` which is the Rastrigin function.
-4. `dnn_opt::core::solutions::griewangk` which is the Griewangk function.
-5. `dnn_opt::core::solutions::michalewicks` which is the Michalewicks function.
-6. `dnn_opt::core::solutions::rosenbrock` which is the Rosenbrock function.
-7. `dnn_opt::core::solutions::schwefel` which is the Schwefel function.
-8. `dnn_opt::core::solutions::styblinski_tang` which is the Styblinski-Tang function.
+1. `::solutions::ackley` which is the Ackley function.
+2. `::solutions::de_jung` which is the De Jung function.
+3. `::solutions::rastrigin` which is the Rastrigin function.
+4. `::solutions::griewangk` which is the Griewangk function.
+5. `::solutions::michaleicks` which is the Michalewicks function.
+6. `::solutions::rosenbrock` which is the Rosenbrock function.
+7. `::solutions::schwefel` which is the Schwefel function.
+8. `::solutions::styblinski_tang` which is the Styblinski-Tang function.
 
-Also, is very easy to include more benchmark functions. I'll provide a specific doc section for this too. As you may expect, there are also a special solution that stands for a dnn model which is: `dnn_opt::core::solutions::network`.
+Also, is very easy to include more benchmark functions. I'll provide a specific doc section for this too. As you may expect, there are also a special solution that stands for a dnn model which is: `::solutions::network`.
 
 # The `network` class
 
-This is a special `solution` that models a dnn optimization surface. A dnn can be created in several ways and using parameters as stacked layers of procesing units and dnn_opt provides a way to accomplish this. Lets see what features you may find intresting.
+This is a special solution that models the neural network optimization surface. A neural network can be created in several ways and using parameters as stacked layers of procesing units and ``dnn_opt`` provides a way to accomplish this. Lets see what features you may find intresting.
 
 ## Activation functions.
 
-dnn_opt provides several activation functions that can be used by the processing units in a network. All activation functions derive from a base class called `dnn_opt::core::activation_function` and reside under the namespace `dnn_opt::core::activation_functions::`. You are free to use:
+`dnn_opt` provides several activation functions that can be used by the processing units in a network. All activation functions derive from a base class called `::activation_function` and reside under the namespace `::activation_functions::`. You are free to use:
 
-1. `dnn_opt::core::activation_functions::elu`
-2. `dnn_opt::core::activation_functions::identity`
-3. `dnn_opt::core::activation_functions::relu`
-4. `dnn_opt::core::activation_functions::sigmoid`
-5. `dnn_opt::core::activation_functions::tan_h`
-6. `dnn_opt::core::activation_functions::softmax`
+1. `::activation_functions::elu`
+2. `::activation_functions::identity`
+3. `::activation_functions::relu`
+4. `::activation_functions::sigmoid`
+5. `::activation_functions::tan_h`
+6. `::activation_functions::softmax`
 
 ## Layers
 
-Common dnn applications make use of several types of layers. dnn_opt provides several of them. All layers derive from a base class called `dnn_opt::core::layer` and reside under the namespace `dnn_opt::core::layers::`. You can use:
+Common dnn applications make use of several types of layers. ``dnn_opt`` provides several of them. All layers derive from a base class called `::layer` and reside under the namespace `::layers::`. You can use:
 
-1. `dnn_opt::core::layers::fully_connected`
-2. `dnn_opt::core::layers::convolutional`
-3. `dnn_opt::core::layers::average pooling`
-4. `dnn_opt::core::layers::max_pooling`
-5. `dnn_opt::core::layers::discretization`
+1. `::layers::fully_connected`
 
 Extending new layers is straight-forward. I'll include more documentation about the currently implemented layers and how to create new layers in the future. If you have any question please refer to the documentation in the code, everything is in there.
 
-## Parameter generators
+## Generators
 
-Many population-based optimization methods require to randomly initialize its population. dnn_opt provides a mechanism for determine how to randomly generate the parameters of the solutions. All the parameter generators derive form the base class `dnn_opt::core::parameter_generator` and reside under the namespace `dnn_opt::core::parameter_generators::`. You are free to use the followings:
+Many population-based optimization methods require to randomly initialize its population. ``dnn_opt`` provides a mechanism to determine how to randomly generate the parameters of the solutions. This define the search space. All the parameter generators derive form the base class `::generator` and reside under the namespace `::generators::`. You are free to use the followings:
 
-1. `dnn_opt::core::parameter_generators::normal`
-2. `dnn_opt::core::parameter_generators::uniform`
+1. `::generators::normal`
+2. `::generators::uniform`
 
-Extending new paramter generators is straight-forward too. I'll include more documentation about this but until that, you can refer to the documentation in the code.
+Extending new generators is straight-forward. I'll include more documentation about this but until that, you can refer to the documentation in the code.
 
 ## Error functions
 
-There are several ways to measure the error of a dnn. dnn_opt provides several error functions to accomplish this. All error functions derive from the base class `dnn_opt::core::error_function` and reside under the namespace `dnn_opt::core::activation_functions::`. For the moment, you can use the followings:
+There are several ways to measure the error of a dnn. `dnn_opt` provides several error functions to accomplish this. All error functions derive from the base class `::error` and reside under the namespace `::errors::`. For the moment, you can use the followings:
 
-1. `dnn_opt::core::activation_functions::mse` for regression problems.
-2. `dnn_opt::core::activation_functions::overall_error` for classification problems.
+1. `::errors::mse` for regression problems.
+2. `::errors::overall_error` for classification problems.
 
 Extending new error functions is straight-forward. I'll include more documentation about this but until that, you can refer to the documentation in the code.
 
 # Input readers
 
-Training a dnn requires training patterns. dnn_opt load training patterns via classes that derives from `dnn_opt::core::reader` and recide under the namespace `dnn_opt::core::io::`. For the moment we only provide a single class to do this job:
+Training a dnn requires training patterns. `dnn_opt` load training patterns via classes that derives from `::reader` and recide under the namespace `::io::`. For the moment we only provide a single class to do this job:
 
-1. `dnn_opt::core::io::file_reader`
+1. `::readers::file_reader` that reads from CSV files, please read the class documentation.
 
 Extending new readers is straight-forward. I'll include more documentation about this but until that, you can refer to the documentation in the code.
 
-# Samplers
-
-This is an experimental feature and it will be documented in the future. Please just refer to the examples and see how to use it.
-
 # Examples
 
-In this section you can see a basic example of how to use dnn_opt.
+In this section you can see a basic examples. Please take a look at the examples folder provided with the library:
 
-## Multi-layer perceptron with Firefly Algorithm
+1. Optimization of benchmark functions.
 
-In this example we will train a multi-layer perceptron with the firefly algorithm. Please make sure to provide the library with the correct format for the input file and a regresion problem. Also, tune the hyper-parameters of the Firefly Algorithm correctly.  See the code documentation for the `dnn_opt::core::io::file_reader` class to find out the correct input file format. You can use some of the following prepared files that are modified from the [UCI repository for machine learning](http://archive.ics.uci.edu/ml/datasets.html):
+## A very simple example
 
-1. [Wine Quality Dataset](docs/regression_problems/winequality-white.csv).
-2. [Concrete Compressive Strenght](docs/regression_problems/concrete.csv). 
-3. [Combined Cycle Power Plant](docs/regression_problems/ccpp.csv).
+In addition, please take a look to the following simple example of how to use the library. We have reserved the best feature of the library for the end: do you see the fourth line?
+
+In `using namespace `dnn_opt`::core` you are specifing to use a sequential implementation, if you have an NVidia GPU the only thing you need to do to use it is to change the namespace to `using namespace `dnn_opt`::cuda`. If you have a multi-core CPU then use `using namespace `dnn_opt`::mcpu` and that is all.
 
 ````c++
+
 #include <iostream>
-#include <memory>
+#include <`dnn_opt`.h>
 
-#include "src/io/file_reader.h"
-#include "src/core/sampler.h"
-#include "src/core/solution_set.h"
-#include "src/metaheuristic/firefly.h"
-#include "src/solution/network.h"
-#include "src/model/layer/fully_connected.h"
-#include "src/model/error_function/mse.h"
-#include "src/model/activation_function/tan_h.h"
-#include "src/model/parameter_generator/uniform.h"
+using namespace std;
+using namespace `dnn_opt`::core;
 
-using namespace dnn_opt::core;
-
-int main()
+int main(int argc, char** argv)
 {
-  auto reader     = io::file_reader::make( "./winequality-white.csv" );
-  auto sampler    = sampler::make( 0, reader->get_input_data(), reader->get_output_data() );
-  auto generator  = parameter_generators::normal::make( 0, 1 );
-  auto error      = error_functions::mse::make();
-  auto solutions  = solution_set::make( 10 );
+  /* command line argument collection */
 
-  for( int i = 0; i < 10; i++ )
+  int n = 256;
+  int p = 40;
+  int eta =1000;
+
+  /* generator that defines the search space */
+  auto* generator = generators::uniform::make(-10.0f, 10.0f);
+
+  /* set that contains the individuals of the population */
+  auto* solutions = solution_set<>::make(40);
+
+  /* creating a population of size = 40 */
+
+  for(int i = 0; i < 40; i++)
   {
-    auto net      = solutions::network::make( false, sampler, error, generator );
+    auto* solution = solutions::de_jung::make(generator, n);
 
-    ( *net ) << layers::fully_connected::make( 11, 10, activation_functions::tan_h::make() )
-             << layers::fully_connected::make( 10, 10, activation_functions::tan_h::make() )
-             << layers::fully_connected::make( 10, 1, activation_functions::tan_h::make() );
-
-    solutions->add( std::move( net ) );
+    solutions->add(solution);
   }
 
-  solutions->init();
+  /* random generation of initial population according the generator */
+  solutions->generate();
 
-  auto algorithm  = algorithms::firefly::make(0.5, 0.75, 0.35, std::move( solutions ) );
+  /* creating algorithm */
+  auto* algorithm = algorithms::pso::make(solutions);
 
-  for( int i = 0; i < 50; i++ )
-  {
-      algorithm->optimize( 10 );
-  }
+  /* optimize for eta iterations */
 
-  /* This is the average MSE error of the entire population */
-  std::cout << algorithm->get_solutions()->fitness();
+  auto start = high_resolution_clock::now();
+  algorithm->optimize(eta);
+  auto end = high_resolution_clock::now();
+
+  /* collect statics */
+
+  float time = duration_cast<milliseconds>(end - start).count();
+  float fitness = algorithm->get_best()->fitness();
+
+  cout << "Time: " << time << " Fitness: " << fitness << endl;
+
+  /* delete allocated memory */
+
+  delete solutions->clean();
+  delete algorithm;
+  delete generator;
+
+  return 0;
 }
 
 ````
 
 # How to contribute
 
-For the moment I won't be accepting contributions. First I'll complete some documentation, prepare some design guidelines and code standards. Any way, if you still want to contribute here is my [blog](https://jairodelgado.github.io) and the contact information is there. Thank you very much for reading. Enjoy!
+Plase take a look to the code stadard and development guidelines in the documentation. You can take a look to the examples and read the documentation in the code. We'll be happy to hear from you!

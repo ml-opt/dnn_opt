@@ -9,11 +9,9 @@ The library support sequential, multicore and GPU implementations for all the fe
 
 We feel that the best way of introduce our library features is by showing some examples. Please take a look at the following subsections. Additionally, feel free to take a look at our examples folder.
 
-## Optimize Sphere function with PSO
+## Optimize sphere function with PSO
 
-In addition, please take a look to the following simple example of how to use the library.
-
-In `using namespace dnn_opt::core` you are specifing to use a sequential implementation, for example, if you have an NVidia GPU the only thing you need to do to use it is to change the namespace to `using namespace dnn_opt::cuda`. If you have a multi-core CPU then use `using namespace dnn_opt::mcpu` and that is all.
+The following example is about optimizing a sphere function by using PSO meta-heuristic. Please take a look at the line starting with `using namespace dnn_opt::core`. There we are specifing to use a sequential implementation. If you have an NVIDIA GPU you can use it by changing the namespace to `using namespace dnn_opt::cuda`. If you have a multi-core CPU then use `using namespace dnn_opt::mcpu` and that is all.
 
 ````c++
 
@@ -65,7 +63,7 @@ int main(int argc, char** argv)
 
   cout << "Time: " << time << " Fitness: " << fitness << endl;
 
-  /* delete allocated memory */
+  /* free memory */
 
   delete solutions->clean();
   delete algorithm;

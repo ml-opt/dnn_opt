@@ -14,7 +14,7 @@ void algorithm::optimize(int count, std::function<void()> on)
   }
 }
 
-void algorithm::optimize_iter_thrshold(int count, float variance)
+void algorithm::optimize_idev(int count, float dev, std::function<void()> on)
 {
   float last = 0;
   float current = get_best()->fitness();
@@ -22,15 +22,17 @@ void algorithm::optimize_iter_thrshold(int count, float variance)
   do
   {
     last = current;
-    optimize(count);
+    optimize(count, on);
     current = get_best()->fitness();
-  } while(fabs(last - current) > variance);
+  } while(fabs(last - current) > dev);
 }
 
-void algorithm::optimize_dev_threshold(float dev)
+void algorithm::optimize_dev(float dev, std::function<void()> on)
 {
-  while(get_solutions()->fitness_dev() > dev) {
+  while(get_solutions()->fitness_dev() > dev)
+  {
     optimize();
+    on();
   }
 }
 

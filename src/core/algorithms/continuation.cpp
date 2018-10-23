@@ -37,14 +37,11 @@ void continuation::optimize(int eta, std::function<void()> on)
   {
     set_reader(i);
 
-    _base->optimize(span, [&on]()
-    {
-      on();
-    });
+    _base->optimize(span, on);
   }
 }
 
-void continuation::optimize_dev_threshold(float dev)
+void continuation::optimize_idev(int count, float dev,  std::function<void()> on)
 {
   int k = _sequence.size();
 
@@ -52,7 +49,19 @@ void continuation::optimize_dev_threshold(float dev)
   {
     set_reader(i);
 
-    _base->optimize_dev_threshold(dev);
+    _base->optimize_idev(count, dev, on);
+  }
+}
+
+void continuation::optimize_dev(float dev,  std::function<void()> on)
+{
+  int k = _sequence.size();
+
+  for(int i = 0; i < k; i++)
+  {
+    set_reader(i);
+
+    _base->optimize_dev(dev, on);
   }
 }
 

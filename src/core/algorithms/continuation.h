@@ -62,7 +62,9 @@ public:
 
   virtual void optimize(int eta, std::function<void()> on = [](){}) override;
 
-  virtual void optimize_dev_threshold(float dev) override;
+  virtual void optimize_idev(int count, float dev, std::function<void()> on = [](){}) override;
+
+  virtual void optimize_dev(float dev, std::function<void()> on = [](){}) override;
 
   virtual solution* get_best() override;
 

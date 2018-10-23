@@ -81,9 +81,9 @@ public:
    * @param variance improvement of the best solution fitness value necesary to
    * continue optimization.
    */
-  virtual void optimize_iter_thrshold(int count, float variance);
+  virtual void optimize_idev(int count, float dev, std::function<void()> on = [](){});
 
-  virtual void optimize_dev_threshold(float dev);
+  virtual void optimize_dev(float dev, std::function<void()> on = [](){});
 
   /**
    * @brief Specify if the optimization algorithm should maximize

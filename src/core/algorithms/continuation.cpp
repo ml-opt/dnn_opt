@@ -28,18 +28,19 @@ void continuation::optimize()
   _base->optimize();
 }
 
-void continuation::optimize(int eta)
+void continuation::optimize(int eta, std::function<void()> on)
 {
   int k = _sequence.size();
+  int span = eta / k;
 
   for(int i = 0; i < k; i++)
   {
     set_reader(i);
 
-    while(get_solutions()->get_evaluations() < (i + 1) * (eta / k))
+    _base->optimize(span, [&on]()
     {
-      _base->optimize();
-    }
+      on();
+    });
   }
 }
 

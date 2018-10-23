@@ -29,6 +29,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define DNN_OPT_CORE_ALGORITHM
 
 #include <vector>
+#include <functional>
 #include <core/base/solution_set.h>
 
 namespace dnn_opt
@@ -68,7 +69,7 @@ public:
    *
    * @param count number of optimization steps to perform.
    */
-  virtual void optimize(int count);
+  virtual void optimize(int count, std::function<void()> on = [](){});
 
   /**
    * @brief Perform optimization until the best solution does not improve its

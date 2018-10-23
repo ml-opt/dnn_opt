@@ -29,6 +29,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define DNN_OPT_CORE_ALGORITHMS_CONTINUATION
 
 #include <vector>
+#include <functional>
 #include <core/base/algorithm.h>
 #include <core/base/sampler.h>
 #include <core/base/reader.h>
@@ -59,7 +60,7 @@ public:
 
   virtual void optimize() override;
 
-  virtual void optimize(int eta) override;
+  virtual void optimize(int eta, std::function<void()> on = [](){}) override;
 
   virtual void optimize_dev_threshold(float dev) override;
 

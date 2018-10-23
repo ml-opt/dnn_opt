@@ -31,6 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <vector>
 #include <memory>
 #include <stdexcept>
+#include <functional>
 #include <core/base/algorithm.h>
 #include <core/base/solution_set.h>
 #include <core/solutions/wrapper.h>

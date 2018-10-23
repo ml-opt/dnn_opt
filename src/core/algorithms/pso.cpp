@@ -1,5 +1,4 @@
 #include <stdexcept>
-#include <core/solutions/network.h> // parche
 #include <core/algorithms/pso.h>
 
 namespace dnn_opt

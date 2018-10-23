@@ -5,11 +5,12 @@ namespace dnn_opt
 namespace core
 {
 
-void algorithm::optimize(int count)
+void algorithm::optimize(int count, std::function<void()> on)
 {
   for(int i = 0; i < count; i++)
   {
     optimize();
+    on();
   }
 }
 

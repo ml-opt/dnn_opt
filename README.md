@@ -37,9 +37,7 @@ int main(int argc, char** argv)
 
   for(int i = 0; i < 40; i++)
   {
-    auto* solution = solutions::de_jung::make(generator, n);
-
-    solutions->add(solution);
+    solutions->add(solutions::de_jung::make(generator, n));
   }
 
   /* random generation of initial population according the generator */
@@ -105,7 +103,7 @@ Also, is very easy to include more benchmark functions. I'll provide a specific 
 
 This is a special solution that models the neural network optimization surface. A neural network can be created in several ways and using parameters as stacked layers of procesing units and dnn_opt provides a way to accomplish this. Lets see what features you may find intresting.
 
-### Activation functions.
+### Activation functions
 
 dnn_opt provides several activation functions that can be used by the processing units in a network. All activation functions derive from a base class called `::activation_function` and reside under the namespace `::activation_functions::`. You are free to use:
 
@@ -152,4 +150,4 @@ Extending new readers is straight-forward. I'll include more documentation about
 
 # How to contribute
 
-Plase take a look to the code stadard and development guidelines in the documentation. You can take a look to the examples and read the documentation in the code. We'll be happy to hear from you!
+Please take a look to the code stadard and development guidelines in the documentation. You can take a look to the examples and read the documentation in the code. We'll be happy to hear from you!

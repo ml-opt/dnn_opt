@@ -23,11 +23,9 @@ using namespace `dnn_opt`::core;
 
 int main(int argc, char** argv)
 {
-  /* command line argument collection */
-
   int n = 256;
   int p = 40;
-  int eta =1000;
+  int eta = 1000;
 
   /* generator that defines the search space */
   auto* generator = generators::uniform::make(-10.0f, 10.0f);

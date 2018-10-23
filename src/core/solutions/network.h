@@ -160,7 +160,7 @@ friend class network;
 
 public:
 
-  virtual reader* get_reader() override;
+  virtual float fitness() override;
 
 private:
 

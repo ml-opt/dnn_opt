@@ -47,10 +47,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * -n dimension of the target solution, default: 256.
  * -p size of the population, default: 40.
- * -e number of iterations of the meta-heuristic, dafault is 1000.
- * -s solution type, default dnn_opt::core::solutions::de_jung.
- * -a meta-heuristic type, default is dnn_opt::core::algorithms::pso.
- * -o output (0 - None, 1-Simple, 2-HPOLib), default is 1.
+ * -e number of iterations of the meta-heuristic, dafault: 1000.
+ * -s solution type, default: dnn_opt::core::solutions::de_jung.
+ * -a meta-heuristic type, default: dnn_opt::core::algorithms::pso.
+ * -o output (0 - None, 1-Simple, 2-HPOLib), default: 1.
  *
  * Depending on the optimization algorithm, you can specify hyper-parameters. See
  * the documentation for each meta-heuristic, specifically set_params() method.

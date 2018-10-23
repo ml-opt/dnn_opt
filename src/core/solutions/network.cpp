@@ -173,14 +173,14 @@ network::~network()
   _layers.clear();
 }
 
-reader* network::linked::get_reader()
+float network::linked::fitness()
 {
   if(_source->get_reader() != network::get_reader())
   {
     network::set_reader(_source->get_reader());
   }
 
-  return network::get_reader();
+  return network::fitness();
 }
 
 network::linked::linked(network* source)

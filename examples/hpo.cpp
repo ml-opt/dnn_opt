@@ -25,6 +25,72 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+/**
+ * This example deals with optimizing hyper-parameters of meta-heuristics with
+ * meta-heuristics. Hyper-parameter optimization (HPO) is a task of high complexity
+ * that involves two nested cycles of optimization, that includes training
+ * in machine learning.
+ *
+ * Here we refer to the regular optimization algoritm simply as algorithm. The
+ * optimization algorithm that deals with hyper-parameter optimization of the
+ * regular algorithm meta-algorithm.
+ *
+ * The hyper-parameters for the meta-algorithm are choosen from literature
+ * recommendation. This is based in the idea that as the regular optimization
+ * problem may have hundreds of dimensions and standard literature recomendation
+ * may not be applicable, hyper-parameter optimization usually involves less
+ * less than 10 parameters.
+ *
+ * Additionally, while some automatic hyper-parameter optimization  algorithms
+ * such as SMAC and TPE are availiable, the practitioner needs to know details
+ * about the regular optimization algoritm plus the hyper-parameter optimization
+ * algorithm. With this approach, if the practitioner is using PSO can use PSO
+ * for HPO.
+ *
+ * See benchark example for a description of the basic workflow of the library.
+ *
+ * From the command line, you can pass the following arguments:
+ *
+ * -n dimension of the target solution, default: 256.
+ * -meta_n number of hyper-parameters, default: 4.
+ * -p size of the population, default: 40.
+ * -meta_p size of the meta-population
+ * -e number of iterations of the meta-heuristic, dafault: 1000.
+ * -s solution type, default: dnn_opt::core::solutions::de_jung.
+ * -a meta-heuristic type, default: dnn_opt::core::algorithms::pso.
+ * -o output (0 - None, 1-Simple, 2-HPOLib), default: 1.
+ *
+ * Depending on the optimization algorithm, you can specify hyper-parameters. See
+ * the documentation for each meta-heuristic, specifically set_params() method.
+ * You can specify the hyper-parameters in the following order:
+ *
+ * -ha first hyper-parameter
+ * -hb second hyper-parameter
+ * -hc third hyper-parameter
+ * -hd fourth hyper-parameter
+ * -he fifth hyper-parameter
+ * -hf sixth hyper-parameter
+ *
+ * The method set_hyper() used in this example will pass the hyper-parameters
+ * to the meta-heuristic, or use default hyper-parameters in case that those
+ * are not specified.
+ *
+ * For default values, hyper-parameters have been configured using automatic
+ * hyper-parameter optimization. See corresponding example, @ref hpo.cpp.
+ *
+ * Solutions that can be created are listed below:
+ *
+ * 0 - @ref dnn_opt::core::solutions::de_jung.
+ *
+ * Algorithms that can be created with this function are listed below:
+ *
+ * 0 - dnn_opt::core::algorithms::pso.
+ *
+ * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
+ * @version 1.0
+ * @date October, 2019
+ */
+
 #include <iostream>
 #include <vector>
 #include <chrono>
@@ -65,10 +131,12 @@ int main(int argc, char** argv)
     solutions->add(solution);
   }
 
+  solutions->generate();
+
   /* creating algorithm */
   auto* algorithm = create_algorithm(algorithm_type, solutions);
 
-  auto* meta_generator = generators::uniform::make(0.0, 3.0);
+  auto* meta_generator = generators::uniform::make(0.0f, 3.0f);
   auto* meta_solutions = solution_set<>::make(meta_p);
 
   for(int i = 0; i < meta_p; i++)
@@ -90,17 +158,24 @@ int main(int argc, char** argv)
   /* optimize for eta iterations */
 
   auto start = high_resolution_clock::now();
-  algorithm->optimize(meta_eta);
+
+  int i = 0;
+
+  meta_algorithm->optimize(meta_eta, [&i]()
+  {
+    cout << "Meta iteration: " << i + 1 << endl;
+  });
+
   auto end = high_resolution_clock::now();
 
   /* collect statics */
 
   float time = duration_cast<milliseconds>(end - start).count();
-  float fitness = algorithm->get_best()->fitness();
+  float fitness = meta_algorithm->get_best()->fitness();
 
   /* show params in standard output */
 
-  float* params = algorithm->get_best()->get_params();
+  float* params = meta_algorithm->get_best()->get_params();
 
   for(int i = 0; i < meta_solutions->get_dim(); i++)
   {
@@ -116,9 +191,13 @@ int main(int argc, char** argv)
   /* delete allocated memory */
   /* dnn_opt::core::solution_set::clean() is a helper to delete solutions */
 
+  delete meta_solutions->clean();
+  delete meta_algorithm;
+  delete meta_generator;
+
   delete solutions->clean();
   delete algorithm;
-  delete generator;
+  delete generator;  
 
   return 0;
 }

@@ -63,10 +63,10 @@ void firefly::move(int s, int t)
   float* source = get_solutions()->get(s)->get_params();
   float* target = get_solutions()->get(t)->get_params();
 
-  float dist = this->distance(s, t);
+  float dist = distance(s, t);
   float beta = get_init_bright() * exp(-1 * get_light_decay() * dist);
 
-  _generator->generate(this->get_solutions()->get_dim(), _r);
+  _generator->generate(get_solutions()->get_dim(), _r);
 
   for(int i = 0; i < dim; i++)
   {

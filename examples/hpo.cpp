@@ -33,7 +33,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * Here we refer to the regular optimization algoritm simply as algorithm. The
  * optimization algorithm that deals with hyper-parameter optimization of the
- * regular algorithm meta-algorithm.
+ * regular algorithm: meta-algorithm.
  *
  * The hyper-parameters for the meta-algorithm are choosen from literature
  * recommendation. This is based in the idea that as the regular optimization
@@ -107,7 +107,7 @@ int main(int argc, char** argv)
   /* command line argument collection */
 
   int n = input("-n", 256, argc, argv);
-  int meta_n = input("-n", 4, argc, argv);
+  int meta_n = input("-m_n", 4, argc, argv);
   int p = input("-p", 40, argc, argv);
   int meta_p = input("-m_p", 10, argc, argv);
   int eta = input("-eta", 1000, argc, argv);
@@ -159,12 +159,7 @@ int main(int argc, char** argv)
 
   auto start = high_resolution_clock::now();
 
-  int i = 0;
-
-  meta_algorithm->optimize(meta_eta, [&i]()
-  {
-    cout << "Meta iteration: " << i + 1 << endl;
-  });
+  meta_algorithm->optimize(meta_eta);
 
   auto end = high_resolution_clock::now();
 

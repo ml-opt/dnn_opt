@@ -85,10 +85,24 @@ solution* create_solution(int type, int n, generator* generator)
 {
   switch(type)
   {
-    case 0 :
-      return solutions::de_jung::make(generator, n);
-    default:
-      throw invalid_argument("solution type not found");
+  case 0 :
+    return solutions::de_jung::make(generator, n);
+  case 1:
+    return solutions::ackley::make(generator, n);
+  case 2:
+    return solutions::griewangk::make(generator, n);
+  case 3:
+    return solutions::michalewicz::make(generator, n);
+  case 4:
+    return solutions::rastrigin::make(generator, n);
+  case 5:
+    return solutions::rosenbrock::make(generator, n);
+  case 6:
+    return solutions::schwefel::make(generator, n);
+  case 7:
+    return solutions::styblinski_tang::make(generator, n);
+  default:
+    throw invalid_argument("solution type not found");
   }
 }
 
@@ -110,10 +124,12 @@ algorithm* create_algorithm(int type, solution_set<>* solutions)
 {
   switch(type)
   {
-    case 0 :
-      return algorithms::pso::make(solutions);
-    default:
-      throw invalid_argument("algorithm type not found");
+  case 0 :
+    return algorithms::pso::make(solutions);
+  case 1 :
+    return algorithms::firefly::make(solutions);
+  default:
+    throw invalid_argument("algorithm type not found");
   }
 }
 
@@ -139,16 +155,23 @@ void set_hyper(int type, algorithm* algorithm, int argc, char** argv)
 
   switch(type)
   {
-    case 0 :
-      ha = input("-ha", 0.8, argc, argv);
-      hb = input("-hb", 0.6, argc, argv);
-      hc = input("-hc", 2.5, argc, argv);
-      hd = input("-hd", 0.01, argc, argv);
+  case 0 :
+    ha = input("-ha", 0.8, argc, argv);
+    hb = input("-hb", 0.6, argc, argv);
+    hc = input("-hc", 2.5, argc, argv);
+    hd = input("-hd", 0.01, argc, argv);
 
-      params = {ha, hb, hc, hd};
-      break;
-    default:
-      throw invalid_argument("algorithm type not found");
+    params = {ha, hb, hc, hd};
+    break;
+  case 1 :
+    ha = input("-ha", 0.8, argc, argv);
+    hb = input("-hb", 0.6, argc, argv);
+    hc = input("-hc", 0.3, argc, argv);
+
+    params = {ha, hb, hc, hd};
+    break;
+  default:
+    throw invalid_argument("algorithm type not found");
   }
 
   algorithm->set_params(params);

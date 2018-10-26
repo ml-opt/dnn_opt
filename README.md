@@ -19,14 +19,10 @@ The following example is about optimizing a sphere function by using PSO meta-he
 #include <dnn_opt.h>
 
 using namespace std;
-using namespace `dnn_opt`::core;
+using namespace dnn_opt::core;
 
 int main(int argc, char** argv)
 {
-  int n = 256;
-  int p = 40;
-  int eta = 1000;
-
   /* generator that defines the search space */
   auto* generator = generators::uniform::make(-10.0f, 10.0f);
 
@@ -37,7 +33,7 @@ int main(int argc, char** argv)
 
   for(int i = 0; i < 40; i++)
   {
-    solutions->add(solutions::de_jung::make(generator, n));
+    solutions->add(solutions::de_jung::make(generator, 256));
   }
 
   /* random generation of initial population according the generator */
@@ -46,18 +42,15 @@ int main(int argc, char** argv)
   /* creating algorithm */
   auto* algorithm = algorithms::pso::make(solutions);
 
-  /* optimize for eta iterations */
+  /* optimize for 1000 iterations */
 
-  auto start = high_resolution_clock::now();
-  algorithm->optimize(eta);
-  auto end = high_resolution_clock::now();
+  algorithm->optimize(1000);
 
   /* collect statics */
 
-  float time = duration_cast<milliseconds>(end - start).count();
   float fitness = algorithm->get_best()->fitness();
 
-  cout << "Time: " << time << " Fitness: " << fitness << endl;
+  cout << "Fitness: " << fitness << endl;
 
   /* free memory */
 

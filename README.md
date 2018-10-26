@@ -43,14 +43,10 @@ int main(int argc, char** argv)
   auto* algorithm = algorithms::pso::make(solutions);
 
   /* optimize for 1000 iterations */
-
   algorithm->optimize(1000);
 
   /* collect statics */
-
-  float fitness = algorithm->get_best()->fitness();
-
-  cout << "Fitness: " << fitness << endl;
+  cout << "Fitness: " << algorithm->get_best()->fitness() << endl;
 
   /* free memory */
 

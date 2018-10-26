@@ -73,7 +73,7 @@ dnn_opt include some optimization algorithms that derive from the class `::algor
 
 You can also find intresting how easely a new population-based meta-heuristic algorithm can be included. I'll create a doc section for this in the future.
 
-## Benchmark function for test optimization algorithms
+## Benchmark function to test optimization algorithms
 
 dnn_opt include some functions to run tests and do some benchmarking in high dimensional optimization. All the test functions are derived from a base class called `::solution` and reside under the namespace `::solutions::`. You are free to use:
 

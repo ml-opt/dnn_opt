@@ -52,13 +52,18 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * From the command line, you can pass the following arguments:
  *
  * -n dimension of the target solution, default: 256.
- * -meta_n number of hyper-parameters, default: 4.
+ * -m_n number of hyper-parameters, default: 4.
+ * -min minumum value of a parameter, default: -10.
+ * -m_min minumum value of a hyper-parameter, default: 0.
+ * -max maximum value of a parameter, default: 10.
+ * -m_max maximum value of a hyper-parameter, default: 3.
  * -p size of the population, default: 40.
- * -meta_p size of the meta-population
+ * -m_p size of the meta-population, default: 10
  * -e number of iterations of the meta-heuristic, dafault: 1000.
+ * -m_e number of iterations of the meta-algorithm, dafault: 10.
  * -s solution type, default: dnn_opt::core::solutions::de_jung.
  * -a meta-heuristic type, default: dnn_opt::core::algorithms::pso.
- * -o output (0 - None, 1-Simple, 2-HPOLib), default: 1.
+ * -o output (0 - None, 1-Fitness, 2-TimeFitness, 3-HPOLib), default: 1.
  *
  * Depending on the optimization algorithm, you can specify hyper-parameters. See
  * the documentation for each meta-heuristic, specifically set_params() method.
@@ -80,11 +85,20 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * Solutions that can be created are listed below:
  *
- * 0 - @ref dnn_opt::core::solutions::de_jung.
+ * 0 - @ref dnn_opt::core::solutions::de_jung
+ * 1 - @ref dnn_opt::core::solutions::ackley
+ * 2 - @ref dnn_opt::core::solutions::giewangk
+ * 3 - @ref dnn_opt::core::solutions::rastrigin
+ * 4 - @ref dnn_opt::core::solutions::rosenbrock
+ * 5 - @ref dnn_opt::core::solutions::schwefel
+ * 6 - @ref dnn_opt::core::solutions::styblinski_tang
+ * 7 - @ref dnn_opt::core::solutions::step
+ * 8 - @ref dnn_opt::core::solutions::alpine
  *
  * Algorithms that can be created with this function are listed below:
  *
- * 0 - dnn_opt::core::algorithms::pso.
+ * 0 - @ref dnn_opt::core::algorithms::pso
+ * 1 - @ref dnn_opt::core::algorithms::firefly
  *
  * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
  * @version 1.0
@@ -108,6 +122,10 @@ int main(int argc, char** argv)
 
   int n = input("-n", 256, argc, argv);
   int meta_n = input("-m_n", 4, argc, argv);
+  int min = input("-min", -10, argc, argv);
+  int meta_min = input("-m_min", 0, argc, argv);
+  int max = input("-max", 10, argc, argv);
+  int meta_max = input("-m_max", 3, argc, argv);
   int p = input("-p", 40, argc, argv);
   int meta_p = input("-m_p", 10, argc, argv);
   int eta = input("-eta", 1000, argc, argv);
@@ -117,7 +135,7 @@ int main(int argc, char** argv)
   int output_type = input("-o", 1, argc, argv);
 
   /* generator that defines the search space */
-  auto* generator = generators::uniform::make(-10.0f, 10.0f);
+  auto* generator = generators::uniform::make(min, max);
 
   /* set that contains the individuals of the population */
   auto* solutions = solution_set<>::make(p);
@@ -136,7 +154,7 @@ int main(int argc, char** argv)
   /* creating algorithm */
   auto* algorithm = create_algorithm(algorithm_type, solutions);
 
-  auto* meta_generator = generators::uniform::make(0.0f, 3.0f);
+  auto* meta_generator = generators::uniform::make(meta_min, meta_max);
   auto* meta_solutions = solution_set<>::make(meta_p);
 
   for(int i = 0; i < meta_p; i++)

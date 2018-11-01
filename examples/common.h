@@ -72,6 +72,14 @@ int input(string param, int default_value, int argc, char** argv)
  * Solutions that can be created with this function are listed below:
  *
  * 0 - @ref dnn_opt::core::solutions::de_jung
+ * 1 - @ref dnn_opt::core::solutions::ackley
+ * 2 - @ref dnn_opt::core::solutions::giewangk
+ * 3 - @ref dnn_opt::core::solutions::rastrigin
+ * 4 - @ref dnn_opt::core::solutions::rosenbrock
+ * 5 - @ref dnn_opt::core::solutions::schwefel
+ * 6 - @ref dnn_opt::core::solutions::styblinski_tang
+ * 7 - @ref dnn_opt::core::solutions::step
+ * 8 - @ref dnn_opt::core::solutions::alpine
  *
  * @param type the type of the solution to be created.
  * @param n the amount of dimensions of the solution.
@@ -92,15 +100,17 @@ solution* create_solution(int type, int n, generator* generator)
   case 2:
     return solutions::griewangk::make(generator, n);
   case 3:
-    return solutions::michalewicz::make(generator, n);
-  case 4:
     return solutions::rastrigin::make(generator, n);
-  case 5:
+  case 4:
     return solutions::rosenbrock::make(generator, n);
-  case 6:
+  case 5:
     return solutions::schwefel::make(generator, n);
-  case 7:
+  case 6:
     return solutions::styblinski_tang::make(generator, n);
+  case 7:
+    return solutions::step::make(generator, n);
+  case 8:
+    return solutions::alpine::make(generator, n);
   default:
     throw invalid_argument("solution type not found");
   }
@@ -111,7 +121,8 @@ solution* create_solution(int type, int n, generator* generator)
  *
  * Algorithms that can be created with this function are listed below:
  *
- * 0 - dnn_opt::core::algorithms::pso
+ * 0 - @ref dnn_opt::core::algorithms::pso
+ * 1 - @ref dnn_opt::core::algorithms::firefly
  *
  * @param type the algorithm to be created.
  * @param solutions an instance of dnn_opt::core::solution_set to be optimized.
@@ -184,8 +195,9 @@ void set_hyper(int type, algorithm* algorithm, int argc, char** argv)
  * Posible values for the output type are:
  *
  * 0 - None
- * 1 - Simple
- * 2 - HPOLib
+ * 1 - Fitness
+ * 2 - TimeFitness
+ * 3 - HPOLib
  *
  * @param type type of output.
  * @param time amount of time of the optimization.
@@ -193,13 +205,17 @@ void set_hyper(int type, algorithm* algorithm, int argc, char** argv)
  */
 void example_out(int type, float time, float fitness)
 {
-  if(type == 1)
+  switch(type)
   {
-    cout << "Time: " << time << "ms" << " Fitness: "<< fitness << endl;
-  }
-  else if(type == 2)
-  {
+  case 1:
+    cout << fitness << endl;
+    break;
+  case 2:
+    cout << time << " " << fitness << endl;
+    break;
+  case 3:
     cout << "Result for ParamILS: SAT," << time;
     cout << ", 1, " << fitness << ", -1, dnn_opt" << endl;
-  }
+    break;
+  }	
 }

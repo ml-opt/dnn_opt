@@ -50,7 +50,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * -e number of iterations of the meta-heuristic, dafault: 1000.
  * -s solution type, default: dnn_opt::core::solutions::de_jung.
  * -a meta-heuristic type, default: dnn_opt::core::algorithms::pso.
- * -o output (0 - None, 1-Simple, 2-HPOLib), default: 1.
+ * -o output (0 - None, 1-Fitness, 2-TimeFitness, 3-HPOLib), default: 1.
  *
  * Depending on the optimization algorithm, you can specify hyper-parameters. See
  * the documentation for each meta-heuristic, specifically set_params() method.
@@ -72,11 +72,20 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * Solutions that can be created are listed below:
  *
- * 0 - @ref dnn_opt::core::solutions::de_jung.
+ * 0 - @ref dnn_opt::core::solutions::de_jung
+ * 1 - @ref dnn_opt::core::solutions::ackley
+ * 2 - @ref dnn_opt::core::solutions::giewangk
+ * 3 - @ref dnn_opt::core::solutions::rastrigin
+ * 4 - @ref dnn_opt::core::solutions::rosenbrock
+ * 5 - @ref dnn_opt::core::solutions::schwefel
+ * 6 - @ref dnn_opt::core::solutions::styblinski_tang
+ * 7 - @ref dnn_opt::core::solutions::step
+ * 8 - @ref dnn_opt::core::solutions::alpine
  *
  * Algorithms that can be created with this function are listed below:
  *
- * 0 - dnn_opt::core::algorithms::pso.
+ * 0 - @ref dnn_opt::core::algorithms::pso
+ * 1 - @ref dnn_opt::core::algorithms::firefly
  *
  * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
  * @version 1.0

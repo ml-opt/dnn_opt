@@ -30,12 +30,11 @@
 
   /* solutions */
   #include <core/solutions/network.h>
-  #include <core/solutions/hyper.h>
-
+  #include <core/solutions/step.h>
+  #include <core/solutions/alpine.h>
   #include <core/solutions/ackley.h>
   #include <core/solutions/de_jung.h>
   #include <core/solutions/griewangk.h>
-  #include <core/solutions/michalewicz.h>
   #include <core/solutions/rastrigin.h>
   #include <core/solutions/rosenbrock.h>
   #include <core/solutions/schwefel.h>

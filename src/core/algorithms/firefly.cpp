@@ -1,6 +1,6 @@
 #include <stdexcept>
 #include <core/algorithms/firefly.h>
-#include <iostream>
+
 namespace dnn_opt
 {
 namespace core
@@ -30,7 +30,7 @@ void firefly::optimize()
       auto* source = this->get_solutions()->get(i);
       auto* target = this->get_solutions()->get(j);
 
-      if(target->is_better_than(source, this->is_maximization()))
+      if(target->is_better_than(source, is_maximization()))
       {
         move(i, j);
       }
@@ -38,8 +38,8 @@ void firefly::optimize()
   }
 
   _rand_influence *= _rand_decay;
-  _generator->set_min(-0.5 * this->get_rand_influence());
-  _generator->set_max(0.5 * this->get_rand_influence());
+  _generator->set_min(-0.5 * get_rand_influence());
+  _generator->set_max(0.5 * get_rand_influence());
 }
 
 solution* firefly::get_best()
@@ -49,8 +49,10 @@ solution* firefly::get_best()
 
 void firefly::init()
 {
-  float min = -0.5f * this->get_rand_influence();
-  float max = 0.5f * this->get_rand_influence();
+  //delete created things
+
+  float min = -0.5f * get_rand_influence();
+  float max = 0.5f * get_rand_influence();
 
   _generator = generators::uniform::make(min, max);
   _r = new float[get_solutions()->get_dim()];
@@ -100,14 +102,15 @@ firefly::~firefly()
 
 void firefly::set_params(std::vector<float> &params)
 {
-  if(params.size() != 3)
+  if(params.size() != 4)
   {
-    std::invalid_argument("algorithms::firefly set_params expect 3 values");
+    std::invalid_argument("algorithms::firefly set_params expect 4 values");
   }
 
   set_light_decay(params.at(0));
   set_init_bright(params.at(1));
   set_rand_influence(params.at(2));
+  set_rand_decay(params.at(3));
 }
 
 float firefly::get_light_decay() const

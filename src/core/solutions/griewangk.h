@@ -39,7 +39,22 @@ namespace solutions
 {
 
 /**
- * @brief The griewangk class
+ * @brief The griewangk class represents an optimization solutions which
+ * fitness cost is calculated via Griewangk function.
+ *
+ * The equation for this function is given by:
+ *
+ * f(x) = \sum_{i=0}^n{x_i^2 / 4000} - \prod_{i=0}^n{\cos(x_i / \sqrt{i})} + 1
+ *
+ * Griewangk function have a global minima in {0,..., 0} with a value of 0.
+ * A commonly used search domain for testing is [-100, 100]. Griewangk is continuous, 
+ * differentiable, non-separable, scalable and multimodal. See the following 
+ * reference [f_59] in:
+ *
+ * MOMIN, JAMIL; YANG, Xin-She. A literature survey of benchmark functions for 
+ * global optimization problems. Journal of Mathematical Modelling and Numerical 
+ * Optimisation, 2013, vol. 4, no 2, p. 150-194.
+ *
  *
  * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
  * @version 1.0

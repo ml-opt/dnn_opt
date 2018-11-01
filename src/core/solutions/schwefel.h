@@ -39,7 +39,22 @@ namespace solutions
 {
 
 /**
- * @brief The schwefel class.
+ * @brief The schwefel class represents an optimization solution which 
+ * fitness cost is calculated via Schwefel function.
+ *
+ * The equation for this function is given by:
+ *
+ * f(x) = -1/n\sum_{i=0}^n{x_i\sin{\sqrt{|x_i|}}}
+ *
+ * Schwefel function have a global minima in ±[\pi(0.5 + k)]^2 with a value of 
+ * -418.983.  A commonly used search domain for testing is [-500, 5000]. Schwefel 
+ * is continuous, differentiable, separable, scalable and multimodal. See the 
+ * following reference[f_128] in:
+ *
+ * MOMIN, JAMIL; YANG, Xin-She. A literature survey of benchmark functions for 
+ * global optimization problems. Journal of Mathematical Modelling and Numerical 
+ * Optimisation, 2013, vol. 4, no 2, p. 150-194.
+ *
  *
  * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
  * @version 1.0

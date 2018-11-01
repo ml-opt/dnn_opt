@@ -42,8 +42,19 @@ namespace solutions
  * @brief The de_jung class represents an optimization solutions which
  * fitness cost is calculated via De'Jung function.
  *
+ * The equation for this function is given by:
+ *
+ * f(x) = \sum_{i=0}^{n}{{x_i}^2}
+ *
  * De'Jung function have a global minima in {0,..., 0} with a value of 0.
- * A commonly used search domain for testing is [-5.12, 5.12].
+ * A commonly used search domain for testing is [0, 10]. De Jung is continuous, 
+ * differentiable, separable, scalable and multimodal. See the following 
+ * reference [f_137] in:
+ * 
+ * MOMIN, JAMIL; YANG, Xin-She. A literature survey of benchmark functions for 
+ * global optimization problems. Journal of Mathematical Modelling and Numerical 
+ * Optimisation, 2013, vol. 4, no 2, p. 150-194.
+ *
  *
  * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
  * @version 1.0

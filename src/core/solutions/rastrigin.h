@@ -42,8 +42,20 @@ namespace solutions
  * @brief The rastrigin class represents an optimization solutions which 
  * fitness cost is calculated via Rastrigin function.
  *
+ * The equation for this function is given by:
+ *
+ * f(x) = 10n + \sum_{i=0}^n{x_i^2-10\cos(2\pi x_i)}
+ *
  * Rastrigin function have a global minima in {0,..., 0} with a value of 0. 
- * A commonly used search domain for testing is [?, ?].
+ * A commonly used search domain for testing is [-5.12, 5.12]. Rastrigin is
+ * continuous, differentiable, separable, scalable and multimodal. See the 
+ * following reference:
+ *
+ * LIANG, Jane-Jing; SUGANTHAN, Ponnuthurai Nagaratnam; DEB, Kalyanmoy. Novel 
+ * composition test functions for numerical global optimization. En Swarm 
+ * Intelligence Symposium, 2005. SIS 2005. Proceedings 2005 IEEE. IEEE, 2005. 
+ * p. 68-75.
+ *
  *
  * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
  * @version 1.0

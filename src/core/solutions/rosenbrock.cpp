@@ -23,9 +23,7 @@ float rosenbrock::calculate_fitness()
 
   for(int i = 0; i < size() - 1; i++)
   {
-    float aux = pow(1 - get(i), 2);
-
-    result += aux + 100 * pow(get(i + 1) - aux, 2);
+    result += 100 * pow(get(i + 1) - pow(get(i), 2), 2) + pow(get(i) - 1, 2);
   }
 
   return result;

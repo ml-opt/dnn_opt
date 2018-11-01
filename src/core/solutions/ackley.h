@@ -42,8 +42,20 @@ namespace solutions
  * @brief The ackley class represents an optimization solution which fitness
  * cost is calculated via Ackley function.
  *
+ * The equation for this function is given by:
+ * 
+ * f(x) = -20e^{0.02\sqrt{n^-1\sum_{i=0}^n{x_i^2}}} - 
+ *        e^{n^{-1}\sum_{i=0}^n{\cos(2\pi x_i)}} + 20 + e
+ *
  * Ackley function have a global minima in {0,..., 0} with a value of 0.
- * A commonly used search domain for testing is [-32.768, 32.768].
+ * A commonly used search domain for testing is [-35, 35]. Ackley is 
+ * continuous, differentiable, non-separable, scalable and multi-modal. See
+ * the following reference [f_1] in:
+ * 
+ * MOMIN, JAMIL; YANG, Xin-She. A literature survey of benchmark functions for 
+ * global optimization problems. Journal of Mathematical Modelling and Numerical 
+ * Optimisation, 2013, vol. 4, no 2, p. 150-194.
+ *
  *
  * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
  * @version 1.0

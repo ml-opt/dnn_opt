@@ -25,7 +25,7 @@ float styblinski_tang::calculate_fitness()
 
   for(int i = 0; i < size(); i++)
   {
-    result += pow(get(i), 4) + 16 * pow(get(i), 2) + 5 * get(i);
+    result += pow(get(i), 4) - 16 * pow(get(i), 2) + 5 * get(i);
   }
 
   return result / 2;

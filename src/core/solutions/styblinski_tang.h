@@ -41,9 +41,20 @@ namespace solutions
 /**
  * @brief The styblinski_tang class represents an optimization solution 
  * which fitness cost is calculated via Styblinski-Tang function.
+ * 
+ * The equation for this function is given by:
+ *
+ * f(x) = 0.5* \sum_{i=0}^n{x_i^4 + 16x_i^2 + 5x_i}
  *
  * Styblinski-Tang function have a global minima in {-2.093,..., 2.9053} with 
- * a value of -39.16. A commonly used search domain for testing is [?, ?].
+ * a value of -78.332. A commonly used search domain for testing is [-5, 5].
+ * Styblinski-Tang is continuous, differentiable, non-separable, non-scalable
+ * and multimodal.  See the following reference[f_144] in:
+ *
+ * MOMIN, JAMIL; YANG, Xin-She. A literature survey of benchmark functions for 
+ * global optimization problems. Journal of Mathematical Modelling and Numerical 
+ * Optimisation, 2013, vol. 4, no 2, p. 150-194.
+ *
  *
  * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
  * @version 1.0

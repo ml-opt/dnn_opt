@@ -25,10 +25,10 @@ float schwefel::calculate_fitness()
 
   for(int i = 0; i < size(); i++)
   {
-    result += - get(i) * sin(sqrt(fabs(get(i))));
+    result += get(i) * sin(sqrt(fabs(get(i))));
   }
 
-  return result;
+  return -1 * result / size();
 }
 
 schwefel::schwefel(generator* generator, unsigned int size )

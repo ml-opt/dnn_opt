@@ -42,8 +42,19 @@ namespace solutions
  * @brief The rosenbrock class represents an optimization solution which 
  * fitness cost is calculated via Rosenbrock function.
  *
+ * The equation for this function is given by:
+ *
+ * f(x) = \sum_{i=0}^{n - 1}[100(x_{i+1} - x_i^2)^2 + (x_i - 1)^2] 
+ *
  * Rosenbrock function have a global minima in {1,..., 1} with a value of 0. 
- * A commonly used search domain for testing is [?, ?].
+ * A commonly used search domain for testing is [-30, 30]. Rosenbrock is
+ * continuous, differentiable, non-separable, non-scalable and multimodal.
+ * See the following reference[f_105] in:
+ *
+ * MOMIN, JAMIL; YANG, Xin-She. A literature survey of benchmark functions for 
+ * global optimization problems. Journal of Mathematical Modelling and Numerical 
+ * Optimisation, 2013, vol. 4, no 2, p. 150-194.
+ *
  *
  * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
  * @version 1.0

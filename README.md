@@ -3,7 +3,14 @@
 
 Welcome to dnn_opt, which states for deep neural network optimization. This is a C++11 library for high dimensional optimization and specifically for deep neural network optimization. However, it can be used for any kind of optimization problem.
 
-The library support sequential, multicore and GPU implementations for all the features. Keep reading to find out what you can currently do.
+The library will support sequential, multicore and GPU implementations for all the features. The current support for each implementation is shown bellow. 
+
+* ![core implementation progress](http://progressed.io/bar/100) core: sequential implementation
+* ![optimized implementation progress](http://progressed.io/bar/5) copt: sequential implementation optimized
+* ![comp implementation progress](http://progressed.io/bar/0) momp: multicore with openMP implementation
+* ![cuda implementation progress](http://progressed.io/bar/90) cuda: parallel GPU implementation
+
+Keep reading to find out what you can currently do.
 
 # Examples
 
@@ -19,14 +26,10 @@ The following example is about optimizing a sphere function by using PSO meta-he
 #include <dnn_opt.h>
 
 using namespace std;
-using namespace `dnn_opt`::core;
+using namespace dnn_opt::core;
 
 int main(int argc, char** argv)
 {
-  int n = 256;
-  int p = 40;
-  int eta = 1000;
-
   /* generator that defines the search space */
   auto* generator = generators::uniform::make(-10.0f, 10.0f);
 
@@ -37,7 +40,7 @@ int main(int argc, char** argv)
 
   for(int i = 0; i < 40; i++)
   {
-    solutions->add(solutions::de_jung::make(generator, n));
+    solutions->add(solutions::de_jung::make(generator, 256));
   }
 
   /* random generation of initial population according the generator */
@@ -46,18 +49,11 @@ int main(int argc, char** argv)
   /* creating algorithm */
   auto* algorithm = algorithms::pso::make(solutions);
 
-  /* optimize for eta iterations */
-
-  auto start = high_resolution_clock::now();
-  algorithm->optimize(eta);
-  auto end = high_resolution_clock::now();
+  /* optimize for 1000 iterations */
+  algorithm->optimize(1000);
 
   /* collect statics */
-
-  float time = duration_cast<milliseconds>(end - start).count();
-  float fitness = algorithm->get_best()->fitness();
-
-  cout << "Time: " << time << " Fitness: " << fitness << endl;
+  cout << "Fitness: " << algorithm->get_best()->fitness() << endl;
 
   /* free memory */
 
@@ -84,7 +80,7 @@ dnn_opt include some optimization algorithms that derive from the class `::algor
 
 You can also find intresting how easely a new population-based meta-heuristic algorithm can be included. I'll create a doc section for this in the future.
 
-## Benchmark function for test optimization algorithms
+## Benchmark function to test optimization algorithms
 
 dnn_opt include some functions to run tests and do some benchmarking in high dimensional optimization. All the test functions are derived from a base class called `::solution` and reside under the namespace `::solutions::`. You are free to use:
 

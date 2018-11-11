@@ -39,12 +39,12 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 using namespace std;
 
-#ifdef ENABLE_CORE
-using namespace dnn_opt::core;
+#ifdef ENABLE_CUDA
+using namespace dnn_opt::cuda;
 #elif ENABLE_COPT
 using namespace dnn_opt::copt;
-#elif ENABLE_CUDA
-using namespace dnn_opt::cuda;
+#elif ENABLE_CORE
+using namespace dnn_opt::core;
 #endif
 
 /**

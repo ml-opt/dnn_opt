@@ -1,3 +1,5 @@
+/*************************** CORE INCLUDES ************************************/
+
 #ifdef ENABLE_CORE
 
   /* base */
@@ -57,7 +59,78 @@
 
 #endif
 
+/*************************** COPT INCLUDES ************************************/
+
+#ifdef ENABLE_COPT
+
+  #ifndef ENABLE_CORE
+  static_assert(false, "dnn_opt::copt requires dnn_opt::core wrapper");
+  #endif
+
+  /* base */
+  #include <copt/base/activation.h>
+  #include <copt/base/algorithm.h>
+  #include <copt/base/error.h>
+  #include <copt/base/generator.h>
+  #include <copt/base/layer.h>
+  #include <copt/base/reader.h>
+  #include <copt/base/sampler.h>
+  #include <copt/base/solution.h>
+  #include <copt/base/solution_set.h>
+  #include <copt/base/shufler.h>
+
+  /* algorithms */
+  #include <copt/algorithms/pso.h>
+  #include <copt/algorithms/firefly.h>
+  #include <copt/algorithms/cuckoo.h>
+  #include <copt/algorithms/continuation.h>
+  #include <copt/algorithms/opwa.h>
+
+  /* errors */
+  #include <copt/errors/mse.h>
+  #include <copt/errors/overall.h>
+
+  /* generators */
+  #include <copt/generators/constant.h>
+  #include <copt/generators/normal.h>
+  #include <copt/generators/uniform.h>
+
+  /* solutions */
+  #include <copt/solutions/network.h>
+  #include <copt/solutions/step.h>
+  #include <copt/solutions/alpine.h>
+  #include <copt/solutions/ackley.h>
+  #include <copt/solutions/de_jung.h>
+  #include <copt/solutions/griewangk.h>
+  #include <copt/solutions/rastrigin.h>
+  #include <copt/solutions/rosenbrock.h>
+  #include <copt/solutions/schwefel.h>
+  #include <copt/solutions/styblinski_tang.h>
+  #include <copt/solutions/hyper.h>
+
+  /* layers */
+  #include <copt/layers/fc.h>
+
+  /* activations */
+  #include <copt/activations/elu.h>
+  #include <copt/activations/hard_limit.h>
+  #include <copt/activations/identity.h>
+  #include <copt/activations/relu.h>
+  #include <copt/activations/sigmoid.h>
+  #include <copt/activations/tan_h.h>
+
+  /* readers */
+  #include <copt/readers/file_reader.h>
+
+#endif
+
+/*************************** CUDA INCLUDES ************************************/
+
 #ifdef ENABLE_CUDA
+
+  #ifndef ENABLE_CORE
+  static_assert(false, "dnn_opt::cuda requires dnn_opt::copt wrapper");
+  #endif
 
   /* base */
   #include <cuda/base/activation.h>

@@ -31,6 +31,16 @@ float constant::generate()
   return _value;
 }
 
+void constant::set_constraints(int count, float* params)
+{
+  float min = get_min();
+  float max = get_max();
+
+  for(int i = 0; i < count; i++)
+  {
+    params[i] = std::max(min, std::min(max, params[i]));
+  }
+}
 
 constant::constant(float value) : generator(value, value)
 {

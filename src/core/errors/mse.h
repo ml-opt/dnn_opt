@@ -58,7 +58,7 @@ public:
 
   void ff(int size, int dim, const float* out, const float* exp) override;
 
-  float f();
+  float f() override;
 
 protected:
 

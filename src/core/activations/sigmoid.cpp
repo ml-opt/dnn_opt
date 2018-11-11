@@ -1,6 +1,7 @@
-#include <math.h>
-#include <core/activations/sigmoid.h>
+#include <cmath>
 #include <algorithm>
+#include <core/activations/sigmoid.h>
+
 namespace dnn_opt
 {
 namespace core

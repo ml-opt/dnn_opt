@@ -66,6 +66,8 @@ public:
 
   virtual float generate() override;
 
+  virtual void set_constraints(int count, float* params) override;
+
   virtual ~normal();
 
 protected:
@@ -79,13 +81,13 @@ protected:
    */
   normal(float mean, float dev);
 
-private:
+protected:
 
   /** The std::generator used to generate random numbers */
   std::mt19937* _generator;
 
   /** The std::normal_distribution for getting normalized random numbers */
-  std::normal_distribution< float >* _distribution;
+  std::normal_distribution<float>* _distribution;
 
 };
 

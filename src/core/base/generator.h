@@ -63,6 +63,8 @@ public:
    */
   virtual float generate() = 0;
 
+  virtual void set_constraints(int count, float* params) = 0;
+
   /**
    * @brief The minimun value that this generator produces.
    *

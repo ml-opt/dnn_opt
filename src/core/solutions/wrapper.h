@@ -25,8 +25,8 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DNN_OPT_CORE_SOLUTIONS_WRAPPER_SOLUTION
-#define DNN_OPT_CORE_SOLUTIONS_WRAPPER_SOLUTION
+#ifndef DNN_OPT_CORE_SOLUTIONS_WRAPPER
+#define DNN_OPT_CORE_SOLUTIONS_WRAPPER
 
 #include <cassert>
 #include <core/base/solution.h>
@@ -161,8 +161,8 @@ protected:
 
 };
 
-}
-}
-}
+} // namespace solutions
+} // namepsace core
+} // namespace dnn_opt
 
 #endif

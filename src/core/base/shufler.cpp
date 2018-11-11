@@ -98,5 +98,5 @@ shufler::~shufler()
   _out_data = 0;
 }
 
-} // core
-} // dnn_opt
+} // namespace core
+} // namespace dnn_opt

@@ -16,7 +16,7 @@ void hard_limit::f(int size, const float* sum, float* out)
 {
   for(int i = 0; i < size; i++)
   {
-    out[ i ] = sum[ i ] > 0 ? 1 : 0;
+    out[i] = sum[i] > 0 ? 1 : 0;
   }
 }
 

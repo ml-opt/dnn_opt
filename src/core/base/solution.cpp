@@ -112,16 +112,7 @@ void solution::set_modified(bool modified)
 
 void solution::set_constrains()
 {
-  float min = get_generator()->get_min();
-  float max = get_generator()->get_max();
-  float* params = get_params();
-  int dim = size();
-
-  for(int i = 0; i < dim; i++)
-  {
-    params[i] = std::min(max, std::max(min, params[i]));
-  }
-
+  get_generator()->set_constraints(size(), get_params());
   set_modified(true);
 }
 

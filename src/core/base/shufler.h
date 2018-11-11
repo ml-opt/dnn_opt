@@ -92,7 +92,8 @@ protected:
   generators::uniform* _generator;
 
 };
-}
-}
+
+} // namespace core
+} // namespace dnn_opt
 
 #endif

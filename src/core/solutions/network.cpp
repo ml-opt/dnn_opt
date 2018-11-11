@@ -107,7 +107,7 @@ void network::init()
   solution::init();
 }
 
-reader* network::get_reader()
+reader* network::get_reader() const
 {
   return _r;
 }

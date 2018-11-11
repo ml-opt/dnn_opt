@@ -112,6 +112,7 @@ protected:
   bool* _mask;
   float* _in_data;
   float* _out_data;
+
 };
 }
 }

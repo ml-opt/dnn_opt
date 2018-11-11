@@ -1,4 +1,4 @@
-#include <math.h>
+#include <cmath>
 #include <core/activations/tan_h.h>
 
 namespace dnn_opt

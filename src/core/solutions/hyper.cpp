@@ -34,7 +34,7 @@ void hyper::set_iteration_count(int iteration_count)
 
 hyper* hyper::clone()
 {
-  auto* result = hyper::make(get_generator(), _algorithm, size());
+  auto* result = hyper::make(get_generator(), get_algorithm(), size());
 
   result->_fitness = fitness();
   result->set_modified(false);
@@ -64,11 +64,13 @@ void hyper::assign(solution* s)
 
 float hyper::calculate_fitness()
 {
-  _algorithm->reset();
-  _algorithm->set_params(size(), get_params());
-  _algorithm->optimize(_iteration_count);
+  algorithm* algorithm = get_algorithm();
 
-  return _algorithm->get_best()->fitness();
+  algorithm->reset();
+  algorithm->set_params(size(), get_params());
+  algorithm->optimize(get_iteration_count());
+
+  return algorithm->get_best()->fitness();
 }
 
 hyper::hyper(generator* generator, algorithm* algorithm, unsigned int size)

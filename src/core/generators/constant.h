@@ -67,6 +67,8 @@ public:
 
   virtual float generate() override;
 
+  virtual void set_constraints(int count, float* params) override;
+
   virtual ~constant();
 
 protected:

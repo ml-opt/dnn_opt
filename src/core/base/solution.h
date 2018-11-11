@@ -49,6 +49,7 @@ class solution
 public:
 
   static solution* make(generator* generator, unsigned int size);
+
   /**
    * @brief Change the value of all the parameters of this solution.
    *

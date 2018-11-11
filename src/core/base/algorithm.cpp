@@ -1,3 +1,4 @@
+#include <cmath>
 #include <core/base/algorithm.h>
 
 namespace dnn_opt

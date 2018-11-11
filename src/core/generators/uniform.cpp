@@ -27,6 +27,17 @@ float uniform::generate()
   return (*_distribution)(*_generator);
 }
 
+void uniform::set_constraints(int count, float* params)
+{
+  float min = get_min();
+  float max = get_max();
+
+  for(int i = 0; i < count; i++)
+  {
+    params[i] = std::max(min, std::min(max, params[i]));
+  }
+}
+
 uniform::uniform(float min, float max) : generator(min, max)
 {
   std::random_device device;

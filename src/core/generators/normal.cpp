@@ -27,6 +27,16 @@ float normal::generate()
   return (*_distribution)(*_generator);
 }
 
+void normal::set_constraints(int count, float* params)
+{
+  float min = get_min();
+  float max = get_max();
+
+  for(int i = 0; i < count; i++)
+  {
+    params[i] = std::max(min, std::min(max, params[i]));
+  }
+}
 
 normal::normal(float mean, float dev) : generator(mean - dev, mean + dev)
 {
@@ -41,7 +51,6 @@ normal::~normal()
   delete _generator;
   delete _distribution;
 }
-
 
 } // namespace generators
 } // namespace core

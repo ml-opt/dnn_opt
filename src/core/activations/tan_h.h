@@ -25,8 +25,8 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DNN_OPT_CORE_ACTIVATIONS_TAN_H
-#define DNN_OPT_CORE_ACTIVATIONS_TAN_H
+#ifndef DNN_OPT_CORE_ACTIVATIONS_TAN
+#define DNN_OPT_CORE_ACTIVATIONS_TAN
 
 #include <core/base/activation.h>
 
@@ -57,6 +57,7 @@ public:
   static tan_h* make();
 
   void f(int size, const float* sum, float* out) override;
+  
 };
 
 } // namespace activations

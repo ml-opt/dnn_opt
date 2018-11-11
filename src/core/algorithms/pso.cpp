@@ -10,12 +10,16 @@ namespace algorithms
 
 void pso::optimize()
 {
-  unsigned int dim = get_solutions()->size();
+  unsigned int n = get_solutions()->size();
 
-  for(int i = 0; i < dim; i++)
+  for(int i = 0; i < n; i++)
   {
     update_speed(i);
     update_position(i);
+  }
+
+  for(int i = 0; i < n; i++)
+  {
     update_local(i);
   }
 

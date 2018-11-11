@@ -20,19 +20,22 @@ void firefly::reset()
 
 void firefly::optimize()
 {
-  this->get_solutions()->sort(this->is_maximization());
+  unsigned int n = get_solutions()->size();
+
+  get_solutions()->sort(is_maximization());
 
   /** move the fireflies */
-  for(int i = 0; i < this->get_solutions()->size(); i++)
+  for(int i = 0; i < n; i++)
   {
-    for(int j = 0; j < this->get_solutions()->size(); j++)
-    {
-      auto* source = this->get_solutions()->get(i);
-      auto* target = this->get_solutions()->get(j);
+    auto* target = get_solutions()->get(i);
 
-      if(target->is_better_than(source, is_maximization()))
+    for(int j = 0; j < n; j++)
+    {
+      auto* mover = get_solutions()->get(j);
+
+      if(target->is_better_than(mover, is_maximization()))
       {
-        move(i, j);
+        move(j, i);
       }
     }
   }
@@ -51,6 +54,11 @@ void firefly::init()
 {
   //delete created things
 
+  _light_decay = 1;
+  _rand_influence = 0.2;
+  _rand_decay = 0.98;
+  _init_bright = 1;
+
   float min = -0.5f * get_rand_influence();
   float max = 0.5f * get_rand_influence();
 
@@ -58,40 +66,38 @@ void firefly::init()
   _r = new float[get_solutions()->get_dim()];
 }
 
-void firefly::move(int s, int t)
+void firefly::move(int m, int t)
 {
   int dim = get_solutions()->get_dim();
-
-  float* source = get_solutions()->get(s)->get_params();
+  float* mover = get_solutions()->get(m)->get_params();
   float* target = get_solutions()->get(t)->get_params();
 
-  float dist = distance(s, t);
+  float dist = distance(m, t);
   float beta = get_init_bright() * exp(-1 * get_light_decay() * dist);
 
   _generator->generate(get_solutions()->get_dim(), _r);
 
   for(int i = 0; i < dim; i++)
   {
-    source[i] +=  beta * (target[i] - source[i]) + _r[i];
+    mover[i] +=  beta * (target[i] - mover[i]) + _r[i];
   }
 
-  get_solutions()->get(s)->set_constrains();
+  get_solutions()->get(m)->set_constrains();
 }
 
-float firefly::distance(int s, int t)
+float firefly::distance(int m, int t)
 {
-  int dim = get_solutions()->get_dim();
-
-  float result = 0;
-  float* source = get_solutions()->get(s)->get_params();
+  float sum = 0;
+  int dim = get_solutions()->get_dim();  
+  float* mover = get_solutions()->get(m)->get_params();
   float* target = get_solutions()->get(t)->get_params();
 
   for (int i = 0; i < dim; i++)
   {
-    result += powf(target[i] - source[i], 2.0f);
+    sum += powf(target[i] - mover[i], 2.0f);
   }
 
-  return result;
+  return sum;
 }
 
 firefly::~firefly()
@@ -102,15 +108,14 @@ firefly::~firefly()
 
 void firefly::set_params(std::vector<float> &params)
 {
-  if(params.size() != 4)
+  if(params.size() != 3)
   {
-    std::invalid_argument("algorithms::firefly set_params expect 4 values");
+    std::invalid_argument("algorithms::firefly set_params expect 3 values");
   }
 
   set_light_decay(params.at(0));
   set_init_bright(params.at(1));
   set_rand_influence(params.at(2));
-  set_rand_decay(params.at(3));
 }
 
 float firefly::get_light_decay() const

@@ -48,7 +48,7 @@ namespace algorithms
  * @version 1.0
  * @date July, 2016
  */
-class pso : public algorithm
+class pso : public virtual algorithm
 {
 public:
 
@@ -133,14 +133,14 @@ protected:
    *
    * @param index the index of the solution to be updated.
    */
-  void update_speed(int idx);
+  virtual void update_speed(int idx);
 
   /**
    * @brief Update the position of a given solution.
    *
    * @param index the index of the solution to be updated.
    */
-  void update_position(int idx);
+  virtual void update_position(int idx);
 
   /**
    * @brief Update the local best solution of a given solution if the current

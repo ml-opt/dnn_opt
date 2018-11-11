@@ -149,23 +149,23 @@ protected:
   /**
    * @brief Move a given firefly to another.
    *
-   * @param s the firefly who is going to move.
+   * @param m the firefly who is going to move.
    *
    * @param t the destination firefly in what the @ref s firefly
    * will move.
    */
-  virtual void move(int s, int t);
+  virtual void move(int m, int t);
 
   /**
    * @brief The Eucliden distance between two fireflies.
    *
-   * @param s the first firefly.
+   * @param m the first firefly.
    *
    * @param t the second firefly.
    *
    * @return the euclidean distance between source and target.
    */
-  virtual float distance(int s, int t);
+  virtual float distance(int m, int t);
 
   /**
    * @brief Create a new instance of the firefly class.
@@ -212,10 +212,6 @@ template<class t_solution>
 firefly::firefly(const solution_set<t_solution>* solutions)
 : algorithm(solutions)
 {
-  _light_decay = 1;
-  _rand_influence = 0.2;
-  _rand_decay = 0.98;
-  _init_bright = 1;
   _generator = 0;
   _r = 0;
 }

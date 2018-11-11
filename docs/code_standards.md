@@ -19,6 +19,7 @@ This section specifies the code standards for the development of new functionali
   2.3. Code segments that are designed for local usage should be placed within a void namespace.
   2.4. Declare variables at the beginning of its code block, leave an empty line after.
   2.5. Separate logical code blocks by empty lines if you feel this will improve readability.
+  2.6. Leave an empty line before the closing brace of a class and before the return statement of a method implementation.
 
 ## Comments and documentation
 
@@ -37,3 +38,5 @@ This section specifies the code standards for the development of new functionali
   4.2. Avoid the use of the auto keyword.
   4.3. Use a space to separate operators and operands. Do not use space to separate parenthesis.
   4.4. Always specify virtual modifier in derived classes.
+  4.5. Include headers that do not belong to the library first and then include the headers that belong to the library.
+  4.6. In .cpp files implement the most important methods of the class first, then implement trivial methods (e.g. getters and setters) and finally implement the contructor and destructor of the class.

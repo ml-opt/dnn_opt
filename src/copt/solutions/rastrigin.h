@@ -25,54 +25,61 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DNN_OPT_COPT_SHUFLER
-#define DNN_OPT_COPT_SHUFLER
+#ifndef DNN_OPT_COPT_SOLUTIONS_RASTRIGIN
+#define DNN_OPT_COPT_SOLUTIONS_RASTRIGIN
 
-#include <core/base/shufler.h>
-#include <copt/base/reader.h>
-#include <copt/generators/uniform.h>
+#include <core/solutions/rastrigin.h>
+#include <copt/base/generator.h>
+#include <copt/base/solution.h>
 
 namespace dnn_opt
 {
 namespace copt
 {
+namespace solutions
+{
 
-class shufler : public virtual reader,
-                public virtual core::shufler
+/**
+ * @copydoc core::solutions::rastrigin
+ *
+ * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
+ * @version 1.0
+ * @date November, 2018
+ */
+class rastrigin : public virtual solution,
+                  public virtual core::solutions::rastrigin
 {
 public:
 
-  static shufler* make(reader* reader, float sample_proportion);
-
   /**
-   * @brief Create a specified number of samplers of the same size dividing
-   * the training patterns contained in @ref reader equally.
+   * @brief Returns an instance of the rastrigin class.
    *
-   * Is responsabilty of the user to de-allocate properly the returned samplers
-   * and the array.
+   * @param generator an instance of a generator class.
    *
-   * @param reader the reader containing the original set of training patterns.
+   * @param size is the number of parameters for this solution. Default is 10.
    *
-   * @param folds the amount of equally divided samples of training patterns.
-   *
-   * @return an array of size @folds containing pointers to the created
-   * samplers.
+   * @return a pointer to an instance of the rastrigin class.
    */
-  static shufler* make(reader* reader, int samples);
+  static rastrigin* make(generator* generator, unsigned int size = 10);
+
+  virtual ~rastrigin();
 
 protected:
 
+  virtual float calculate_fitness() override;
+
   /**
-   * @brief Fisher-Yates shuffle.
+   * @brief The basic contructor for the ratrigin class.
+   *
+   * @param generator an instance of a generator class.
+   *
+   * @param size is the number of parameters for this solution. Default is 10.
    */
-  virtual void shufle();
-
-  void swap(int i, int j);
-
-  shufler(reader* reader, int samples);
+  rastrigin(generator* generator, unsigned int size );
 
 };
 
+} // namespace solutions
 } // namespace copt
 } // namespace dnn_opt
 

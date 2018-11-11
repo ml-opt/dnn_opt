@@ -25,55 +25,67 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DNN_OPT_COPT_SHUFLER
-#define DNN_OPT_COPT_SHUFLER
+#ifndef DNN_OPT_COPT_SOLUTIONS_NETWORK
+#define DNN_OPT_COPT_SOLUTIONS_NETWORK
 
-#include <core/base/shufler.h>
+#include <vector>
+#include <initializer_list>
+#include <core/solutions/network.h>
+#include <copt/base/error.h>
 #include <copt/base/reader.h>
-#include <copt/generators/uniform.h>
+#include <copt/base/generator.h>
+#include <copt/base/solution.h>
+#include <copt/base/layer.h>
 
 namespace dnn_opt
 {
 namespace copt
 {
+namespace solutions
+{
 
-class shufler : public virtual reader,
-                public virtual core::shufler
+class network : public virtual solution,
+                public virtual core::solutions::network
 {
 public:
 
-  static shufler* make(reader* reader, float sample_proportion);
+  static network* make(generator* generator, reader* reader, error* error);
+
+  virtual network* clone() override;
+
+  virtual bool assignable(const dnn_opt::core::solution* s) const override;
+
+  virtual reader* get_reader() const override;
+
+  virtual error* get_error() const override;
 
   /**
-   * @brief Create a specified number of samplers of the same size dividing
-   * the training patterns contained in @ref reader equally.
-   *
-   * Is responsabilty of the user to de-allocate properly the returned samplers
-   * and the array.
-   *
-   * @param reader the reader containing the original set of training patterns.
-   *
-   * @param folds the amount of equally divided samples of training patterns.
-   *
-   * @return an array of size @folds containing pointers to the created
-   * samplers.
+   * @brief The basic destructor of the network class.
    */
-  static shufler* make(reader* reader, int samples);
+  virtual ~network();
 
 protected:
 
-  /**
-   * @brief Fisher-Yates shuffle.
-   */
-  virtual void shufle();
+  /** Forward declaration of linked network class  */
+  class linked;
 
-  void swap(int i, int j);
-
-  shufler(reader* reader, int samples);
+  network(generator* generator, reader* reader, error* error);
 
 };
 
+class network::linked : public virtual network,
+                        public virtual core::solutions::network::linked
+{
+friend class network;
+
+protected:
+
+  linked(network* source);
+
+};
+
+} // namespace solutions
 } // namespace copt
-} // namespace dnn_opt
+} // namespace network
 
 #endif

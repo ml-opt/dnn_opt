@@ -1,39 +1,14 @@
 #include <algorithm>
-#include <core/base/shufler.h>
+#include <copt/base/shufler.h>
 
 namespace dnn_opt
 {
-namespace core
+namespace copt
 {
 
-shufler* shufler::make(reader* reader)
+shufler* shufler::make(reader* reader,  int samples)
 {
-  return new shufler(reader);
-}
-
-float* const shufler::in_data()
-{
-  return _in_data;
-}
-
-float* const shufler::out_data()
-{
-  return _out_data;
-}
-
-int shufler::get_in_dim() const
-{
-  return _reader->get_in_dim();
-}
-
-int shufler::get_out_dim() const
-{
-  return _reader->get_out_dim();
-}
-
-int shufler::size() const
-{
-  return _reader->size();
+  return new shufler(reader, samples);
 }
 
 void shufler::shufle()
@@ -77,25 +52,11 @@ void shufler::swap(int i, int j)
     std::copy_n(aux, get_out_dim(), d_j);
 }
 
-shufler::shufler(reader* reader)
+shufler::shufler(reader* reader, int samples)
+: core::shufler(reader, samples)
 {
-  _reader = reader;
 
-  _generator = generators::uniform::make(0, 1);
-  _in_data = _reader->in_data();
-  _out_data = _reader->out_data();
-  _count = 0;
-
-  shufle();
 }
 
-shufler::~shufler()
-{
-  delete _generator;
-
-  _in_data = 0;
-  _out_data = 0;
-}
-
-} // core
-} // dnn_opt
+} // namespace copt
+} // namespace dnn_opt

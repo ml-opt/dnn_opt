@@ -25,51 +25,35 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DNN_OPT_COPT_SHUFLER
-#define DNN_OPT_COPT_SHUFLER
+#ifndef DNN_OPT_COPT_GENERATOR
+#define DNN_OPT_COPT_GENERATOR
 
-#include <core/base/shufler.h>
-#include <copt/base/reader.h>
-#include <copt/generators/uniform.h>
+#include <core/base/generator.h>
 
 namespace dnn_opt
 {
 namespace copt
 {
 
-class shufler : public virtual reader,
-                public virtual core::shufler
+/**
+ * @copydoc core::generator
+ *
+ * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
+ * @version 1.0
+ * @date June, 2016
+ */
+class generator : public virtual core::generator
 {
-public:
-
-  static shufler* make(reader* reader, float sample_proportion);
-
-  /**
-   * @brief Create a specified number of samplers of the same size dividing
-   * the training patterns contained in @ref reader equally.
-   *
-   * Is responsabilty of the user to de-allocate properly the returned samplers
-   * and the array.
-   *
-   * @param reader the reader containing the original set of training patterns.
-   *
-   * @param folds the amount of equally divided samples of training patterns.
-   *
-   * @return an array of size @folds containing pointers to the created
-   * samplers.
-   */
-  static shufler* make(reader* reader, int samples);
-
 protected:
 
   /**
-   * @brief Fisher-Yates shuffle.
+   * @brief The basic constructor for this class.
+   *
+   * @param min the minimun value this generator produces.
+   *
+   * @param max the maximun value this generator produces.
    */
-  virtual void shufle();
-
-  void swap(int i, int j);
-
-  shufler(reader* reader, int samples);
+  generator(float min, float max);
 
 };
 

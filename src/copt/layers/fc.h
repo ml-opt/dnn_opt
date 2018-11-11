@@ -29,6 +29,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define DNN_OPT_COPT_LAYERS_FC
 
 #include <core/layers/fc.h>
+#include <copt/base/layer.h>
+#include <copt/base/activation.h>
 
 namespace dnn_opt
 {
@@ -44,7 +46,8 @@ namespace layers
  * @date December, 2017
  * @version 1.0
  */
-class fc : public virtual core::layers::fc
+class fc : public virtual layer,
+           public virtual core::layers::fc
 {
 public:
 
@@ -59,7 +62,7 @@ public:
    *
    * @return a pointer to a new instance of the fc class.
    */
-  static fc* make(int in_dim, int out_dim, core::activation* activation);
+  static fc* make(int in_dim, int out_dim, activation* activation);
 
   virtual fc* clone() override;
 
@@ -74,7 +77,7 @@ protected:
    *
    * @param out_dimension the number of out dimensions.
    */
-  fc(int in_dim, int out_dim, core::activation* activation);
+  fc(int in_dim, int out_dim, activation* activation);
 
 };
 

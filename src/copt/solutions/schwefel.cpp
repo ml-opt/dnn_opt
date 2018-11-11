@@ -1,0 +1,49 @@
+#include <cmath>
+#include <copt/solutions/schwefel.h>
+
+namespace dnn_opt
+{
+namespace copt
+{
+namespace solutions
+{
+
+schwefel* schwefel::make(generator* generator, unsigned int size)
+{
+  auto* result = new schwefel(generator, size);
+
+  result->init();
+
+  return result;
+}
+
+float schwefel::calculate_fitness()
+{
+  solution::calculate_fitness();
+
+  float result = 0;
+
+  for(int i = 0; i < size(); i++)
+  {
+    result += get(i) * sin(sqrt(fabs(get(i))));
+  }
+
+  return -1 * result / size();
+}
+
+schwefel::schwefel(generator* generator, unsigned int size )
+: solution(generator, size),
+  core::solution(generator, size),
+  core::solutions::schwefel(generator, size)
+{
+
+}
+
+schwefel::~schwefel()
+{
+
+}
+
+} // namespace solutions
+} // namespace copt
+} // namespace dnn_opt

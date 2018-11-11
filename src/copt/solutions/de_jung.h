@@ -24,13 +24,13 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+
 #ifndef DNN_OPT_COPT_SOLUTIONS_DE_JUNG
 #define DNN_OPT_COPT_SOLUTIONS_DE_JUNG
 
 #include <core/solutions/de_jung.h>
-
-#include <core/base/generator.h>
-#include <core/base/solution.h>
+#include <copt/base/generator.h>
+#include <copt/base/solution.h>
 
 namespace dnn_opt
 {
@@ -40,17 +40,18 @@ namespace solutions
 {
 
 /**
- * @copydoc core::algorithm
+ * @copydoc core::solutions::de_jung
  *
  * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
  * @date December, 2017
  * @version 1.0
  */
-class de_jung : public virtual core::solutions::de_jung
+class de_jung : public virtual solution,
+                public virtual core::solutions::de_jung
 {
 public:
 
-  static de_jung* make(core::generator* generator, unsigned int size = 10);
+  static de_jung* make(generator* generator, unsigned int size = 10);
 
   virtual ~de_jung();
 
@@ -58,7 +59,7 @@ protected:
 
   virtual float calculate_fitness() override;
 
-  de_jung(core::generator* generator, unsigned int size = 10);
+  de_jung(generator* generator, unsigned int size = 10);
 
 };
 

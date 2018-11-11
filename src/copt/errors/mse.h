@@ -25,54 +25,50 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DNN_OPT_COPT_SHUFLER
-#define DNN_OPT_COPT_SHUFLER
+#ifndef DNN_OPT_COPT_ERRORS_MSE
+#define DNN_OPT_COPT_ERRORS_MSE
 
-#include <core/base/shufler.h>
-#include <copt/base/reader.h>
-#include <copt/generators/uniform.h>
+#include <core/errors/mse.h>
+#include <copt/base/error.h>
 
 namespace dnn_opt
 {
 namespace copt
 {
+namespace errors
+{
 
-class shufler : public virtual reader,
-                public virtual core::shufler
+/**
+ * @copydoc core::errors::mse
+ *
+ * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
+ * @date September, 2018
+ * @version 1.0
+ */
+class mse : public virtual error,
+            public virtual core::errors::mse
 {
 public:
 
-  static shufler* make(reader* reader, float sample_proportion);
-
   /**
-   * @brief Create a specified number of samplers of the same size dividing
-   * the training patterns contained in @ref reader equally.
+   * Create a new instance of the mse class.
    *
-   * Is responsabilty of the user to de-allocate properly the returned samplers
-   * and the array.
-   *
-   * @param reader the reader containing the original set of training patterns.
-   *
-   * @param folds the amount of equally divided samples of training patterns.
-   *
-   * @return an array of size @folds containing pointers to the created
-   * samplers.
+   * @return a pointer to an instance of elu class.
    */
-  static shufler* make(reader* reader, int samples);
+  static mse* make();
+
+  void ff(int size, int dim, const float* out, const float* exp) override;
 
 protected:
 
   /**
-   * @brief Fisher-Yates shuffle.
+   * @brief The default constructor of the mse class.
    */
-  virtual void shufle();
-
-  void swap(int i, int j);
-
-  shufler(reader* reader, int samples);
+  mse();
 
 };
 
+} // namespace errors
 } // namespace copt
 } // namespace dnn_opt
 

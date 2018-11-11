@@ -8,7 +8,7 @@ namespace copt
 namespace solutions
 {
 
-de_jung* de_jung::make(core::generator *generator, unsigned int size)
+de_jung* de_jung::make(generator *generator, unsigned int size)
 {
   auto* result = new de_jung(generator, size);
 
@@ -24,8 +24,9 @@ float de_jung::calculate_fitness()
   return result;
 }
 
-de_jung::de_jung(core::generator* generator, unsigned int size)
-: core::solution(generator, size),
+de_jung::de_jung(generator* generator, unsigned int size)
+: solution(generator, size),
+  core::solution(generator, size),
   core::solutions::de_jung(generator, size)
 {
 

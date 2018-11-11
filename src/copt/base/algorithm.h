@@ -25,53 +25,51 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DNN_OPT_COPT_SHUFLER
-#define DNN_OPT_COPT_SHUFLER
+#ifndef DNN_OPT_COPT_ALGORITHM
+#define DNN_OPT_COPT_ALGORITHM
 
-#include <core/base/shufler.h>
-#include <copt/base/reader.h>
-#include <copt/generators/uniform.h>
+#include <vector>
+#include <functional>
+#include <core/base/algorithm.h>
+#include <copt/base/solution_set.h>
 
 namespace dnn_opt
 {
 namespace copt
 {
 
-class shufler : public virtual reader,
-                public virtual core::shufler
+/**
+ * @copydoc core::algorithm
+ *
+ * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
+ * @date June, 2018
+ * @version 1.0
+ */
+class algorithm : public virtual core::algorithm
 {
-public:
-
-  static shufler* make(reader* reader, float sample_proportion);
-
-  /**
-   * @brief Create a specified number of samplers of the same size dividing
-   * the training patterns contained in @ref reader equally.
-   *
-   * Is responsabilty of the user to de-allocate properly the returned samplers
-   * and the array.
-   *
-   * @param reader the reader containing the original set of training patterns.
-   *
-   * @param folds the amount of equally divided samples of training patterns.
-   *
-   * @return an array of size @folds containing pointers to the created
-   * samplers.
-   */
-  static shufler* make(reader* reader, int samples);
-
 protected:
 
   /**
-   * @brief Fisher-Yates shuffle.
+   * @brief The basic contructor for an optimization algorithm.
    */
-  virtual void shufle();
+  template<class t_solution>
+  algorithm(const solution_set<t_solution>* solutions);
 
-  void swap(int i, int j);
+private:
 
-  shufler(reader* reader, int samples);
+  /** The optimization operation performed by this algorithm */
+  bool _maximization;
+
+  solution_set<>* _solutions;
 
 };
+
+template<class t_solution>
+algorithm::algorithm(const solution_set<t_solution>* solutions)
+: core::algorithm(solutions)
+{
+
+}
 
 } // namespace copt
 } // namespace dnn_opt

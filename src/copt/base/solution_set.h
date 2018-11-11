@@ -25,53 +25,63 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DNN_OPT_COPT_SHUFLER
-#define DNN_OPT_COPT_SHUFLER
+#ifndef DNN_OPT_COPT_SOLUTION_SET
+#define DNN_OPT_COPT_SOLUTION_SET
 
-#include <core/base/shufler.h>
-#include <copt/base/reader.h>
-#include <copt/generators/uniform.h>
+#include <vector>
+#include <algorithm>
+#include <stdexcept>
+#include <core/base/solution_set.h>
+#include <copt/base/solution.h>
+
+using namespace std;
 
 namespace dnn_opt
 {
 namespace copt
 {
 
-class shufler : public virtual reader,
-                public virtual core::shufler
+/**
+ * @brief The solution_set class is intended to manage a set of optimization
+ * solutions for a determined optimization problem.
+ *
+ * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
+ * @date June, 2016
+ * @version 1.0
+ */
+template<class t_solution = solution>
+class solution_set : public core::solution_set<t_solution>
 {
+
+static_assert(true, "t_solution must derive from copt::solution");
+
 public:
 
-  static shufler* make(reader* reader, float sample_proportion);
-
-  /**
-   * @brief Create a specified number of samplers of the same size dividing
-   * the training patterns contained in @ref reader equally.
-   *
-   * Is responsabilty of the user to de-allocate properly the returned samplers
-   * and the array.
-   *
-   * @param reader the reader containing the original set of training patterns.
-   *
-   * @param folds the amount of equally divided samples of training patterns.
-   *
-   * @return an array of size @folds containing pointers to the created
-   * samplers.
-   */
-  static shufler* make(reader* reader, int samples);
+  static solution_set<t_solution>* make(unsigned int size = 10);
 
 protected:
 
   /**
-   * @brief Fisher-Yates shuffle.
+   * @brief The basic constructor for a solution_set.
+   *
+   * @param size the number of solutions of this container.
    */
-  virtual void shufle();
-
-  void swap(int i, int j);
-
-  shufler(reader* reader, int samples);
+  solution_set(unsigned int size = 10);
 
 };
+
+template<class t_solution>
+solution_set<t_solution>* solution_set<t_solution>::make(unsigned int size)
+{
+  return new solution_set<t_solution>(size);
+}
+
+template<class t_solution>
+solution_set<t_solution>::solution_set(unsigned int size)
+: core::solution_set<t_solution>(size)
+{
+
+}
 
 } // namespace copt
 } // namespace dnn_opt

@@ -9,7 +9,7 @@ namespace copt
 namespace layers
 {
 
-fc* fc::make(int in_dim, int out_dim, core::activation* activation)
+fc* fc::make(int in_dim, int out_dim, activation* activation)
 {
   return new fc(in_dim, out_dim, activation);
 }
@@ -53,12 +53,13 @@ void fc::ws(int size, const float* in, const float* params, float* out)
 
 fc *fc::clone()
 {
-  return fc::make(_in_dim, _out_dim, _activation);
+  return fc::make(_in_dim, _out_dim, dynamic_cast<activation*>(_activation));
 }
 
-fc::fc(int in_dim, int out_dim, core::activation* activation)
+fc::fc(int in_dim, int out_dim, activation* activation)
 : core::layers::fc(in_dim, out_dim, activation),
-  core::layer(in_dim, out_dim, activation)
+  core::layer(in_dim, out_dim, activation),
+  layer(in_dim, out_dim, activation)
 {
 
 }

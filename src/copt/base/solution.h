@@ -25,52 +25,62 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DNN_OPT_COPT_SHUFLER
-#define DNN_OPT_COPT_SHUFLER
+#ifndef DNN_OPT_COPT_SOLUTION
+#define DNN_OPT_COPT_SOLUTION
 
-#include <core/base/shufler.h>
-#include <copt/base/reader.h>
-#include <copt/generators/uniform.h>
+#include <core/base/solution.h>
+#include <copt/base/generator.h>
 
 namespace dnn_opt
 {
 namespace copt
 {
 
-class shufler : public virtual reader,
-                public virtual core::shufler
+/**
+ * @brief The solution class is intended as an interface to provide custom
+ * solutions to be optimized. The most important feature of a solution is
+ * its fitness value that measures its quality.
+ *
+ * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
+ * @date June, 2016
+ * @version 1.0
+ */
+class solution : public virtual core::solution
 {
 public:
 
-  static shufler* make(reader* reader, float sample_proportion);
+  static solution* make(generator* generator, unsigned int size);
 
   /**
-   * @brief Create a specified number of samplers of the same size dividing
-   * the training patterns contained in @ref reader equally.
+   * @brief Creates an exact replica of this solution.
    *
-   * Is responsabilty of the user to de-allocate properly the returned samplers
-   * and the array.
-   *
-   * @param reader the reader containing the original set of training patterns.
-   *
-   * @param folds the amount of equally divided samples of training patterns.
-   *
-   * @return an array of size @folds containing pointers to the created
-   * samplers.
+   * @return a pointer to a copy of this object.
    */
-  static shufler* make(reader* reader, int samples);
+  virtual solution* clone();
+
+  /**
+   * @brief Check if the given object instance is assignable to this solution.
+   *
+   * @param a solution to check if it is assignable to this solution.
+   *
+   * @return true if the given solution is the given solution is assignable,
+   * false otherwise.
+   */
+  virtual bool assignable(const solution* s) const;
+
+  virtual void assign(solution* s);
+
+  virtual generator* get_generator() const override;
 
 protected:
 
   /**
-   * @brief Fisher-Yates shuffle.
+   * @brief The basic constructor of the solution class.
    */
-  virtual void shufle();
+  solution(generator* generator, unsigned int size);
 
-  void swap(int i, int j);
-
-  shufler(reader* reader, int samples);
-
+  /** a pointer to _generator that do not degrade to core::generator */
+  generator* _copt_generator;
 };
 
 } // namespace copt

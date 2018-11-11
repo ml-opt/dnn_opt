@@ -25,54 +25,68 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DNN_OPT_COPT_SHUFLER
-#define DNN_OPT_COPT_SHUFLER
+#ifndef DNN_OPT_COPT_ALGORITHMS_CUCKOO
+#define DNN_OPT_COPT_ALGORITHMS_CUCKOO
 
-#include <core/base/shufler.h>
-#include <copt/base/reader.h>
+#include <core/algorithms/cuckoo.h>
+#include <copt/generators/normal.h>
 #include <copt/generators/uniform.h>
+#include <copt/base/algorithm.h>
 
 namespace dnn_opt
 {
 namespace copt
 {
+namespace algorithms
+{
 
-class shufler : public virtual reader,
-                public virtual core::shufler
+/**
+ * @copydoc core::algorithms::cuckoo
+ *
+ * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
+ * @date July, 2018
+ * @version 1.0
+ */
+class cuckoo : public virtual algorithm,
+               public virtual core::algorithms::cuckoo
 {
 public:
 
-  static shufler* make(reader* reader, float sample_proportion);
-
-  /**
-   * @brief Create a specified number of samplers of the same size dividing
-   * the training patterns contained in @ref reader equally.
-   *
-   * Is responsabilty of the user to de-allocate properly the returned samplers
-   * and the array.
-   *
-   * @param reader the reader containing the original set of training patterns.
-   *
-   * @param folds the amount of equally divided samples of training patterns.
-   *
-   * @return an array of size @folds containing pointers to the created
-   * samplers.
-   */
-  static shufler* make(reader* reader, int samples);
+  template<class t_solution>
+  static cuckoo* make(solution_set<t_solution>* solutions);
 
 protected:
 
   /**
-   * @brief Fisher-Yates shuffle.
+   * @copydoc core::algorithms::cuckoo::generate_new_cuckoo
    */
-  virtual void shufle();
+  void generate_new_cuckoo(int cuckoo_idx);
 
-  void swap(int i, int j);
-
-  shufler(reader* reader, int samples);
+  template<class t_solution>
+  cuckoo(solution_set<t_solution>* solutions);
 
 };
 
+template<class t_solution>
+cuckoo* cuckoo::make(solution_set<t_solution>* solutions)
+{
+  auto result = new cuckoo(solutions);
+
+  result->init();
+
+  return result;
+}
+
+template<class t_solution>
+cuckoo::cuckoo(solution_set<t_solution>* solutions)
+: algorithm(solutions),
+  core::algorithm(solutions),
+  core::algorithms::cuckoo(solutions)
+{
+  
+}
+
+} // namespace algorithms
 } // namespace copt
 } // namespace dnn_opt
 

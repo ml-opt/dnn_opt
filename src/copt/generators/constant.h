@@ -25,54 +25,66 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DNN_OPT_COPT_SHUFLER
-#define DNN_OPT_COPT_SHUFLER
+#ifndef DNN_OPT_COPT_GENERATORS_CONSTANT
+#define DNN_OPT_COPT_GENERATORS_CONSTANT
 
-#include <core/base/shufler.h>
-#include <copt/base/reader.h>
-#include <copt/generators/uniform.h>
+#include <core/generators/constant.h>
+#include <copt/base/generator.h>
 
 namespace dnn_opt
 {
 namespace copt
 {
+namespace generators
+{
 
-class shufler : public virtual reader,
-                public virtual core::shufler
+/**
+ * @copydoc core::generators::constant
+ *
+ * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
+ * @date September, 2018
+ * @version 1.0
+ */
+class constant : public virtual generator,
+                 public virtual core::generators::constant
 {
 public:
 
-  static shufler* make(reader* reader, float sample_proportion);
-
   /**
-   * @brief Create a specified number of samplers of the same size dividing
-   * the training patterns contained in @ref reader equally.
+   * Create a new instance of the constant class.
    *
-   * Is responsabilty of the user to de-allocate properly the returned samplers
-   * and the array.
+   * @param mean the mean of the constantly distributed generator.
    *
-   * @param reader the reader containing the original set of training patterns.
+   * @param dev the standard deviation from the mean.
    *
-   * @param folds the amount of equally divided samples of training patterns.
-   *
-   * @return an array of size @folds containing pointers to the created
-   * samplers.
+   * @return a pointer to an instance of constant class.
    */
-  static shufler* make(reader* reader, int samples);
+  static constant* make(float value);
+
+  static constant* make(float value, float min, float max);
+
+  void generate(int count, float* params) override;
+
+  virtual float generate() override;
+
+  virtual ~constant();
 
 protected:
 
   /**
-   * @brief Fisher-Yates shuffle.
+   * The basic constructor for the constant class.
+   *
+   * @param mean the mean of the constantly distributed generator.
+   *
+   * @param dev the standard deviation from the mean.
    */
-  virtual void shufle();
+  constant(float value);
 
-  void swap(int i, int j);
-
-  shufler(reader* reader, int samples);
+  constant(float value, float min, float max);
 
 };
 
+} // namespace generators
 } // namespace copt
 } // namespace dnn_opt
 

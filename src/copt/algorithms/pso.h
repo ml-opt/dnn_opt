@@ -25,54 +25,82 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DNN_OPT_COPT_SHUFLER
-#define DNN_OPT_COPT_SHUFLER
+#ifndef DNN_OPT_COPT_ALGORITHMS_PSO
+#define DNN_OPT_COPT_ALGORITHMS_PSO
 
-#include <core/base/shufler.h>
-#include <copt/base/reader.h>
+#include <core/algorithms/pso.h>
+#include <copt/base/algorithm.h>
 #include <copt/generators/uniform.h>
+#include <copt/generators/constant.h>
 
 namespace dnn_opt
 {
 namespace copt
 {
+namespace algorithms
+{
 
-class shufler : public virtual reader,
-                public virtual core::shufler
+/**
+ * @copydoc core::algorithms::pso
+ *
+ * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
+ * @version 1.0
+ * @date July, 2018
+ */
+class pso : public virtual algorithm,
+            public virtual core::algorithms::pso
 {
 public:
 
-  static shufler* make(reader* reader, float sample_proportion);
+  template<class t_solution>
+  static pso* make(solution_set<t_solution>* solutions);
 
-  /**
-   * @brief Create a specified number of samplers of the same size dividing
-   * the training patterns contained in @ref reader equally.
-   *
-   * Is responsabilty of the user to de-allocate properly the returned samplers
-   * and the array.
-   *
-   * @param reader the reader containing the original set of training patterns.
-   *
-   * @param folds the amount of equally divided samples of training patterns.
-   *
-   * @return an array of size @folds containing pointers to the created
-   * samplers.
-   */
-  static shufler* make(reader* reader, int samples);
+  virtual void optimize() override;
+
+  using algorithm::optimize;
 
 protected:
 
   /**
-   * @brief Fisher-Yates shuffle.
+   * @copydoc core::algorithms::pso::update_speed
    */
-  virtual void shufle();
+  virtual void update_speed(int idx) override;
 
-  void swap(int i, int j);
+  /**
+   * @copydoc core::algorithms::pso::update_position
+   */
+  virtual void update_position(int idx) override;
 
-  shufler(reader* reader, int samples);
+  /**
+   * @brief The basic contructor of a pso class.
+   *
+   * @param solutions a set of individuals.
+   */
+  template<class t_solution>
+  pso(solution_set<t_solution>* solutions);
 
 };
 
+/* templated function implementations */
+
+template<class t_solution>
+pso* pso::make(solution_set<t_solution> *solutions)
+{
+  auto* result = new pso(solutions);
+  result->init();
+  return result;
+}
+
+template<class t_solution>
+pso::pso(solution_set<t_solution>* solutions)
+: algorithm(solutions),
+  core::algorithm(solutions),
+  core::algorithms::pso(solutions)
+{
+
+}
+
+} // namespace algorithms
 } // namespace copt
 } // namespace dnn_opt
 

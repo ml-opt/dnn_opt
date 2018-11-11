@@ -25,55 +25,61 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DNN_OPT_COPT_SHUFLER
-#define DNN_OPT_COPT_SHUFLER
+#ifndef DNN_OPT_COPT_SOLUTIONS_WRAPPER
+#define DNN_OPT_COPT_SOLUTIONS_WRAPPER
 
-#include <core/base/shufler.h>
-#include <copt/base/reader.h>
-#include <copt/generators/uniform.h>
+#include <core/solutions/wrapper.h>
+#include <copt/base/solution.h>
 
 namespace dnn_opt
 {
 namespace copt
 {
+namespace solutions
+{
 
-class shufler : public virtual reader,
-                public virtual core::shufler
+class wrapper : public virtual solution,
+                public virtual core::solutions::wrapper
 {
 public:
 
-  static shufler* make(reader* reader, float sample_proportion);
+  static wrapper* make(int index, int count, solution* base)
+  {
+    auto* result = new wrapper(index, count, base);
 
-  /**
-   * @brief Create a specified number of samplers of the same size dividing
-   * the training patterns contained in @ref reader equally.
-   *
-   * Is responsabilty of the user to de-allocate properly the returned samplers
-   * and the array.
-   *
-   * @param reader the reader containing the original set of training patterns.
-   *
-   * @param folds the amount of equally divided samples of training patterns.
-   *
-   * @return an array of size @folds containing pointers to the created
-   * samplers.
-   */
-  static shufler* make(reader* reader, int samples);
+    result->init();
+
+    return result;
+  }
+
+  solution* clone() override
+  {
+    auto result = new wrapper(_index, _count, dynamic_cast<solution*>(_base));
+
+    return result;
+  }
+
+  bool assignable(const solution* s) const override
+  {
+    return true;
+
+    /* TODO: Check this to include _index and _count comprobation */
+  }
 
 protected:
 
-  /**
-   * @brief Fisher-Yates shuffle.
-   */
-  virtual void shufle();
+  wrapper(int index, int count, solution* base)
+  : solution(base->get_generator(), 0),
+    core::solution(base->get_generator(), 0),
+    core::solutions::wrapper(index, count, base)
+  {
 
-  void swap(int i, int j);
-
-  shufler(reader* reader, int samples);
+  }
 
 };
 
-} // namespace copt
+} // namespace solutions
+} // namepsace copt
 } // namespace dnn_opt
 
 #endif

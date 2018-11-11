@@ -25,54 +25,43 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DNN_OPT_COPT_SHUFLER
-#define DNN_OPT_COPT_SHUFLER
+#ifndef DNN_OPT_COPT_ACTIVATIONS_TAN
+#define DNN_OPT_COPT_ACTIVATIONS_TAN
 
-#include <core/base/shufler.h>
-#include <copt/base/reader.h>
-#include <copt/generators/uniform.h>
+#include <core/activations/tan_h.h>
+#include <copt/base/activation.h>
 
 namespace dnn_opt
 {
 namespace copt
 {
+namespace activations
+{
 
-class shufler : public virtual reader,
-                public virtual core::shufler
+/**
+ * @copydoc core::activations::tan_h
+ *
+ * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
+ * @date September, 2018
+ * @version 1.0
+ */
+class tan_h : public virtual activation,
+              public virtual core::activations::tan_h
 {
 public:
 
-  static shufler* make(reader* reader, float sample_proportion);
-
   /**
-   * @brief Create a specified number of samplers of the same size dividing
-   * the training patterns contained in @ref reader equally.
+   * Create an instance of the tan_h class.
    *
-   * Is responsabilty of the user to de-allocate properly the returned samplers
-   * and the array.
-   *
-   * @param reader the reader containing the original set of training patterns.
-   *
-   * @param folds the amount of equally divided samples of training patterns.
-   *
-   * @return an array of size @folds containing pointers to the created
-   * samplers.
+   * @return a pointer to a new instance of the tan_h class.
    */
-  static shufler* make(reader* reader, int samples);
+  static tan_h* make();
 
-protected:
-
-  /**
-   * @brief Fisher-Yates shuffle.
-   */
-  virtual void shufle();
-
-  void swap(int i, int j);
-
-  shufler(reader* reader, int samples);
+  void f(int size, const float* sum, float* out) override;
 
 };
 
+} // namespace activations
 } // namespace copt
 } // namespace dnn_opt
 

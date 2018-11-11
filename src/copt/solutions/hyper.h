@@ -25,54 +25,64 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DNN_OPT_COPT_SHUFLER
-#define DNN_OPT_COPT_SHUFLER
+#ifndef DNN_OPT_COPT_SOLUTIONS_HYPER
+#define DNN_OPT_COPT_SOLUTIONS_HYPER
 
-#include <core/base/shufler.h>
-#include <copt/base/reader.h>
-#include <copt/generators/uniform.h>
+#include <core/solutions/hyper.h>
+#include <copt/base/generator.h>
+#include <copt/base/solution.h>
+#include <copt/base/algorithm.h>
 
 namespace dnn_opt
 {
 namespace copt
 {
+namespace solutions
+{
 
-class shufler : public virtual reader,
-                public virtual core::shufler
+/**
+ * @copydoc core::solutions::hyper
+ *
+ * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
+ * @version 1.0
+ * @date November, 2017
+ */
+class hyper : public virtual solution,
+              public virtual core::solutions::hyper
 {
 public:
 
-  static shufler* make(reader* reader, float sample_proportion);
+  static hyper* make(generator* generator, algorithm* algorithm, unsigned int size);
 
-  /**
-   * @brief Create a specified number of samplers of the same size dividing
-   * the training patterns contained in @ref reader equally.
-   *
-   * Is responsabilty of the user to de-allocate properly the returned samplers
-   * and the array.
-   *
-   * @param reader the reader containing the original set of training patterns.
-   *
-   * @param folds the amount of equally divided samples of training patterns.
-   *
-   * @return an array of size @folds containing pointers to the created
-   * samplers.
-   */
-  static shufler* make(reader* reader, int samples);
+  virtual hyper* clone() override;
+
+  virtual bool assignable(const solution* s) const override;
+
+  virtual void assign(solution* s) override;
+
+  virtual algorithm* get_algorithm() const;
+
+  virtual ~hyper();
 
 protected:
 
   /**
-   * @brief Fisher-Yates shuffle.
+   * @brief The basic contructor for this class.
+   *
+   * @param generator an instance of a generator class.
+   * The generator is used to initialize the parameters of this
+   * solution.
+   *
+   * @param size is the number of parameters for this solution. Default is 10.
    */
-  virtual void shufle();
+  hyper(generator* generator, algorithm* algorithm, unsigned int size = 10 );
 
-  void swap(int i, int j);
-
-  shufler(reader* reader, int samples);
+  /** A pointer to _algorithm that do not degrade to core::algorithm */
+  algorithm* _copt_algorithm;
 
 };
 
+} // namespace solutions
 } // namespace copt
 } // namespace dnn_opt
 

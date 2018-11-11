@@ -25,15 +25,15 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DNN_OPT_CORE_READERS_FILE_READER
-#define DNN_OPT_CORE_READERS_FILE_READER
+#ifndef DNN_OPT_COPT_READERS_FILE_READER
+#define DNN_OPT_COPT_READERS_FILE_READER
 
 #include <fstream>
-#include <core/base/reader.h>
+#include <copt/base/reader.h>
 
 namespace dnn_opt
 {
-namespace core
+namespace copt
 {
 namespace readers
 {
@@ -66,9 +66,9 @@ public:
    */
   static file_reader* make(std::string file_name);
 
-  virtual float* const in_data() override;
+  virtual float* in_data() override;
 
-  virtual float* const out_data() override;
+  virtual float* out_data() override;
 
   virtual int get_in_dim() const override;
 
@@ -118,7 +118,7 @@ protected:
 };
 
 } // namespace readers
-} // namespace core
+} // namespace copt
 } // namespace dnn_opt
 
 #endif

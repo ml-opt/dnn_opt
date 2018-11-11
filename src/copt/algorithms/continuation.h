@@ -25,54 +25,35 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DNN_OPT_COPT_SHUFLER
-#define DNN_OPT_COPT_SHUFLER
+#ifndef DNN_OPT_COPT_ALGORITHMS_CONTINUATION
+#define DNN_OPT_COPT_ALGORITHMS_CONTINUATION
 
-#include <core/base/shufler.h>
-#include <copt/base/reader.h>
-#include <copt/generators/uniform.h>
+#include <vector>
+#include <functional>
+#include <core/algorithms/continuation.h>
+#include <copt/base/algorithm.h>
 
 namespace dnn_opt
 {
 namespace copt
 {
+namespace algorithms
+{
 
-class shufler : public virtual reader,
-                public virtual core::shufler
+class continuation : public virtual algorithm,
+                     public virtual core::algorithms::continuation
 {
 public:
 
-  static shufler* make(reader* reader, float sample_proportion);
-
-  /**
-   * @brief Create a specified number of samplers of the same size dividing
-   * the training patterns contained in @ref reader equally.
-   *
-   * Is responsabilty of the user to de-allocate properly the returned samplers
-   * and the array.
-   *
-   * @param reader the reader containing the original set of training patterns.
-   *
-   * @param folds the amount of equally divided samples of training patterns.
-   *
-   * @return an array of size @folds containing pointers to the created
-   * samplers.
-   */
-  static shufler* make(reader* reader, int samples);
+  static continuation* make(algorithm* base, builder* builder);
 
 protected:
 
-  /**
-   * @brief Fisher-Yates shuffle.
-   */
-  virtual void shufle();
-
-  void swap(int i, int j);
-
-  shufler(reader* reader, int samples);
+  continuation(algorithm* base, builder* builder);
 
 };
 
+} // namespace algorithms
 } // namespace copt
 } // namespace dnn_opt
 

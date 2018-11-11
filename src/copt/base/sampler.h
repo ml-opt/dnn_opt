@@ -25,18 +25,21 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DNN_OPT_CORE_SAMPLER
-#define DNN_OPT_CORE_SAMPLER
+#ifndef DNN_OPT_COPT_SAMPLER
+#define DNN_OPT_COPT_SAMPLER
+
+#include <core/base/sampler.h>
 
 #include <string>
-#include <core/base/reader.h>
+#include <copt/base/reader.h>
 
 namespace dnn_opt
 {
-namespace core
+namespace copt
 {
 
-class sampler : public virtual reader
+class sampler : public virtual reader,
+                public virtual core::sampler
 {
 public:
 
@@ -58,16 +61,6 @@ public:
    */
   static sampler** make(reader* reader, int folds);
 
-  virtual float* const in_data() override;
-
-  virtual float* const out_data() override;
-
-  virtual int get_in_dim() const override;
-
-  virtual int get_out_dim() const override ;
-
-  virtual int size() const override;
-
   /**
    * @brief Create a new sampler containing the training patterns that are in
    * this sampler but not in @ref other.
@@ -81,8 +74,6 @@ public:
   sampler* difference(sampler* other);
 
   virtual void save_to_file(std::string file_name);
-
-  virtual ~sampler();
 
 protected:
 
@@ -104,14 +95,9 @@ protected:
 
   virtual void sample();
 
-  reader* _reader;
-  int _samples;
-
-  bool* _mask;
-  float* _in_data;
-  float* _out_data;
 };
-}
-}
+
+} // namespace copt
+} // namespace dnn_opt
 
 #endif

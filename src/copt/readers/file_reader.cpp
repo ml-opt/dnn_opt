@@ -1,9 +1,9 @@
 #include <stdexcept>
-#include <core/readers/file_reader.h>
+#include <copt/readers/file_reader.h>
 
 namespace dnn_opt
 {
-namespace core
+namespace copt
 {
 namespace readers
 {  
@@ -13,12 +13,12 @@ file_reader* file_reader::make(std::string file_name)
   return new file_reader(file_name);
 }
 
-float* const file_reader::in_data()
+float* file_reader::in_data()
 {
   return _in_data;
 }
 
-float* const file_reader::out_data()
+float* file_reader::out_data()
 {
   return _out_data;
 }
@@ -83,5 +83,5 @@ file_reader::file_reader(std::string file_name)
 }
 
 } // namespace readers
-} // namespace core
+} // namespace copt
 } // namespace dnn_opt

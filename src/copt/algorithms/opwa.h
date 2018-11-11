@@ -25,54 +25,71 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DNN_OPT_COPT_SHUFLER
-#define DNN_OPT_COPT_SHUFLER
+#ifndef DNN_OPT_COPT_ALGORITHMS_OPWA
+#define DNN_OPT_COPT_ALGORITHMS_OPWA
 
-#include <core/base/shufler.h>
-#include <copt/base/reader.h>
+#include <vector>
+#include <functional>
+#include <core/algorithms/opwa.h>
+#include <copt/base/algorithm.h>
+#include <copt/base/solution_set.h>
+#include <copt/solutions/wrapper.h>
 #include <copt/generators/uniform.h>
 
 namespace dnn_opt
 {
 namespace copt
 {
+namespace algorithms
+{
 
-class shufler : public virtual reader,
-                public virtual core::shufler
+class opwa : public virtual algorithm,
+             public virtual core::algorithms::opwa
 {
 public:
 
-  static shufler* make(reader* reader, float sample_proportion);
-
-  /**
-   * @brief Create a specified number of samplers of the same size dividing
-   * the training patterns contained in @ref reader equally.
-   *
-   * Is responsabilty of the user to de-allocate properly the returned samplers
-   * and the array.
-   *
-   * @param reader the reader containing the original set of training patterns.
-   *
-   * @param folds the amount of equally divided samples of training patterns.
-   *
-   * @return an array of size @folds containing pointers to the created
-   * samplers.
-   */
-  static shufler* make(reader* reader, int samples);
+  template<class t_solution>
+  static opwa* make(int count, const solution_set<t_solution>* solutions, wa builder);
 
 protected:
 
-  /**
-   * @brief Fisher-Yates shuffle.
-   */
-  virtual void shufle();
+  template<class t_solution>
+  opwa(int count, const solution_set<t_solution>* solutions, wa builder);
 
-  void swap(int i, int j);
-
-  shufler(reader* reader, int samples);
+  template<class t_solution>
+  opwa(int count, const solution_set<t_solution>* solutions);
 
 };
 
+template<class t_solution>
+opwa* opwa::make(int count, const solution_set<t_solution>* solutions, wa builder)
+{
+  auto* result = new opwa(count, solutions, builder);
+
+  result->init();
+
+  return result;
+}
+
+template<class t_solution>
+opwa::opwa(int count, const solution_set<t_solution>* solutions, wa builder)
+: algorithm(solutions),
+  core::algorithm(solutions),
+  core::algorithms::opwa(count, solutions, builder)
+{
+
+}
+
+template<class t_solution>
+opwa::opwa(int count, const solution_set<t_solution>* solutions)
+: algorithm(solutions),
+  core::algorithm(solutions),
+  core::algorithms::opwa(count, solutions)
+{
+
+}
+
+} // namespace algorithms
 } // namespace copt
 } // namespace dnn_opt
 

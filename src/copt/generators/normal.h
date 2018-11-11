@@ -25,54 +25,63 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DNN_OPT_COPT_SHUFLER
-#define DNN_OPT_COPT_SHUFLER
+#ifndef DNN_OPT_COPT_GENERATORS_NORMAL
+#define DNN_OPT_COPT_GENERATORS_NORMAL
 
-#include <core/base/shufler.h>
-#include <copt/base/reader.h>
-#include <copt/generators/uniform.h>
+#include <random>
+#include <core/generators/normal.h>
+#include <copt/base/generator.h>
 
 namespace dnn_opt
 {
 namespace copt
 {
+namespace generators
+{
 
-class shufler : public virtual reader,
-                public virtual core::shufler
+/**
+ * @copydoc core::generators::normal
+ *
+ * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
+ * @date September, 2018
+ * @version 1.0
+ */
+class normal : public virtual generator,
+               public virtual core::generators::normal
 {
 public:
 
-  static shufler* make(reader* reader, float sample_proportion);
-
   /**
-   * @brief Create a specified number of samplers of the same size dividing
-   * the training patterns contained in @ref reader equally.
+   * Create a new instance of the normal class.
    *
-   * Is responsabilty of the user to de-allocate properly the returned samplers
-   * and the array.
+   * @param mean the mean of the normally distributed generator.
    *
-   * @param reader the reader containing the original set of training patterns.
+   * @param dev the standard deviation from the mean.
    *
-   * @param folds the amount of equally divided samples of training patterns.
-   *
-   * @return an array of size @folds containing pointers to the created
-   * samplers.
+   * @return a pointer to an instance of normal class.
    */
-  static shufler* make(reader* reader, int samples);
+  static normal* make(float mean, float dev);
+
+  void generate(int count, float* params) override;
+
+  virtual float generate() override;
+
+  virtual ~normal();
 
 protected:
 
   /**
-   * @brief Fisher-Yates shuffle.
+   * The basic constructor for the normal class.
+   *
+   * @param mean the mean of the normally distributed generator.
+   *
+   * @param dev the standard deviation from the mean.
    */
-  virtual void shufle();
-
-  void swap(int i, int j);
-
-  shufler(reader* reader, int samples);
+  normal(float mean, float dev);
 
 };
 
+} // namespace generators
 } // namespace copt
 } // namespace dnn_opt
 

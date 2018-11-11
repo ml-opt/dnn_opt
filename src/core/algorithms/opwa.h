@@ -30,7 +30,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <vector>
 #include <memory>
-#include <stdexcept>
 #include <functional>
 #include <core/base/algorithm.h>
 #include <core/base/solution_set.h>
@@ -55,119 +54,33 @@ public:
   typedef std::function<algorithm* (solution_set<>*)> wa;
 
   template<class t_solution>
-  static opwa* make(int count, const solution_set<t_solution>* solutions, wa builder)
-  {
-    auto* result = new opwa(count, solutions, builder);
+  static opwa* make(int count, const solution_set<t_solution>* solutions, wa builder);
 
-    result->init();
+  virtual void reset() override;
 
-    return result;
-  }
-
-  virtual void reset() override
-  {
-
-  }
-
-  virtual void optimize() override
-  {
-    for(auto& algorithm : _algorithms)
-    {
-      if(_generator->generate() <= get_density())
-      {
-        algorithm->optimize();
-      }
-    }
-
-    for(int i = 0; i < get_solutions()->size(); i++)
-    {
-      get_solutions()->get(i)->set_modified(true);
-    }
-  }
+  virtual void optimize() override;
 
   using algorithm::optimize;
 
-  virtual solution* get_best() override
-  {
-    auto best = get_solutions()->get_best(is_maximization());
+  virtual solution* get_best() override;
 
-    return best;
-  }
+  virtual void init() override;
 
-  virtual void init() override
-  {
-    for( int i = 0; i < _count; i++ )
-    {
-      // TODO: Re-use the container <part> multiple times instead delete it
+  virtual void set_params(std::vector<float> &params) override;
 
-      auto* part = solution_set<>::make(get_solutions()->size());
+  float get_density();
 
-      for( int j = 0; j < get_solutions()->size(); j++ )
-      {
-        part->add(solutions::wrapper::make(i, _count, get_solutions()->get(j)));
-      }
+  void set_density(float density);
 
-      auto wa = std::unique_ptr<algorithm>(_builder(part));
-      _algorithms.push_back(std::move(wa));
-
-      delete part;
-    }
-  }
-
-  virtual void set_params(std::vector<float> &params) override
-  {
-    if(params.size() != 1)
-    {
-      std::invalid_argument("algorithms::opwa set_params expect 1 value");
-    }
-
-    set_density(params.at(0));
-  }
-
-  float get_density()
-  {
-    return _density;
-  }
-
-  void set_density(float density)
-  {
-    if(density < 0 || density > 1)
-    {
-      throw out_of_range("density is a probability factor in [0,1]");
-    }
-
-    _density = density;
-  }
-
-  virtual ~opwa() override
-  {
-    for(auto& algorithm : _algorithms)
-    {
-      algorithm->get_solutions()->clean();
-    }
-    delete _generator;
-  }
+  virtual ~opwa() override;
 
 protected:
 
   template<class t_solution>
-  opwa(int count, const solution_set<t_solution>* solutions, wa builder)
-  : algorithm(solutions)
-  {
-    _builder = builder;
-    _count = count;
-    _density = 1.0f;
-    _generator = generators::uniform::make(0.0f, 1.0f);
-  }
+  opwa(int count, const solution_set<t_solution>* solutions, wa builder);
 
   template<class t_solution>
-  opwa(int count, const solution_set<t_solution>* solutions)
-  : algorithm(solutions)
-  {
-    _count = count;
-    _density = 1.0f;
-    _generator = generators::uniform::make(0.0f, 1.0f);
-  }
+  opwa(int count, const solution_set<t_solution>* solutions);
 
 protected:
 
@@ -186,6 +99,31 @@ protected:
   generators::uniform* _generator;
 
 };
+
+template<class t_solution>
+opwa* opwa::make(int count, const solution_set<t_solution>* solutions, wa builder)
+{
+  auto* result = new opwa(count, solutions, builder);
+
+  result->init();
+
+  return result;
+}
+
+template<class t_solution>
+opwa::opwa(int count, const solution_set<t_solution>* solutions, wa builder)
+: algorithm(solutions)
+{
+  _builder = builder;
+  _count = count;
+}
+
+template<class t_solution>
+opwa::opwa(int count, const solution_set<t_solution>* solutions)
+: algorithm(solutions)
+{
+  _count = count;
+}
 
 } // namespace algorithms
 } // namespace core

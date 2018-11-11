@@ -38,7 +38,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <dnn_opt.h>
 
 using namespace std;
+
+#ifdef ENABLE_CORE
 using namespace dnn_opt::core;
+#elif ENABLE_COPT
+using namespace dnn_opt::copt;
+#elif ENABLE_CUDA
+using namespace dnn_opt::cuda;
+#endif
 
 /**
  * @brief Finds an integer parameter value from command line input.

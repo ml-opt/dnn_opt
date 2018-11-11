@@ -6,8 +6,7 @@ Welcome to dnn_opt, which states for deep neural network optimization. This is a
 The library will support sequential, multicore and GPU implementations for all the features. The current support for each implementation is shown bellow. 
 
 * ![core implementation progress](http://progressed.io/bar/100) core: sequential implementation
-* ![optimized implementation progress](http://progressed.io/bar/5) copt: sequential implementation optimized
-* ![comp implementation progress](http://progressed.io/bar/0) momp: multicore with openMP implementation
+* ![optimized implementation progress](http://progressed.io/bar/25) copt: parallel CPU implementation
 * ![cuda implementation progress](http://progressed.io/bar/90) cuda: parallel GPU implementation
 
 Keep reading to find out what you can currently do.

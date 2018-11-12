@@ -44,7 +44,7 @@ namespace solutions
  * 
  * The equation for this function is given by:
  *
- * f(x) = 0.5* \sum_{i=0}^n{x_i^4 + 16x_i^2 + 5x_i}
+ * f(x) = 0.5 * \sum_{i=0}^n{x_i^4 + 16x_i^2 + 5x_i}
  *
  * Styblinski-Tang function have a global minima in {-2.093,..., 2.9053} with 
  * a value of -78.332. A commonly used search domain for testing is [-5, 5].

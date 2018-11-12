@@ -28,7 +28,7 @@ float griewangk::calculate_fitness()
   for(int i = 0; i < size(); i++)
   {
     summatory  += get(i) * get(i) / 4000;
-    multiplier *= cos(get(i) / sqrt(i));
+    multiplier *= cos(get(i) / sqrt(i + 1));
   }
 
   result = summatory - multiplier + 1;

@@ -19,16 +19,19 @@ alpine* alpine::make(generator* generator, unsigned int size)
 
 float alpine::calculate_fitness()
 {
+  int n = size();
   float result = 0;
   float* params = get_params();
-  int n = size();
 
+  solution::calculate_fitness();
+
+  #pragma omp simd
   for(int i = 0; i < n; i++)
   {
-    result += params[i] * sin(params[i]) + 0.1 * params[i];
+    result += std::fabs(params[i] * sin(params[i]) + 0.1 * params[i]);
   }
 
-  return result;
+  return std::fabs(result);
 }
 
 alpine::alpine(generator* generator, unsigned int size)

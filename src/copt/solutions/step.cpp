@@ -1,4 +1,5 @@
 #include <cmath>
+#include <omp.h>
 #include <copt/solutions/step.h>
 
 namespace dnn_opt
@@ -23,6 +24,9 @@ float step::calculate_fitness()
   float* params = get_params();
   int n = size();
 
+  solution::calculate_fitness();
+
+  #pragma omp simd
   for(int i = 0; i < n; i++)
   {
     result += std::pow(std::floor(params[i]), 2);

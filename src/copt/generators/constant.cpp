@@ -1,4 +1,5 @@
 #include <stdexcept>
+#include <omp.h>
 #include <copt/generators/constant.h>
 
 namespace dnn_opt
@@ -20,6 +21,7 @@ constant* constant::make(float value, float min, float max)
 
 void constant::generate(int count, float* params)
 {
+  #pragma omp simd
   for(int i = 0; i < count; i++)
   {
     params[i] = _value;

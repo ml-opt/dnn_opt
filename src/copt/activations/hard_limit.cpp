@@ -1,3 +1,4 @@
+#include <omp.h>
 #include <copt/activations/hard_limit.h>
 
 namespace dnn_opt
@@ -14,6 +15,7 @@ hard_limit* hard_limit::make()
 
 void hard_limit::f(int size, const float* sum, float* out)
 {
+  #pragma omp simd
   for(int i = 0; i < size; i++)
   {
     out[i] = sum[i] > 0 ? 1 : 0;

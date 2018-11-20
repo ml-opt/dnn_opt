@@ -1,4 +1,5 @@
 #include <cmath>
+#include <omp.h>
 #include <copt/activations/elu.h>
 
 namespace dnn_opt
@@ -15,6 +16,7 @@ elu* elu::make(float alpha)
 
 void elu::f(int size, const float* sum, float* out)
 {
+  #pragma omp simd
   for(int i = 0; i < size; i++)
   {
     if(sum[i] >= 0)

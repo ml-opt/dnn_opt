@@ -1,4 +1,5 @@
 #include <cmath>
+#include <omp.h>
 #include <copt/solutions/schwefel.h>
 
 namespace dnn_opt
@@ -19,16 +20,20 @@ schwefel* schwefel::make(generator* generator, unsigned int size)
 
 float schwefel::calculate_fitness()
 {
+  int n = size();
+  float* params = get_params();
+
   solution::calculate_fitness();
 
   float result = 0;
 
-  for(int i = 0; i < size(); i++)
+  #pragma omp simd
+  for(int i = 0; i < n; i++)
   {
-    result += get(i) * sin(sqrt(fabs(get(i))));
+    result += params[i] * sin(sqrt(fabs(params[i])));
   }
 
-  return -1 * result / size();
+  return -1 * result / n;
 }
 
 schwefel::schwefel(generator* generator, unsigned int size )

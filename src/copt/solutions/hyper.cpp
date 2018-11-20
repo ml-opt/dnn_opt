@@ -8,9 +8,9 @@ namespace copt
 namespace solutions
 {
 
-hyper* hyper::make(generator* generator, algorithm* algorithm, unsigned int size)
+hyper* hyper::make(generator* generator, algorithm* base, unsigned int size)
 {
-  auto* result = new hyper(generator, algorithm, size);
+  auto* result = new hyper(generator, base, size);
 
   result->init();
 
@@ -23,7 +23,7 @@ hyper* hyper::clone()
 
   result->_fitness = fitness();
   result->set_modified(false);
-  result->set_iteration_count(get_iteration_count());
+  result->set_do_optimize(_do_optimize);
 
   result->_evaluations = get_evaluations();
 
@@ -44,7 +44,7 @@ void hyper::assign(solution* s)
   auto* ss = dynamic_cast<hyper*>(s);
 
   solution::assign(ss);
-  set_iteration_count(ss->get_iteration_count());
+  set_do_optimize(ss->_do_optimize);
 }
 
 algorithm* hyper::get_algorithm() const
@@ -52,12 +52,12 @@ algorithm* hyper::get_algorithm() const
   return _copt_algorithm;
 }
 
-hyper::hyper(generator* generator, algorithm* algorithm, unsigned int size)
+hyper::hyper(generator* generator, algorithm* base, unsigned int size)
 : solution(generator, size),
   core::solution(generator, size),
-  core::solutions::hyper(generator, algorithm, size)
+  core::solutions::hyper(generator, base, size)
 {
-  _copt_algorithm = algorithm;
+  _copt_algorithm = base;
 }
 
 hyper::~hyper()

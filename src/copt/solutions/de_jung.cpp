@@ -18,8 +18,10 @@ de_jung* de_jung::make(generator *generator, unsigned int size)
 }
 
 float de_jung::calculate_fitness()
-{
+{  
   float result = cblas_sdot(size(), get_params(), 1, get_params(), 1);
+
+  solution::calculate_fitness();
 
   return result;
 }

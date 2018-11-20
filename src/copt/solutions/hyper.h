@@ -52,7 +52,7 @@ class hyper : public virtual solution,
 {
 public:
 
-  static hyper* make(generator* generator, algorithm* algorithm, unsigned int size);
+  static hyper* make(generator* generator, algorithm* base, unsigned int size);
 
   virtual hyper* clone() override;
 
@@ -75,7 +75,7 @@ protected:
    *
    * @param size is the number of parameters for this solution. Default is 10.
    */
-  hyper(generator* generator, algorithm* algorithm, unsigned int size = 10 );
+  hyper(generator* generator, algorithm* base, unsigned int size = 10 );
 
   /** A pointer to _algorithm that do not degrade to core::algorithm */
   algorithm* _copt_algorithm;

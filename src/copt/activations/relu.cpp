@@ -1,3 +1,4 @@
+#include <omp.h>
 #include <algorithm>
 #include <copt/activations/relu.h>
 
@@ -15,6 +16,7 @@ relu* relu::make()
 
 void relu::f(int size, const float* sum, float* out)
 {
+  #pragma omp simd
   for(int i = 0; i < size; i++)
   {
     out[i] = std::max(0.0f, sum[i]);

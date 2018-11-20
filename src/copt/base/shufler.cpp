@@ -6,9 +6,9 @@ namespace dnn_opt
 namespace copt
 {
 
-shufler* shufler::make(reader* reader,  int samples)
+shufler* shufler::make(reader* reader)
 {
-  return new shufler(reader, samples);
+  return new shufler(reader);
 }
 
 void shufler::shufle()
@@ -52,8 +52,8 @@ void shufler::swap(int i, int j)
     std::copy_n(aux, get_out_dim(), d_j);
 }
 
-shufler::shufler(reader* reader, int samples)
-: core::shufler(reader, samples)
+shufler::shufler(reader* reader)
+: core::shufler(reader)
 {
 
 }

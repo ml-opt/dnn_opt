@@ -42,23 +42,7 @@ class shufler : public virtual reader,
 {
 public:
 
-  static shufler* make(reader* reader, float sample_proportion);
-
-  /**
-   * @brief Create a specified number of samplers of the same size dividing
-   * the training patterns contained in @ref reader equally.
-   *
-   * Is responsabilty of the user to de-allocate properly the returned samplers
-   * and the array.
-   *
-   * @param reader the reader containing the original set of training patterns.
-   *
-   * @param folds the amount of equally divided samples of training patterns.
-   *
-   * @return an array of size @folds containing pointers to the created
-   * samplers.
-   */
-  static shufler* make(reader* reader, int samples);
+  static shufler* make(reader* reader);
 
 protected:
 
@@ -69,7 +53,7 @@ protected:
 
   void swap(int i, int j);
 
-  shufler(reader* reader, int samples);
+  shufler(reader* reader);
 
 };
 

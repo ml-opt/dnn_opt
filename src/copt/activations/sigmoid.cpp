@@ -1,4 +1,5 @@
 #include <cmath>
+#include <omp.h>
 #include <algorithm>
 #include <copt/activations/sigmoid.h>
 
@@ -16,6 +17,7 @@ sigmoid* sigmoid::make()
 
 void sigmoid::f(int size, const float* sum, float* out)
 {
+  #pragma omp simd
   for(int i = 0; i < size; i++)
   {
     out[i] = 1 / (1 + exp(- 1 * sum[i]));

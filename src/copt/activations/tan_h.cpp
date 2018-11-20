@@ -1,4 +1,5 @@
 #include <cmath>
+#include <omp.h>
 #include <copt/activations/tan_h.h>
 
 namespace dnn_opt
@@ -15,6 +16,7 @@ tan_h* tan_h::make()
 
 void tan_h::f(int size, const float* sum, float* out)
 {
+  #pragma omp simd
   for(int i = 0; i < size; i++)
   {
     out[i] = tanh(sum[i]);

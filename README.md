@@ -87,6 +87,16 @@ dnn_opt include some functions to run tests and do some benchmarking in high dim
 
 Also, is very easy to include more benchmark functions. I'll provide a specific doc section for this too. As you may expect, there are also a special solution that stands for a dnn model which is: `::solutions::network`.
 
+## Generators
+
+Many population-based optimization methods require to randomly initialize its population. dnn_opt provides a mechanism to determine how to randomly generate the parameters of the solutions. This define the search space. All the parameter generators derive form the base class `::generator` and reside under the namespace `::generators::`. You are free to use the followings:
+
+1. `::generators::normal` generate numbers with normal distribution in a given interval
+2. `::generators::uniform` generate numbers with uniform distribution in a given interval
+3. `::generators::group` generate numbers from a sequence of generators, you can use it to generate different dimensions of a solution vector with different distributions.
+
+Extending new generators is straight-forward. I'll include more documentation about this but until that, you can refer to the documentation in the code.
+
 ## The network class
 
 This is a special solution that models the neural network optimization surface. A neural network can be created in several ways and using parameters as stacked layers of procesing units and dnn_opt provides a way to accomplish this. Lets see what features you may find intresting.
@@ -109,16 +119,6 @@ Common dnn applications make use of several types of layers. dnn_opt provides se
 1. `::layers::fully_connected`
 
 Extending new layers is straight-forward. I'll include more documentation about the currently implemented layers and how to create new layers in the future. If you have any question please refer to the documentation in the code, everything is in there.
-
-### Generators
-
-Many population-based optimization methods require to randomly initialize its population. dnn_opt provides a mechanism to determine how to randomly generate the parameters of the solutions. This define the search space. All the parameter generators derive form the base class `::generator` and reside under the namespace `::generators::`. You are free to use the followings:
-
-1. `::generators::normal` generate numbers with normal distribution in a given interval
-2. `::generators::uniform` generate numbers with uniform distribution in a given interval
-3. `::generators::group` generate numbers from a sequence of generators, you can use it to generate different dimensions of a solution vector with different distributions.
-
-Extending new generators is straight-forward. I'll include more documentation about this but until that, you can refer to the documentation in the code.
 
 ### Error functions
 

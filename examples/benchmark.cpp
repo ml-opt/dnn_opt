@@ -125,16 +125,7 @@ int main(int argc, char** argv)
   auto* generator = generators::uniform::make(-10.0f, 10.0f);
 
   /* set that contains the individuals of the population */
-  auto* solutions = solution_set<>::make(p);
-
-  /* creating a population of size p */
-
-  for(int i = 0; i < p; i++)
-  {
-    auto* solution = create_solution(solution_type, n, generator);
-
-    solutions->add(solution);
-  }
+  auto* solutions = solution_set<>::make(p, create_solution(solution_type, n, generator));
 
   /* random generation of initial population according the generator */
   solutions->generate();

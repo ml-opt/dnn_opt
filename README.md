@@ -33,14 +33,7 @@ int main(int argc, char** argv)
   auto* generator = generators::uniform::make(-10.0f, 10.0f);
 
   /* set that contains the individuals of the population */
-  auto* solutions = solution_set<>::make(40);
-
-  /* creating a population of size = 40 */
-
-  for(int i = 0; i < 40; i++)
-  {
-    solutions->add(solutions::de_jung::make(generator, 256));
-  }
+  auto* solutions = solution_set<>::make(40, solutions::de_jung::make(generator, 256));
 
   /* random generation of initial population according the generator */
   solutions->generate();
@@ -121,8 +114,9 @@ Extending new layers is straight-forward. I'll include more documentation about 
 
 Many population-based optimization methods require to randomly initialize its population. dnn_opt provides a mechanism to determine how to randomly generate the parameters of the solutions. This define the search space. All the parameter generators derive form the base class `::generator` and reside under the namespace `::generators::`. You are free to use the followings:
 
-1. `::generators::normal`
-2. `::generators::uniform`
+1. `::generators::normal` generate numbers with normal distribution in a given interval
+2. `::generators::uniform` generate numbers with uniform distribution in a given interval
+3. `::generators::group` generate numbers from a sequence of generators, you can use it to generate different dimensions of a solution vector with different distributions.
 
 Extending new generators is straight-forward. I'll include more documentation about this but until that, you can refer to the documentation in the code.
 

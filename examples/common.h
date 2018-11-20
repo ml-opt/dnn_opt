@@ -221,7 +221,7 @@ void example_out(int type, float time, float fitness)
     cout << time << " " << fitness << endl;
     break;
   case 3:
-    cout << "Result for ParamILS: SAT," << time;
+    cout << "Result for ParamILS: SAT, " << time;
     cout << ", 1, " << fitness << ", -1, dnn_opt" << endl;
     break;
   }	

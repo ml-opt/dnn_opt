@@ -159,43 +159,46 @@ int main(int argc, char** argv)
   solutions->generate();
 
   /* creating algorithm */
-  auto* algorithm = create_algorithm(algorithm_type, solutions);
+  auto* base = create_algorithm(algorithm_type, solutions);
 
   auto* meta_generator = generators::uniform::make(meta_min, meta_max);
   auto* meta_solutions = solution_set<>::make(meta_p);
 
   for(int i = 0; i < meta_p; i++)
   {
-    auto* solution = solutions::hyper::make(meta_generator, algorithm, meta_n);
+    auto* solution = solutions::hyper::make(meta_generator, base, meta_n);
 
-    solution->set_iteration_count(eta);
+    solution->set_do_optimize([eta](dnn_opt::core::algorithm* base)
+    {
+      base->optimize_eval(eta);
+    });
 
     meta_solutions->add(solution);
   }
 
   meta_solutions->generate();
 
-  auto* meta_algorithm = create_algorithm(algorithm_type, meta_solutions);
+  auto* meta_base = create_algorithm(algorithm_type, meta_solutions);
 
   /* hyper-parameters, see @ref dnn_opt::core::algorithm::set_params() */
-  set_hyper(algorithm_type, meta_algorithm, argc, argv);
+  set_hyper(algorithm_type, meta_base, argc, argv);
 
   /* optimize for eta iterations */
 
   auto start = high_resolution_clock::now();
 
-  meta_algorithm->optimize(meta_eta);
+  meta_base->optimize(meta_eta);
 
   auto end = high_resolution_clock::now();
 
   /* collect statics */
 
   float time = duration_cast<milliseconds>(end - start).count();
-  float fitness = meta_algorithm->get_best()->fitness();
+  float fitness = meta_base->get_best()->fitness();
 
   /* show params in standard output */
 
-  float* params = meta_algorithm->get_best()->get_params();
+  float* params = meta_base->get_best()->get_params();
 
   for(int i = 0; i < meta_solutions->get_dim(); i++)
   {
@@ -212,11 +215,11 @@ int main(int argc, char** argv)
   /* dnn_opt::core::solution_set::clean() is a helper to delete solutions */
 
   delete meta_solutions->clean();
-  delete meta_algorithm;
+  delete meta_base;
   delete meta_generator;
 
   delete solutions->clean();
-  delete algorithm;
+  delete base;
   delete generator;  
 
   return 0;

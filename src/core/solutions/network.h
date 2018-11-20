@@ -222,6 +222,8 @@ public:
 
   virtual float fitness() override;
 
+  virtual reader* get_reader() const override;
+
 protected:
 
   linked(network* source);

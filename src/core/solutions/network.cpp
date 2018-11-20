@@ -183,6 +183,11 @@ float network::linked::fitness()
   return network::fitness();
 }
 
+reader* network::linked::get_reader() const
+{
+  return _source->get_reader();
+}
+
 network::linked::linked(network* source)
 : solution(source->get_generator(), 0),
   network(source->get_generator(), source->get_reader(), source->get_error())

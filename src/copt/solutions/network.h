@@ -78,6 +78,8 @@ class network::linked : public virtual network,
 {
 friend class network;
 
+  virtual reader* get_reader() const override;
+
 protected:
 
   linked(network* source);

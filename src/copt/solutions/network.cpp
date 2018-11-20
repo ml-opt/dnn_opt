@@ -70,6 +70,11 @@ network::~network()
 
 }
 
+reader* network::linked::get_reader() const
+{
+  return dynamic_cast<reader*>(_source->get_reader());
+}
+
 network::linked::linked(network* source)
 : solution(source->get_generator(), 0),
   network(source->get_generator(), source->get_reader(), source->get_error()),

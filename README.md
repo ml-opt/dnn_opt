@@ -17,7 +17,7 @@ We feel that the best way of introduce our library features is by showing some e
 
 ## Optimize sphere function with PSO
 
-The following example is about optimizing a sphere function by using PSO meta-heuristic. Please take a look at the line starting with `using namespace dnn_opt::core`. There we are specifing to use a sequential implementation. If you have an NVIDIA GPU you can use it by changing the namespace to `using namespace dnn_opt::cuda`. If you have a multi-core CPU then use `using namespace dnn_opt::mcpu` and that is all.
+The following example is about optimizing a sphere function by using PSO meta-heuristic. Please take a look at the line starting with `using namespace dnn_opt::core`. There we are specifing to use a sequential implementation. If you have an NVIDIA GPU you can use it by changing the namespace to `using namespace dnn_opt::cuda`. If you have a multi-core CPU then use `using namespace dnn_opt::copt` and that is all.
 
 ````c++
 

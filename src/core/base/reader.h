@@ -82,6 +82,20 @@ public:
    */
   virtual int size() const = 0;
 
+  /**
+   * @brief Swap the training patterns of this reader with the @ref other
+   * reader.
+   *
+   * This reader and the other reader must have the same @ref size() and
+   * @ref get_in_dim() and @ref get_out_dim().
+   *
+   * @param other the reader to swap for this.
+   *
+   * @throws std::invalid_argument if the other reader do not have the same
+   * @ref size() or the same @ref get_in_dim() or the same @ref get_out_dim().
+   */
+  virtual void swap(reader* other);
+
   virtual ~reader();
 
 };

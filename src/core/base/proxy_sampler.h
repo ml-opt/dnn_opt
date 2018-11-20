@@ -25,27 +25,26 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DNN_OPT_CORE_SHUFLER
-#define DNN_OPT_CORE_SHUFLER
+#ifndef DNN_OPT_CORE_PROXY_SAMPLER
+#define DNN_OPT_CORE_PROXY_SAMPLER
 
+#include <string>
 #include <core/base/reader.h>
-#include <core/generators/uniform.h>
 
 namespace dnn_opt
 {
 namespace core
 {
 
-class shufler : public virtual reader
+class proxy_sampler : public virtual reader
 {
 public:
 
-  static shufler* make(reader* reader);
+  static proxy_sampler* make(reader* reader, int limit, int offset = 0);
 
-  /**
-   * @brief Fisher-Yates shuffle.
-   */
-  virtual void shufle();
+  static proxy_sampler** make_fold(reader* reader, int folds = 10, int overlap = 0);
+
+  static proxy_sampler** make_fold_prop(reader* reader, int folds = 10, float overlap = 0);
 
   virtual float* in_data() override;
 
@@ -57,21 +56,17 @@ public:
 
   virtual int size() const override;
 
-  virtual ~shufler();
+  virtual ~proxy_sampler();
 
 protected:
 
-  void swap(int i, int j);
-
-  shufler(reader* reader);
-
-  float* _in_data;
-  float* _out_data;
-
-  int _count;
+  proxy_sampler(reader* reader, int limit, int offset = 0);
 
   reader* _reader;
-  generators::uniform* _generator;
+
+  int _limit;
+
+  int _offset;
 
 };
 

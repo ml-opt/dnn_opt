@@ -19,12 +19,15 @@ rastrigin* rastrigin::make(generator* generator, unsigned int size)
 
 float rastrigin::calculate_fitness()
 {
+  int n = size();
+  float* params = get_params();
   float result = 10 * size();
 
   solution::calculate_fitness();
-  for(int i = 0; i < size(); i++)
+
+  for(int i = 0; i < n; i++)
   {
-    result += pow(get(i), 2) - 10 * cos(2 * 3.141592653f * get(i));
+    result += pow(params[i], 2) - 10 * cos(2 * 3.141592653f * params[i]);
   }
 
   return result;

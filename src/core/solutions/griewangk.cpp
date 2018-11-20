@@ -19,16 +19,18 @@ griewangk* griewangk::make(generator* generator, unsigned int size)
 
 float griewangk::calculate_fitness()
 {
-  double summatory = 0;
-  double multiplier = 1;
+  int n = size();
+  float* params = get_params();
+  float summatory = 0;
+  float multiplier = 1;
   float result = 0;
 
   solution::calculate_fitness();
 
-  for(int i = 0; i < size(); i++)
+  for(int i = 0; i < n; i++)
   {
-    summatory  += get(i) * get(i) / 4000;
-    multiplier *= cos(get(i) / sqrt(i + 1));
+    summatory  += pow(params[i], 2.0) / 4000;
+    multiplier *= cos(params[i] / sqrt(i + 1));
   }
 
   result = summatory - multiplier + 1;

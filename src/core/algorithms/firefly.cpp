@@ -11,11 +11,6 @@ namespace algorithms
 void firefly::reset()
 {
   get_solutions()->generate();
-
-  _light_decay = 1.0f;
-  _rand_influence = 0.2f;
-  _rand_decay = 0.98f;
-  _init_bright = 1.0f;
 }
 
 void firefly::optimize()
@@ -151,6 +146,8 @@ void firefly::set_init_bright(float value)
 void firefly::set_rand_influence(float value)
 {
   _rand_influence = value;
+  _generator->set_min(-0.5 * value);
+  _generator->set_max(0.5 * value);
 }
 
 void firefly::set_rand_decay(float rand_decay)

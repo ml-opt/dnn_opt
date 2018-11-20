@@ -37,6 +37,15 @@ void algorithm::optimize_dev(float dev, std::function<void()> on)
   }
 }
 
+void algorithm::optimize_eval(int count, std::function<void()> on)
+{
+  while(get_solutions()->get_evaluations() < count)
+  {
+    optimize();
+    on();
+  }
+}
+
 bool algorithm::is_maximization()
 {
   return _maximization;

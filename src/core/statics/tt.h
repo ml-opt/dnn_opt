@@ -25,56 +25,49 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DNN_OPT_CORE_SHUFLER
-#define DNN_OPT_CORE_SHUFLER
+#ifndef DNN_OPT_CORE_STATICS_TT
+#define DNN_OPT_CORE_STATICS_TT
 
-#include <core/base/reader.h>
-#include <core/generators/uniform.h>
+#include <vector>
+#include <core/statics/k_fold.h>
 
 namespace dnn_opt
 {
 namespace core
 {
+namespace statics
+{
 
-class shufler : public virtual reader
+class tt : public virtual k_fold
 {
 public:
 
-  static shufler* make(reader* reader);
+  virtual void reset() override;
+
+  virtual float get_error();
+
+  virtual float get_bias();
 
   /**
-   * @brief Fisher-Yates shuffle.
+   * The basic destructor of this class.
    */
-  virtual void shufle();
-
-  virtual float* in_data() override;
-
-  virtual float* out_data() override;
-
-  virtual int get_in_dim() const override;
-
-  virtual int get_out_dim() const override ;
-
-  virtual int size() const override;
-
-  virtual ~shufler();
+  virtual ~tt();
 
 protected:
 
-  void swap(int i, int j);
+  virtual void init() override;
 
-  shufler(reader* reader);
+  tt(int k, algorithm* base, reader* reader);
 
-  float* _in_data;
-  float* _out_data;
+private:
 
-  int _count;
+  /** Stores generalization error of different folds */
 
-  reader* _reader;
-  generators::uniform* _generator;
+  vector<float> _results;
 
 };
 
+} // namespace statics
 } // namespace core
 } // namespace dnn_opt
 

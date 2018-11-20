@@ -66,6 +66,8 @@ public:
 
   virtual void optimize_dev(float dev, std::function<void()> on = [](){}) override;
 
+  virtual void optimize_eval(int count, std::function<void()> on = [](){}) override;
+
   virtual solution* get_best() override;
 
   virtual void init() override;

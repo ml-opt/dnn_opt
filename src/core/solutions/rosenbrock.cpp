@@ -19,11 +19,15 @@ rosenbrock* rosenbrock::make(generator* generator, unsigned int size)
 
 float rosenbrock::calculate_fitness()
 {
-  float result = solution::calculate_fitness();
+  int n = size();
+  float* params = get_params();
+  float result = 0;
 
-  for(int i = 0; i < size() - 1; i++)
+  solution::calculate_fitness();
+
+  for(int i = 0; i < n - 1; i++)
   {
-    result += 100 * pow(get(i + 1) - pow(get(i), 2), 2) + pow(get(i) - 1, 2);
+    result += 100 * pow(params[i + 1] - pow(params[i], 2), 2) + pow(params[i] - 1, 2);
   }
 
   return result;

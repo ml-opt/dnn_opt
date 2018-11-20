@@ -65,6 +65,18 @@ void continuation::optimize_dev(float dev,  std::function<void()> on)
   }
 }
 
+void continuation::optimize_eval(int count, std::function<void()> on)
+{
+  int k = _sequence.size();
+
+  for(int i = 0; i < k; i++)
+  {
+    set_reader(i);
+
+    _base->optimize_eval(count / k, on);
+  }
+}
+
 solution* continuation::get_best()
 {
   return _base->get_best();

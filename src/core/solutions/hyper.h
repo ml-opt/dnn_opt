@@ -28,6 +28,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef DNN_OPT_CORE_SOLUTIONS_HYPER
 #define DNN_OPT_CORE_SOLUTIONS_HYPER
 
+#include <functional>
 #include <core/base/generator.h>
 #include <core/base/solution.h>
 #include <core/base/algorithm.h>
@@ -51,13 +52,11 @@ class hyper : public virtual solution
 {
 public:
 
-  static hyper* make(generator* generator, algorithm* algorithm, unsigned int size);
+  static hyper* make(generator* generator, algorithm* base, unsigned int size);
 
   virtual algorithm* get_algorithm() const;
 
-  int get_iteration_count() const;
-
-  void set_iteration_count(int iteration_count);
+  void set_do_optimize(std::function<void(algorithm*)> do_optimize);
 
   virtual hyper* clone() override;
 
@@ -88,13 +87,12 @@ protected:
    *
    * @param size is the number of parameters for this solution. Default is 10.
    */
-  hyper(generator* generator, algorithm* algorithm, unsigned int size = 10 );
+  hyper(generator* generator, algorithm* base, unsigned int size = 10 );
 
   /** The elementary optimization algorithm */
-  algorithm* _algorithm;
+  algorithm* _base;
 
-  /** The number of elementary optimization steeps to perform */
-  int _iteration_count;
+  std::function<void(algorithm*)> _do_optimize;
 
 };
 

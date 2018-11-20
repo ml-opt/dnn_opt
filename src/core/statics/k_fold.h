@@ -25,16 +25,21 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DNN_OPT_CORE_ALGORITHM
-#define DNN_OPT_CORE_ALGORITHM
+#ifndef DNN_OPT_CORE_STATICS_K_FOLD
+#define DNN_OPT_CORE_STATICS_K_FOLD
 
 #include <vector>
 #include <functional>
-#include <core/base/solution_set.h>
+#include <core/solutions/network.h>
+#include <core/base/algorithm.h>
+#include <core/base/proxy_sampler.h>
+#include <core/base/shufler.h>
 
 namespace dnn_opt
 {
 namespace core
+{
+namespace statics
 {
 
 /**
@@ -46,7 +51,7 @@ namespace core
  * @date June, 2016
  * @version 1.0
  */
-class algorithm
+class k_fold : public virtual algorithm
 {
 public:
 
@@ -57,19 +62,18 @@ public:
    * Some optimization algorithms may store internal state over the course of
    * optimization steeps. This method resets such internal state.
    */
-  virtual void reset() = 0;
+  virtual void reset() override;
 
-  /**
-   * @brief Perform a single step of optimization.
-   */
-  virtual void optimize() = 0;
+  virtual void re_sample();
+
+  virtual void optimize() override;
 
   /**
    * @brief Perform multiple steps of optimization.
    *
    * @param count number of optimization steps to perform.
    */
-  virtual void optimize(int count, std::function<void()> on = [](){});
+  virtual void optimize(int count, std::function<void()> on = [](){}) override;
 
   /**
    * @brief Perform optimization until the best solution does not improve its
@@ -81,11 +85,9 @@ public:
    * @param variance improvement of the best solution fitness value necesary to
    * continue optimization.
    */
-  virtual void optimize_idev(int count, float dev, std::function<void()> on = [](){});
+  virtual void optimize_idev(int count, float dev, std::function<void()> on = [](){}) override;
 
-  virtual void optimize_dev(float dev, std::function<void()> on = [](){});
-
-  virtual void optimize_eval(int count, std::function<void()> on = [](){});
+  virtual void optimize_dev(float dev, std::function<void()> on = [](){}) override;
 
   /**
    * @brief Specify if the optimization algorithm should maximize
@@ -95,7 +97,7 @@ public:
    *
    * @return true if the goal is maximization, false if minimization.
    */
-  virtual bool is_maximization();
+  virtual bool is_maximization() override;
 
   /**
    * @brief Change the optimization operation performed by this
@@ -104,26 +106,32 @@ public:
    * @param maximization true to perform maximization, false to perform
    * minimization.
    */
-  virtual void set_maximization(bool maximization);
+  virtual void set_maximization(bool maximization) override;
 
-  /**
-   * @brief Returns the solution_set used by the algorithm to store the
-   * population to optimize.
-   *
-   * @return a pointer to the solution_set.
-   */
-  virtual solution_set<>* get_solutions() const;
+  virtual solution* get_best() override;
 
-  virtual solution* get_best() = 0;
+  virtual void set_params(std::vector<float> &params) override;
 
-  virtual void set_params(std::vector<float> &params) = 0;
+  using algorithm::set_params;
 
-  virtual void set_params(int n, float* params) final;
+  virtual void set_k(float k);
+
+  virtual float get_k();
+
+  virtual int on_fold(std::function<void(reader*, reader*)> listener);
+
+  virtual void remove_fold_listener(int idx);
+
+  virtual float get_validation_error();
+
+  virtual float get_training_error();
+
+  virtual algorithm* get_base();
 
   /**
    * The basic destructor of this class.
    */
-  virtual ~algorithm();
+  virtual ~k_fold();
 
 protected:
 
@@ -131,30 +139,37 @@ protected:
    * @brief Allocate dynamic memory to initialize of this class. Derived classes
    * should implement the factory pattern and call this method before returning.
    */
-  virtual void init() = 0;
+  virtual void init() override;
 
   /**
    * @brief The basic contructor for an optimization algorithm.
    */
-  template<class t_solution>
-  algorithm(const solution_set<t_solution>* solutions);
+  k_fold(int k, algorithm* base, reader* reader);
 
 private:
 
-  /** The optimization operation performed by this algorithm */
-  bool _maximization;
+  void set_reader(reader* reader);
 
-  solution_set<>* _solutions;
+  void optimize(std::function<void()> base_optimizer);
+
+  /** Number of folds to generate*/
+  int _k;
+
+  algorithm* _base;
+
+  reader* _reader;
+
+  solution_set<solutions::network>* _solutions;
+
+  proxy_sampler** _fold_containers;
+
+  shufler* _shufler;
+
+  std::vector<std::function<void(reader*, reader*)>> _on_fold_listeners;
 
 };
 
-template<class t_solution>
-algorithm::algorithm(const solution_set<t_solution>* solutions)
-{
-  _maximization = false;
-  _solutions = solutions->cast_copy();
-}
-
+} // namespace statics
 } // namespace core
 } // namespace dnn_opt
 

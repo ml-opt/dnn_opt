@@ -8,9 +8,9 @@ namespace core
 namespace solutions
 {
 
-hyper* hyper::make(generator* generator, algorithm* algorithm, unsigned int size)
+hyper* hyper::make(generator* generator, algorithm* base, unsigned int size)
 {
-  auto* result = new hyper(generator, algorithm, size);
+  auto* result = new hyper(generator, base, size);
 
   result->init();
 
@@ -19,17 +19,12 @@ hyper* hyper::make(generator* generator, algorithm* algorithm, unsigned int size
 
 algorithm* hyper::get_algorithm() const
 {
-  return _algorithm;
+  return _base;
 }
 
-int hyper::get_iteration_count() const
+void hyper::set_do_optimize(std::function<void(algorithm*)> do_optimize)
 {
-  return _iteration_count;
-}
-
-void hyper::set_iteration_count(int iteration_count)
-{
-  _iteration_count = iteration_count;
+  _do_optimize = do_optimize;
 }
 
 hyper* hyper::clone()
@@ -38,7 +33,7 @@ hyper* hyper::clone()
 
   result->_fitness = fitness();
   result->set_modified(false);
-  result->set_iteration_count(get_iteration_count());
+  result->set_do_optimize(_do_optimize);
 
   result->_evaluations = get_evaluations();
 
@@ -59,25 +54,31 @@ void hyper::assign(solution* s)
   auto* ss = dynamic_cast<hyper*>(s);
 
   solution::assign(ss);
-  set_iteration_count(ss->get_iteration_count());
+  set_do_optimize(_do_optimize);
 }
 
 float hyper::calculate_fitness()
 {
-  algorithm* algorithm = get_algorithm();
+  algorithm* base = get_algorithm();
 
-  algorithm->reset();
-  algorithm->set_params(size(), get_params());
-  algorithm->optimize(get_iteration_count());
+  solution::calculate_fitness();
 
-  return algorithm->get_best()->fitness();
+  base->reset();
+  base->set_params(size(), get_params());
+
+  _do_optimize(base);
+
+  return base->get_best()->fitness();
 }
 
-hyper::hyper(generator* generator, algorithm* algorithm, unsigned int size)
+hyper::hyper(generator* generator, algorithm* base, unsigned int size)
 : solution(generator, size)
 {
-  _algorithm = algorithm;
-  _iteration_count = 10;
+  _base = base;
+  _do_optimize = [](algorithm* base)
+  {
+    base->optimize();
+  };
 }
 
 hyper::~hyper()

@@ -19,13 +19,15 @@ styblinski_tang* styblinski_tang::make(generator* generator, unsigned int size)
 
 float styblinski_tang::calculate_fitness()
 {
+  int n = size();
+  float* params = get_params();
   float result = 0;
 
   solution::calculate_fitness();
 
-  for(int i = 0; i < size(); i++)
+  for(int i = 0; i < n; i++)
   {
-    result += pow(get(i), 4) + 16 * pow(get(i), 2) + 5 * get(i);
+    result += pow(params[i], 4) + 16 * pow(params[i], 2) + 5 * params[i];
   }
 
   return result / 2;

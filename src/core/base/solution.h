@@ -125,7 +125,7 @@ public:
 
   /**
    * @brief Initialize the parameters of this solution based on the provided
-   * @generator.
+   * @ref get_generator() and restart the number of @ref get_evaluations().
    */
   virtual void generate();
 

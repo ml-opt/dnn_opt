@@ -23,6 +23,8 @@ float step::calculate_fitness()
   float* params = get_params();
   int n = size();
 
+  solution::calculate_fitness();
+
   for(int i = 0; i < n; i++)
   {
     result += std::pow(std::floor(params[i]), 2);

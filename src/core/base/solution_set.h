@@ -58,6 +58,8 @@ public:
 
   static solution_set<t_solution>* make(unsigned int size = 10);
 
+  static solution_set<t_solution>* make(unsigned int size, solution* solution);
+
   /**
    * @brief The number of solutions of this container.
    *
@@ -257,6 +259,21 @@ template<class t_solution>
 solution_set<t_solution>* solution_set<t_solution>::make(unsigned int size)
 {
   return new solution_set<t_solution>(size);
+}
+
+template<class t_solution>
+solution_set<t_solution>* solution_set<t_solution>::make(unsigned int size, solution* s)
+{
+  auto* set = new solution_set<t_solution>(size);
+
+  set->add(s);
+
+  for(int i = 1; i < size; i++)
+  {
+    set->add(s->clone());
+  }
+
+  return set;
 }
 
 template<class t_solution>

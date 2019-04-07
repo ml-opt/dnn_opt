@@ -28,7 +28,7 @@
 #ifndef DNN_OPT_CUDA_ALGORITHMS_FIREFLY
 #define DNN_OPT_CUDA_ALGORITHMS_FIREFLY
 
-#include <cuda/base/solution_set.h>
+#include <cuda/base/set.h>
 #include <cuda/base/algorithm.h>
 #include <cuda/generators/uniform.h>
 #include <core/algorithms/firefly.h>
@@ -59,7 +59,7 @@ public:
    * optimize.
    */
   template<class t_solution>
-  static firefly* make(const solution_set<t_solution>* solutions);
+  static firefly* make(const set<t_solution>* solutions);
 
   /**
    * The basic destructor of the firefly class.
@@ -75,7 +75,7 @@ protected:
    * optimize.
    */
   template<class t_solution>
-  firefly(const solution_set<t_solution>* solutions);
+  firefly(const set<t_solution>* solutions);
 
   virtual void init() override;
 
@@ -98,7 +98,7 @@ protected:
 };
 
 template<class t_solution>
-firefly* firefly::make(const solution_set<t_solution>* solutions)
+firefly* firefly::make(const set<t_solution>* solutions)
 {
   auto* result = new firefly(solutions);
 
@@ -108,7 +108,7 @@ firefly* firefly::make(const solution_set<t_solution>* solutions)
 }
 
 template<class t_solution>
-firefly::firefly(const solution_set<t_solution>* solutions)
+firefly::firefly(const set<t_solution>* solutions)
 : core::algorithms::firefly(solutions),
   core::algorithm(solutions),
   algorithm(solutions)

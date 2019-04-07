@@ -53,17 +53,49 @@ public:
 
   bool assignable(const core::solution* s) const override;
 
-  virtual void init() override;
-
-  virtual reader* get_reader() override;
+  virtual reader* get_reader() const override;
 
   virtual void set_reader(core::reader* reader) override;
+
+  virtual error* get_error() const override;
+
+  virtual float* predict(core::reader* validation_set) override;
+
+  virtual void init() override;
 
   virtual ~network() override;
 
 protected:
 
+  /** Forward declaration of linked network class  */
+  class linked;
+
   network(generator* generator, reader* reader, error* error);
+
+  network(generator* generator);
+
+};
+
+/* TODO: implement all methods respect _source! */
+class network::linked : public virtual network,
+                        public virtual core::solutions::network::linked
+{
+friend class network;
+
+public:
+
+  virtual reader* get_reader() const override;
+
+  virtual void set_reader(core::reader* reader) override;
+
+  virtual error* get_error() const override;
+
+protected:
+
+  linked(network* base);
+
+  /** The linked network solution that is being tracked */
+  network* _cuda_base;
 
 };
 

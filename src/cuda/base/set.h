@@ -25,11 +25,11 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DNN_OPT_CUDA_SOLUTION
-#define DNN_OPT_CUDA_SOLUTION
+#ifndef DNN_OPT_CUDA_SET
+#define DNN_OPT_CUDA_SET
 
-#include <core/base/solution.h>
-#include <cuda/base/generator.h>
+#include <cuda/base/solution.h>
+#include <core/base/set.h>
 
 namespace dnn_opt
 {
@@ -37,40 +37,63 @@ namespace cuda
 {
 
 /**
- * @brief Provides a wrapper for GPU processing of the solutions.
+ * This class represents an abstract optimization algorithm capable of
+ * define the basic functionalities of any meta-heuristic. In order to extend
+ * the library, new algorithms shuold derive from this class.
+ * The CUDA wrapper for this class is intended for the execution of such optimization
+ * algorithms in a CUDA capable device.
  *
  * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
  * @date June, 2017
  * @version 1.0
  */
-class solution : public virtual core::solution
+template<class t_solution = solution>
+class set : public core::set<t_solution>
 {
+
+static_assert(true, "t_solution must derive from cuda::solution");
+
 public:
 
-  static solution* make(generator* generator, unsigned int size);
+  static set<t_solution>* make(unsigned int size = 10)
+  {
+    return new set<t_solution>(size);
+  }
 
-  virtual void assign(core::solution* s) override;
+  template<class t_t_solution = solution>
+  set<t_t_solution>* cast_copy() const
+  {
+    auto* result = set<t_t_solution>::make(this->size());
 
-  virtual void set_constrains() override;
+    for(int i = 0; i < this->size(); i++)
+    {
+      result->add(dynamic_cast<t_t_solution*>(this->get(i)));
+    }
 
-  virtual void init() override;
+    return result;
+  }
 
-  virtual ~solution() override;
+  virtual ~set()
+  {
 
-  virtual generator* get_generator() const override;
+  }
 
 protected:
 
-  solution(generator* generator, unsigned int size);
+  /**
+   * @brief The basic contructor for an optimization algorithm.
+   *
+   * @param solutions the set of solutions to optimize.
+   */
+  set(unsigned int size = 10)
+  : core::set<t_solution>(size)
+  {
 
-private:
-
-  /** a pointer to _generator that do not degrade to core::generator */
-  generator* _dev_generator;
+  }
 
 };
 
-} // namespace cuda
-} // namespace dnn_opt
+}
+}
 
 #endif

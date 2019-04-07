@@ -44,29 +44,82 @@ class continuation : public virtual algorithm,
 {
 public:
 
-  class random_builder;
+  /** Forward declaration of the builder seq of subsets of training patterns */
+  class seq;
 
-  static continuation* make(algorithm* base, builder* builder);
+  /** Forward declaration of a descent builder */
+  class descent;
+
+  class fixed;
+
+  static continuation* make(algorithm* base, seq* builder);
 
   virtual ~continuation() override;
 
 protected:
 
-  continuation(algorithm* base, builder* builder);
+  continuation(algorithm* base, seq* builder);
 
 };
 
-class continuation::random_builder : public core::algorithms::continuation::random_builder
+/**
+ * @copydoc core::algorithms::continuation::seq
+ * @author Jairo Rojas-Delgado<jrdelgado@uci.cu>
+ * @date january, 2018
+ * @version 1.0
+ */
+class continuation::seq : public virtual core::algorithms::continuation::seq
 {
-public:
 
-  static random_builder* make(unsigned int k, float beta);
+};
 
-  virtual std::vector<core::reader*> build(core::reader* dataset) override;
+class continuation::descent : public virtual continuation::seq,
+                              public virtual core::algorithms::continuation::descent
+{
+public :
+
+  static descent* make(reader* dataset, int k, float beta);
+
+  virtual void build() override;
+
+  virtual reader* get(int idx) override;
 
 protected:
 
-  random_builder(unsigned int k, float beta);
+  descent(reader* dataset, int k, float beta);
+
+private:
+
+  reader* _cuda_dataset;
+
+  std::vector<reader*> _cuda_sequence;
+
+};
+
+
+class continuation::fixed : public virtual continuation::seq,
+                            public virtual core::algorithms::continuation::fixed
+{
+public :
+
+  static fixed* make(reader* dataset, int k, float beta);
+
+  virtual void build() override;
+
+  virtual reader* get(int idx) override;
+
+  virtual ~fixed();
+
+protected:
+
+  fixed(reader* dataset, int k, float beta);
+
+private:
+
+  reader* _cuda_dataset;
+
+  std::vector<reader*> _cuda_sequence;
+
 };
 
 } // namespace algorithms

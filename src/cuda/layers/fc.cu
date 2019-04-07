@@ -221,7 +221,7 @@ void fc::ws(int size, const float* in, const float* params, float* out)
 
 layer* fc::clone()
 {
-  return 0;
+  return fc::make(_in_dim, _out_dim, get_activation());
 }
 
 fc::fc(int in_dim, int out_dim, activation* activation)

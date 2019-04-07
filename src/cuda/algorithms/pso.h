@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2017, Jairo Rojas-Delgado <jrdelgado@uci.cu>
+Copyright (c) 2018, Jairo Rojas-Delgado <jrdelgado@uci.cu>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -25,16 +25,14 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DNN_OPT_CUDA_ALGORITHMS_OPWA
-#define DNN_OPT_CUDA_ALGORITHMS_OPWA
+#ifndef DNN_OPT_CUDA_ALGORITHMS_PSO
+#define DNN_OPT_CUDA_ALGORITHMS_PSO
 
-#include <vector>
-#include <memory>
-#include <core/algorithms/opwa.h>
 #include <cuda/base/algorithm.h>
-#include <cuda/base/set.h>
-#include <cuda/solutions/wrapper.h>
-
+#include <cuda/generators/uniform.h>
+#include <cuda/generators/constant.h>
+#include <core/algorithms/pso.h>
+#include <iostream>
 namespace dnn_opt
 {
 namespace cuda
@@ -42,68 +40,67 @@ namespace cuda
 namespace algorithms
 {
 
-class opwa : public virtual core::algorithms::opwa,
-             public virtual algorithm
+/**
+ * @copydoc core::algorithms::pso
+ *
+ * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
+ * @version 1.0
+ * @date July, 2018
+ */
+class pso : public virtual algorithm,
+            public virtual core::algorithms::pso
 {
 public:
 
-  /**
-   * Shorthand for the lambda function which creates wrapped algorithms that
-   * operates in partitions.
-   */
-  typedef std::function<algorithm* (set<>*)> wa;
-
-  static opwa* make(int count, const set<>* solutions, wa builder)
-  {
-    auto* result = new opwa(count, solutions, builder);
-
-    result->init();
-
-    return result;
-  }
-
-  virtual void init() override
-  {
-    for( int i = 0; i < _count; i++ )
-    {
-      auto* part = set<>::make(_dev_solutions->size());
-
-      for( int j = 0; j < get_solutions()->size(); j++ )
-      {
-        part->add(solutions::wrapper::make(i, _count, _dev_solutions->get(j)));
-      }
-
-      auto wa = std::unique_ptr<algorithm>(_dev_builder(part));
-      _algorithms.push_back(std::move(wa));
-    }
-  }
-
-  virtual ~opwa() override
-  {
-    delete _dev_solutions;
-  }
-
-protected:
-
   template<class t_solution>
-  opwa(int count, const set<t_solution>* solutions, wa builder)
-  : core::algorithms::opwa(count, solutions),
-    core::algorithm(solutions),
-    algorithm(solutions)
-  {
-    _dev_solutions = solutions->cast_copy();
-    _dev_builder = builder;
-  }
+  static pso* make(set<t_solution>* solutions);
+
+  using algorithm::optimize;
+
+  virtual ~pso() override;
 
 protected:
 
-  /** Pointer to _solutions that do not degrade to core::set */
-  set<>* _dev_solutions;
+  virtual void init() override;
 
-  /** Lambda function that creates wrapped algorithms for GPU execution */
-  wa _dev_builder;
+  /**
+   * @copydoc core::algorithms::pso::update_speed
+   */
+  virtual void update_speed(int idx) override;
+
+  /**
+   * @copydoc core::algorithms::pso::update_position
+   */
+  virtual void update_position(int idx) override;
+
+  /**
+   * @brief The basic contructor of a pso class.
+   *
+   * @param solutions a set of individuals.
+   */
+  template<class t_solution>
+  pso(set<t_solution>* solutions);
 
 };
+
+/* templated function implementations */
+
+template<class t_solution>
+pso* pso::make(set<t_solution> *solutions)
+{
+  auto* result = new pso(solutions);
+  result->init();
+  return result;
+}
+
+template<class t_solution>
+pso::pso(set<t_solution>* solutions)
+: algorithm(solutions),
+  core::algorithm(solutions),
+  core::algorithms::pso(solutions)
+{
+
+}
 
 } // namespace algorithms
 } // namespace cuda

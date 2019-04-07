@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2017, Jairo Rojas-Delgado <jrdelgado@uci.cu>
+Copyright (c) 2018, Jairo Rojas-Delgado <jrdelgado@uci.cu>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -25,48 +25,34 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DNN_OPT_CUDA_SOLUTION
-#define DNN_OPT_CUDA_SOLUTION
+#ifndef DNN_OPT_CUDA_PROXY_SAMPLER
+#define DNN_OPT_CUDA_PROXY_SAMPLER
 
-#include <core/base/solution.h>
-#include <cuda/base/generator.h>
+#include <string>
+#include <core/base/proxy_sampler.h>
+#include <cuda/base/reader.h>
 
 namespace dnn_opt
 {
 namespace cuda
 {
 
-/**
- * @brief Provides a wrapper for GPU processing of the solutions.
- *
- * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
- * @date June, 2017
- * @version 1.0
- */
-class solution : public virtual core::solution
+class proxy_sampler : public virtual reader,
+                      public virtual core::proxy_sampler
 {
 public:
 
-  static solution* make(generator* generator, unsigned int size);
+  static proxy_sampler* make(reader* reader, int limit, int offset = 0);
 
-  virtual void assign(core::solution* s) override;
+  static proxy_sampler** make_fold(reader* reader, int folds = 10, int overlap = 0);
 
-  virtual void set_constrains() override;
+  static proxy_sampler** make_fold_prop(reader* reader, int folds = 10, float overlap = 0);
 
-  virtual void init() override;
-
-  virtual ~solution() override;
-
-  virtual generator* get_generator() const override;
+  virtual ~proxy_sampler();
 
 protected:
 
-  solution(generator* generator, unsigned int size);
-
-private:
-
-  /** a pointer to _generator that do not degrade to core::generator */
-  generator* _dev_generator;
+  proxy_sampler(reader* reader, int limit, int offset = 0);
 
 };
 

@@ -35,6 +35,33 @@ struct constrains : public thrust::unary_function<float, float>
 } // namespace solution
 } // namespace ops
 
+solution* solution::make(generator* generator, unsigned int size)
+{
+  auto* result = new solution(generator, size);
+
+  result->init();
+
+  return result;
+}
+
+void solution::assign(core::solution* s)
+{
+  if(assignable(s) == false)
+  {
+    throw new std::invalid_argument("solution is not compatible");
+  }
+
+  auto s_params_ptr = thrust::device_pointer_cast(s->get_params());
+  auto params_ptr = thrust::device_pointer_cast(get_params());
+
+  thrust::copy_n(s_params_ptr, size(), params_ptr);
+
+  _fitness = s->fitness();
+  _evaluations = s->get_evaluations();
+
+  set_modified(false);
+}
+
 generator* solution::get_generator() const
 {
   return _dev_generator;
@@ -46,7 +73,7 @@ void solution::set_constrains()
   float max = get_generator()->get_max();
   auto ptr = thrust::device_pointer_cast(get_params());
 
-  transform(ptr, ptr + size(), ptr, ops::solution::constrains(min, max));
+  thrust::transform(ptr, ptr + size(), ptr, ops::solution::constrains(min, max));
 
   set_modified(true);
 }

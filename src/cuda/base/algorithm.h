@@ -28,7 +28,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef DNN_OPT_CUDA_ALGORITHM
 #define DNN_OPT_CUDA_ALGORITHM
 
-#include <cuda/base/solution_set.h>
+#include <cuda/base/set.h>
 #include <core/base/algorithm.h>
 
 namespace dnn_opt
@@ -52,12 +52,12 @@ class algorithm : public virtual core::algorithm
 protected:
 
   template<class t_solution>
-  algorithm(const solution_set<t_solution>* solutions);
+  algorithm(const set<t_solution>* solutions);
 
 };
 
 template<class t_solution>
-algorithm::algorithm(const solution_set<t_solution>* solutions)
+algorithm::algorithm(const set<t_solution>* solutions)
 : core::algorithm(solutions)
 {
 

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2017, Jairo Rojas-Delgado <jrdelgado@uci.cu>
+Copyright (c) 2018, Jairo Rojas-Delgado <jrdelgado@uci.cu>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -25,51 +25,78 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DNN_OPT_CUDA_SOLUTION
-#define DNN_OPT_CUDA_SOLUTION
+#ifndef DNN_OPT_CUDA_SOLUTIONS_HYPER
+#define DNN_OPT_CUDA_SOLUTIONS_HYPER
 
-#include <core/base/solution.h>
+#include <functional>
 #include <cuda/base/generator.h>
+#include <cuda/base/solution.h>
+#include <cuda/base/algorithm.h>
 
 namespace dnn_opt
 {
 namespace cuda
 {
+namespace solutions
+{
 
 /**
- * @brief Provides a wrapper for GPU processing of the solutions.
+ * @brief The hyper class represents an optimization algorithm hyper-parameter
+ * solution.
  *
  * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
- * @date June, 2017
  * @version 1.0
+ * @date November, 2017
  */
-class solution : public virtual core::solution
+class hyper : public virtual solution
 {
 public:
+// TODO: Fix this
+  static hyper* make(generator* generator, algorithm* base, unsigned int size);
 
-  static solution* make(generator* generator, unsigned int size);
+  virtual algorithm* get_algorithm() const;
+
+  void set_do_optimize(std::function<void(algorithm*)> do_optimize);
+
+  virtual hyper* clone() override;
+
+  virtual bool assignable(const core::solution* s) const override;
 
   virtual void assign(core::solution* s) override;
 
-  virtual void set_constrains() override;
-
-  virtual void init() override;
-
-  virtual ~solution() override;
-
-  virtual generator* get_generator() const override;
+  virtual ~hyper();
 
 protected:
 
-  solution(generator* generator, unsigned int size);
+   /**
+    * @copydoc solution::calculate_fitness()
+    *
+    * Performs @ref get_iteration_count() optimization steeps of the provided
+    * @ref get_algorithm() and returns its fitness.
+    *
+    * @return the fitness of this solution.
+    */
+  virtual float calculate_fitness() override;
 
-private:
+  /**
+   * @brief The basic contructor for this class.
+   *
+   * @param generator an instance of a generator class.
+   * The generator is used to initialize the parameters of this
+   * solution.
+   *
+   * @param size is the number of parameters for this solution. Default is 10.
+   */
+  hyper(generator* generator, algorithm* base, unsigned int size = 10 );
 
-  /** a pointer to _generator that do not degrade to core::generator */
-  generator* _dev_generator;
+  /** The elementary optimization algorithm */
+  algorithm* _base;
+
+  std::function<void(algorithm*)> _do_optimize;
 
 };
 
+} // namespace solutions
 } // namespace cuda
 } // namespace dnn_opt
 

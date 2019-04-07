@@ -1,4 +1,5 @@
 #include <random>
+#include <curand.h>
 #include <thrust/device_ptr.h>
 #include <thrust/transform.h>
 #include <cuda/generators/uniform.h>
@@ -10,9 +11,7 @@ namespace cuda
 namespace generators
 {
 
-namespace ops
-{
-namespace uniform
+namespace
 {
 
 struct range
@@ -35,7 +34,6 @@ struct range
 };
 
 }
-}
 
 uniform* uniform::make(float min, float max)
 {
@@ -47,7 +45,7 @@ void uniform::generate(int count, float* params)
   auto ptr = thrust::device_pointer_cast(params);
 
   curandGenerateUniform(_gen, params, count);
-  thrust::transform(ptr, ptr + count, ptr, ops::uniform::range(_min, _max));
+  thrust::transform(ptr, ptr + count, ptr, range(_min, _max));
 }
 
 float uniform::generate()

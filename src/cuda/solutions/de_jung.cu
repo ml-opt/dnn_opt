@@ -60,6 +60,8 @@ void de_jung::from_core(core::solutions::de_jung* solution)
 
 float de_jung::calculate_fitness()
 {
+  solution::calculate_fitness();
+
   float result = cublasSdot(size(), get_params(), 1, get_params(), 1);
 
   return result;

@@ -48,7 +48,14 @@ class layer : public virtual core::layer
 {
 public:
 
+  virtual activation* get_activation() const;
+
+protected:
   layer(int in_dim, int out_dim, activation* activation);
+
+private:
+
+  activation* _cuda_activation;
 
 };
 

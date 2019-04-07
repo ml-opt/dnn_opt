@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2017, Jairo Rojas-Delgado <jrdelgado@uci.cu>
+Copyright (c) 2018, Jairo Rojas-Delgado <jrdelgado@uci.cu>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -25,51 +25,64 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DNN_OPT_CUDA_SOLUTION
-#define DNN_OPT_CUDA_SOLUTION
+#ifndef DNN_OPT_CUDA_GENERATORS_NORMAL
+#define DNN_OPT_CUDA_GENERATORS_NORMAL
 
-#include <core/base/solution.h>
+#include <curand.h>
+#include <core/generators/normal.h>
 #include <cuda/base/generator.h>
 
 namespace dnn_opt
 {
 namespace cuda
 {
+namespace generators
+{
 
 /**
- * @brief Provides a wrapper for GPU processing of the solutions.
+ * @copydoc core::generators::normal
  *
  * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
- * @date June, 2017
+ * @date September, 2018
  * @version 1.0
  */
-class solution : public virtual core::solution
+class normal : public virtual generator,
+               public virtual core::generators::normal
 {
 public:
 
-  static solution* make(generator* generator, unsigned int size);
+  /**
+   * Create a new instance of the normal class.
+   *
+   * @param mean the mean of the normally distributed generator.
+   *
+   * @param dev the standard deviation from the mean.
+   *
+   * @return a pointer to an instance of normal class.
+   */
+  static normal* make(float mean, float dev);
 
-  virtual void assign(core::solution* s) override;
+  void generate(int count, float* params) override;
 
-  virtual void set_constrains() override;
+  virtual float generate() override;
 
-  virtual void init() override;
-
-  virtual ~solution() override;
-
-  virtual generator* get_generator() const override;
+  virtual ~normal();
 
 protected:
 
-  solution(generator* generator, unsigned int size);
+  /**
+   * The basic constructor for the normal class.
+   *
+   * @param mean the mean of the normally distributed generator.
+   *
+   * @param dev the standard deviation from the mean.
+   */
+  normal(float mean, float dev);
 
-private:
-
-  /** a pointer to _generator that do not degrade to core::generator */
-  generator* _dev_generator;
-
+  curandGenerator_t _gen;
 };
 
+} // namespace generators
 } // namespace cuda
 } // namespace dnn_opt
 

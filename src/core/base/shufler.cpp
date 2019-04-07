@@ -13,12 +13,12 @@ shufler* shufler::make(reader* reader)
 
 float* shufler::in_data()
 {
-  return _in_data;
+  return _reader->in_data();
 }
 
 float* shufler::out_data()
 {
-  return _out_data;
+  return _reader->out_data();
 }
 
 int shufler::get_in_dim() const
@@ -80,19 +80,12 @@ void shufler::swap(int i, int j)
 shufler::shufler(reader* reader)
 {
   _reader = reader;
-
   _generator = generators::uniform::make(0, 1);
-  _in_data = reader->in_data();
-  _out_data = reader->out_data();
-  _count = 0;
 }
 
 shufler::~shufler()
 {
   delete _generator;
-
-  _in_data = 0;
-  _out_data = 0;
 }
 
 } // namespace core

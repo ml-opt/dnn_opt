@@ -30,7 +30,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <vector>
 #include <functional>
-#include <core/base/solution_set.h>
+#include <core/base/set.h>
 
 namespace dnn_opt
 {
@@ -62,14 +62,14 @@ public:
   /**
    * @brief Perform a single step of optimization.
    */
-  virtual void optimize() = 0;
+  virtual void optimize();
 
   /**
    * @brief Perform multiple steps of optimization.
    *
    * @param count number of optimization steps to perform.
    */
-  virtual void optimize(int count, std::function<void()> on = [](){});
+  virtual void optimize(int count, std::function<bool()> on);
 
   /**
    * @brief Perform optimization until the best solution does not improve its
@@ -81,11 +81,11 @@ public:
    * @param variance improvement of the best solution fitness value necesary to
    * continue optimization.
    */
-  virtual void optimize_idev(int count, float dev, std::function<void()> on = [](){});
+  virtual void optimize_idev(int count, float dev, std::function<bool()> on);
 
-  virtual void optimize_dev(float dev, std::function<void()> on = [](){});
+  virtual void optimize_dev(float dev, std::function<bool()> on);
 
-  virtual void optimize_eval(int count, std::function<void()> on = [](){});
+  virtual void optimize_eval(int count, std::function<bool()> on);
 
   /**
    * @brief Specify if the optimization algorithm should maximize
@@ -107,14 +107,16 @@ public:
   virtual void set_maximization(bool maximization);
 
   /**
-   * @brief Returns the solution_set used by the algorithm to store the
+   * @brief Returns the set used by the algorithm to store the
    * population to optimize.
    *
-   * @return a pointer to the solution_set.
+   * @return a pointer to the set.
    */
-  virtual solution_set<>* get_solutions() const;
+  virtual set<>* get_solutions() const;
 
   virtual solution* get_best() = 0;
+
+  long get_iterations() const;
 
   virtual void set_params(std::vector<float> &params) = 0;
 
@@ -137,21 +139,24 @@ protected:
    * @brief The basic contructor for an optimization algorithm.
    */
   template<class t_solution>
-  algorithm(const solution_set<t_solution>* solutions);
+  algorithm(const set<t_solution>* solutions);
 
 private:
 
   /** The optimization operation performed by this algorithm */
   bool _maximization;
 
-  solution_set<>* _solutions;
+  long _iterations;
+
+  set<>* _solutions;
 
 };
 
 template<class t_solution>
-algorithm::algorithm(const solution_set<t_solution>* solutions)
+algorithm::algorithm(const set<t_solution>* solutions)
 {
   _maximization = false;
+  _iterations = 0;
   _solutions = solutions->cast_copy();
 }
 

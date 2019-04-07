@@ -6,29 +6,42 @@ namespace dnn_opt
 namespace core
 {
 
-void algorithm::optimize(int count, std::function<void()> on)
+void algorithm::optimize()
 {
-  for(int i = 0; i < count; i++)
+  _iterations += 1;
+}
+
+void algorithm::optimize(int count, std::function<bool()> on)
+{
+  bool on_opt = true;
+
+  for(int i = 0; i < count && on_opt; i++)
   {
     optimize();
-    on();
+    on_opt = on();
   }
 }
 
-void algorithm::optimize_idev(int count, float dev, std::function<void()> on)
+void algorithm::optimize_idev(int count, float dev, std::function<bool()> on)
 {
   float last = 0;
   float current = get_best()->fitness();
+  bool on_opt = true;
 
   do
   {
     last = current;
-    optimize(count, on);
+    optimize(count, [&on_opt, &on]()
+    {
+      on_opt = on();
+      return on_opt;
+    });
     current = get_best()->fitness();
-  } while(fabs(last - current) > dev);
+
+  } while(fabs(last - current) > dev && on_opt);
 }
 
-void algorithm::optimize_dev(float dev, std::function<void()> on)
+void algorithm::optimize_dev(float dev, std::function<bool()> on)
 {
   while(get_solutions()->fitness_dev() > dev)
   {
@@ -37,12 +50,15 @@ void algorithm::optimize_dev(float dev, std::function<void()> on)
   }
 }
 
-void algorithm::optimize_eval(int count, std::function<void()> on)
+void algorithm::optimize_eval(int count, std::function<bool()> on)
 {
-  while(get_solutions()->get_evaluations() < count)
+  bool on_opt = true;
+  long start = get_solutions()->get_evaluations();
+
+  while(get_solutions()->get_evaluations() - start < count && on_opt)
   {
     optimize();
-    on();
+    on_opt = on();
   }
 }
 
@@ -56,9 +72,14 @@ void algorithm::set_maximization(bool maximization)
   _maximization = maximization;
 }
 
-solution_set<>* algorithm::get_solutions() const
+set<>* algorithm::get_solutions() const
 {
   return _solutions;
+}
+
+long algorithm::get_iterations() const
+{
+
 }
 
 void algorithm::set_params(int n, float* params)

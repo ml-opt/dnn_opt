@@ -93,6 +93,8 @@ public:
    */
   void set_max(float max);
 
+  float get_ext() const;
+
   /**
    * The basic destructor of this class.
    */

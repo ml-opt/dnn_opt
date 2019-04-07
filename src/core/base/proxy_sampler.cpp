@@ -16,11 +16,11 @@ proxy_sampler** proxy_sampler::make_fold(reader* reader, int folds, int overlap)
 {
   proxy_sampler** proxy_samplers = new proxy_sampler*[folds];
   int sample_size = reader->size() / folds;
+  int limit = std::min(reader->size(), sample_size + overlap / 2);
 
   for(int i = 0; i < folds; i++)
   {
     int offset = std::max(0, i * sample_size - overlap / 2);
-    int limit = std::min(reader->size(), offset + sample_size + overlap / 2);
 
     proxy_samplers[i] = new proxy_sampler(reader, limit, offset);
   }
@@ -34,7 +34,7 @@ proxy_sampler** proxy_sampler::make_fold_prop(reader* reader, int folds, float o
 
   if(overlap < 0 || overlap > 1.0f)
   {
-    throw std::range_error("overlap parameters should be in the range [0, 1]");
+    throw std::out_of_range("overlap parameters should be in the range [0, 1]");
   }
 
   return make_fold(reader, folds, overlap_proportion);
@@ -67,6 +67,11 @@ int proxy_sampler::size() const
 
 proxy_sampler::proxy_sampler(reader* reader, int limit, int offset)
 {
+  if(offset + limit > reader->size())
+  {
+    throw std::out_of_range("the sampler limit is beyond the reader size");
+  }
+
   _reader = reader;
   _limit = limit;
   _offset = offset;
@@ -77,5 +82,5 @@ proxy_sampler::~proxy_sampler()
 
 }
 
-}
-}
+} // namespace core
+} // namespace dnn_opt

@@ -65,11 +65,6 @@ protected:
 
   shufler(reader* reader);
 
-  float* _in_data;
-  float* _out_data;
-
-  int _count;
-
   reader* _reader;
   generators::uniform* _generator;
 

@@ -99,6 +99,14 @@ public:
   virtual int bias_size() const = 0;
 
   /**
+   * @brief The @ref activation this layer uses to produce its output
+   * values.
+   *
+   * @return a pointer to the @ref activation.
+   */
+  virtual activation* get_activation() const;
+
+  /**
    * @brief Creates an exact copy of this layer.
    *
    * @return a pointer to a copy of this layer.
@@ -108,14 +116,6 @@ public:
   virtual ~layer();
 
 protected:
-
-  /**
-   * @brief The @ref activation this layer uses to produce its output
-   * values.
-   *
-   * @return a pointer to the @ref activation.
-   */
-  activation* get_activation() const;
 
   /**
    * @brief The basic contructor for this class.

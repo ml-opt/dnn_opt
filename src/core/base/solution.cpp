@@ -89,7 +89,7 @@ void solution::assign(solution* s)
 
 float solution::fitness()
 {
-  if (_modified == true)
+  if (is_modified())
   {
     _fitness = calculate_fitness();
   }
@@ -101,9 +101,10 @@ float solution::fitness()
 
 void solution::generate()
 {
+  _evaluations = 0;
+  
   set_modified(true);
   get_generator()->generate(size(), get_params());
-  _evaluations = 0;
 }
 
 void solution::set_modified(bool modified)

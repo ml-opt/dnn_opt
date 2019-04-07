@@ -26,6 +26,11 @@ void generator::set_max(float max)
   _max = max;
 }
 
+float generator::get_ext() const
+{
+  return _max - _min;
+}
+
 generator::generator(float min, float max)
 {
   if(min > max)

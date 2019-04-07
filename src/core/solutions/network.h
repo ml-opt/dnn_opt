@@ -43,72 +43,20 @@ namespace core
 namespace solutions
 {
 
-/**
- * @brief The network class is a solution that represents a neural network. It
- * can be used to assembly layers of processing units of different activation
- * functions.
- *
- * This class is NOT thread safe because the propagation steep uses static
- * internal memory to hold auxiliary computations. This internal memory is
- * shared among all network objects.
- *
- * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
- * @date September, 2016
- * @version 1.0
- */
 class network : public virtual solution
 {
 public:
 
-  /**
-   * @brief Create a new network class.
-   *
-   * @param generator the generator responsible for generating the initial
-   * set of parameters.
-   *
-   * @param reader the reader that contain the training patterns.
-   *
-   * @param error the error function
-   *
-   * @return a pointer to the created network.
-   */
   static network* make(generator* generator, reader* reader, error* error);
 
-  /**
-   * @brief Return a proxy object that can be used as this class.
-   *
-   * The clones proxy object is holds the same function that this one except
-   * that the proxy object is aware of the changes in the @ref set_reader() and
-   * @ref set_error() modifications of the original object.
-   *
-   * @return a cloned proxy to this object.
-   */
   virtual network* clone() override;
 
-  /**
-   * @brief Check if the given solution is assignable to this network.
-   *
-   * A solution is assignable this network if it is a network class, contains
-   * the same layered structure and the same amount of parameters.
-   *
-   * @param s the solution to check assignability.
-   *
-   * @return true if the given solution is assignable, false otherwise.
-   */
   virtual bool assignable(const solution* s) const override;
 
-  /**
-   * @brief Allows to add several layers of processing units at the same time as
-   * an initializer list. After the layers are added the network class is
-   * automatically initialized to include all new layer parameters and internal
-   * status.
-   *
-   * @param layers a list of layers to be added.
-   */
   void add_layer(std::initializer_list<layer*> layers);
 
   /**
-   * Add a new layer at the end of all layers. Make sure to call @ref init()
+   * Add a new layer at the end of all layers. Make sure to call init()
    * when you finish to alter the network layered structure.
    *
    * @param layer the new layer to be added.
@@ -116,6 +64,13 @@ public:
    * @return a pointer to this solution.
    */
   network* add_layer(layer* layer);
+
+  /**
+   * @brief The reader used to obtain the training patterns.
+   *
+   * @return a constant pointer to the reader.
+   */
+  virtual reader* get_reader() const;
 
   /**
    * @brief Change the reader used to obtain the training patterns in order to
@@ -130,22 +85,17 @@ public:
 
   /**
    * @brief Propagate a validation set of patterns through the network and
-   * calculate the generalization error.
+   * calculate generalization error.
    *
    * @param reader a reader containing the validation set of patterns
    *
    * @return the generalization error based on the error of this
    * network.
    */
-  float test(reader* validation_set);
+  virtual float test(reader* validation_set);
 
-  /**
-   * @brief Initialize the internal status of this network to hold layers
-   * parameters and the required memory for internal computations.
-   *
-   * Derived classes should override this method to allocate the memory in
-   * the proper devices and platforms.
-   */
+  virtual float* predict(reader* validation_set);
+
   virtual void init() override;
 
   /**
@@ -155,12 +105,7 @@ public:
    */
   virtual error* get_error() const;
 
-  /**
-   * @brief The reader used to obtain the training patterns.
-   *
-   * @return a constant pointer to the reader.
-   */
-  virtual reader* get_reader() const;
+
 
   /**
    * @brief The basic destructor of the network class.
@@ -169,7 +114,7 @@ public:
 
 protected:
 
-  /** Forward declaration of linked network class */
+  /** Forward declaration of linked network class  */
   class linked;
 
   virtual float calculate_fitness() override;
@@ -185,6 +130,8 @@ protected:
 
   network(generator* generator, reader* reader, error* error);
 
+  network(generator* generator);
+
   /** List of layers in cascade to propagate the input signal */
   std::vector<layer*> _layers;
 
@@ -193,23 +140,23 @@ protected:
 
   /** Error function used to calculate the fitness of the network */
   error* _e;
-
+public:////////////////////////////////////////////////////////////////////////
   /** 
    * Output of the layer i that is currently propagating the input signal.
    * This is a flatten array of dimension [_r->batch_size() x _max_out] in 
    * a row by row fashion.
    */
-  static float* _current_out;
+  static float* CURRENT_OUT;
   
   /** 
    * The output of the layer i - 1.
    * This is a flatten array of dimension [_r->batch_size() x _max_out] in 
    * a row by row fashion.
    */
-  static float* _prior_out;
-
+  static float* PRIOR_OUT;
+protected://///////////////////////////////////////////////////////////////////
   /** The amount of outputs of the layer with the higher amount of units */
-  static int _max_out;
+  int _max_out;
 
 };
 
@@ -224,12 +171,16 @@ public:
 
   virtual reader* get_reader() const override;
 
+  virtual void set_reader(reader* reader) override;
+
+  virtual error* get_error() const override;
+
 protected:
 
-  linked(network* source);
+  linked(network* base);
 
   /** The linked network solution that is being tracked */
-  network* _source;
+  network* _base;
 
 };
 

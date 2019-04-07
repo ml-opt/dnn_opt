@@ -9,6 +9,9 @@ namespace core
 namespace solutions
 {
 
+float* network::CURRENT_OUT = 0;
+float* network::PRIOR_OUT = 0;
+
 network* network::make(generator* generator, reader* reader, error* error)
 {
   auto* result = new network(generator, reader, error);
@@ -22,16 +25,16 @@ network* network::clone()
 {
   linked* nn = new linked(this);
 
-  nn->_fitness = fitness();
-  nn->_evaluations = get_evaluations();
-  nn->_modified = false;
-
   for(auto &l : _layers)
   {
     nn->add_layer(l->clone());
   }
 
   nn->init();
+  nn->_fitness = fitness();
+  nn->_evaluations = get_evaluations();
+  nn->set_modified(false);
+
   std::copy_n(get_params(), size(), nn->get_params());
 
   return nn;
@@ -65,6 +68,7 @@ network* network::add_layer(layer* layer)
   {
     assert(_layers.back()->get_out_dim() == layer->get_in_dim());
   }
+
   _size += layer->size();
   _max_out = std::max(_max_out, layer->get_out_dim());
   _layers.push_back(layer);
@@ -74,20 +78,23 @@ network* network::add_layer(layer* layer)
 
 void network::set_reader(reader* reader)
 {
+  if(_r->size() < reader->size())
+  {
+    delete[] CURRENT_OUT;
+    delete[] PRIOR_OUT;
+
+    CURRENT_OUT = new float[reader->size() * _max_out];
+    PRIOR_OUT = new float[reader->size() * _max_out];
+  }
+
   _r = reader;
   _modified = true;
-
-  delete[] _current_out;
-  delete[] _prior_out;
-
-  _current_out = new float[_r->size() * _max_out];
-  _prior_out = new float[_r->size() * _max_out];
 }
 
 float network::test(reader* validation_set)
 {
   float result = 0;
-  reader* current_reader = _r;
+  reader* current_reader = get_reader();
 
   set_reader(validation_set);
   result = calculate_fitness();
@@ -96,13 +103,28 @@ float network::test(reader* validation_set)
   return result;
 }
 
+float* network::predict(reader* validation_set)
+{
+  int n = validation_set->size() * validation_set->get_out_dim();
+  float* result = new float[n];
+  reader* current_reader = get_reader();
+
+  set_reader(validation_set);
+  std::copy_n(prop(), n, result);
+  set_reader(current_reader);
+
+  return result;
+}
+
 void network::init()
 {
-  delete[] _current_out;
-  delete[] _prior_out;
+  reader* r = get_reader();
 
-  _current_out = new float[_r->size() * _max_out];
-  _prior_out = new float[_r->size() * _max_out];
+  delete[] CURRENT_OUT;
+  delete[] PRIOR_OUT;
+
+  CURRENT_OUT = new float[r->size() * _max_out];
+  PRIOR_OUT = new float[r->size() * _max_out];
 
   solution::init();
 }
@@ -119,19 +141,22 @@ error* network::get_error() const
 
 float network::calculate_fitness()
 {
+  error* e = get_error();
+  reader* r = get_reader();
   solution::calculate_fitness();
 
-  _e->ff(_r->size(), _r->get_out_dim(), prop(), _r->out_data());
+  e->ff(r->size(), r->get_out_dim(), prop(), r->out_data());
 
-  return _e->f();
+  return e->f();
 }
 
 const float* network::prop()
 {
+  reader* r = get_reader();
   float* params = get_params();
 
   /* propagate the signal in the first layer with input patterns */
-  _layers.front()->prop(_r->size(), _r->in_data(), params, _prior_out);
+  _layers.front()->prop(r->size(), r->in_data(), params, PRIOR_OUT);
 
   for(unsigned int i = 1; i < _layers.size(); i++)
   {
@@ -139,15 +164,15 @@ const float* network::prop()
     params += _layers.at(i - 1)->size();
 
     /* propagate the signal through the layer */
-    _layers.at(i)->prop(_r->size(), _prior_out, params, _current_out);
+    _layers.at(i)->prop(r->size(), PRIOR_OUT, params, CURRENT_OUT);
 
-    /* swap the outs to use _current_out as _prior_out in next iteration*/
-    float* aux = _prior_out;
-    _prior_out = _current_out;
-    _current_out = aux;
+    /* swap the outs to use _current_out as _prior_out in next iteration */
+    float* aux = PRIOR_OUT;
+    PRIOR_OUT = CURRENT_OUT;
+    CURRENT_OUT = aux;
   }
 
-  return _prior_out;
+  return PRIOR_OUT;
 }
 
 network::network(generator* generator, reader* reader, error* error)
@@ -156,8 +181,18 @@ network::network(generator* generator, reader* reader, error* error)
   _r = reader;
   _e = error;
   _max_out = 0;
-  _current_out = 0;
-  _prior_out = 0;
+//  CURRENT_OUT = 0;
+//  PRIOR_OUT = 0;
+}
+
+network::network(generator* generator)
+: solution(generator, 0)
+{
+  _r = 0;
+  _e = 0;
+  _max_out = 0;
+//  CURRENT_OUT = 0;
+//  PRIOR_OUT = 0;
 }
 
 network::~network()
@@ -167,17 +202,20 @@ network::~network()
     delete layer;
   }
 
-  delete[] _current_out;
-  delete[] _prior_out;
+//  delete[] CURRENT_OUT;
+//  delete[] PRIOR_OUT;
+
+//  CURRENT_OUT = 0;
+//  PRIOR_OUT = 0;
 
   _layers.clear();
 }
 
 float network::linked::fitness()
 {
-  if(_source->get_reader() != network::get_reader())
+  if(_base->get_reader() != network::get_reader())
   {
-    network::set_reader(_source->get_reader());
+    set_reader(_base->get_reader());
   }
 
   return network::fitness();
@@ -185,14 +223,27 @@ float network::linked::fitness()
 
 reader* network::linked::get_reader() const
 {
-  return _source->get_reader();
+  return _base->get_reader();
 }
 
-network::linked::linked(network* source)
-: solution(source->get_generator(), 0),
-  network(source->get_generator(), source->get_reader(), source->get_error())
+void network::linked::set_reader(reader* reader)
 {
-  _source = source;
+  network::set_reader(reader);
+  _base->set_reader(reader);
+}
+
+error* network::linked::get_error() const
+{
+  return _base->get_error();
+}
+
+network::linked::linked(network* base)
+: solution(base->get_generator(), 0),
+  network(base->get_generator())
+{
+  _base = base;
+  _r = base->get_reader();
+  _e = base->get_error();
 }
 
 } // namespace solutions

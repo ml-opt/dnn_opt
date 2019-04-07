@@ -1,7 +1,7 @@
 #include <algorithm>
 #include <stdexcept>
 #include <core/algorithms/continuation.h>
-
+#include <iostream>
 namespace dnn_opt
 {
 namespace core
@@ -9,7 +9,7 @@ namespace core
 namespace algorithms
 {
 
-continuation* continuation::make(algorithm* base, builder* builder)
+continuation* continuation::make(algorithm* base, seq* builder)
 {
   auto* result = new continuation(base, builder);
 
@@ -28,52 +28,73 @@ void continuation::optimize()
   _base->optimize();
 }
 
-void continuation::optimize(int eta, std::function<void()> on)
+void continuation::optimize(int eta, std::function<bool()> on)
 {
-  int k = _sequence.size();
+  bool on_opt = true;
+  int k = _builder->size();
   int span = eta / k;
 
-  for(int i = 0; i < k; i++)
+  for(int i = 0; i < k && on_opt; i++)
   {
     set_reader(i);
 
-    _base->optimize(span, on);
+    _base->optimize(span, [&on_opt, &on]()
+    {
+      on_opt = on();
+      return on_opt;
+    });
   }
 }
 
-void continuation::optimize_idev(int count, float dev,  std::function<void()> on)
+void continuation::optimize_idev(int count, float dev,  std::function<bool()> on)
 {
-  int k = _sequence.size();
+  bool on_opt = true;
+  int k = _builder->size();
 
-  for(int i = 0; i < k; i++)
+  for(int i = 0; i < k && on_opt; i++)
   {
     set_reader(i);
 
-    _base->optimize_idev(count, dev, on);
+    _base->optimize_idev(count, dev, [&on_opt, &on]()
+    {
+      on_opt = on();
+      return on_opt;
+    });
   }
 }
 
-void continuation::optimize_dev(float dev,  std::function<void()> on)
+void continuation::optimize_dev(float dev,  std::function<bool()> on)
 {
-  int k = _sequence.size();
+  bool on_opt = true;
+  int k = _builder->size();
 
-  for(int i = 0; i < k; i++)
+  for(int i = 0; i < k && on_opt; i++)
   {
     set_reader(i);
 
-    _base->optimize_dev(dev, on);
+    _base->optimize_dev(dev, [&on_opt, &on]()
+    {
+      on_opt = on();
+      return on_opt;
+    });
   }
 }
 
-void continuation::optimize_eval(int count, std::function<void()> on)
+void continuation::optimize_eval(int count, std::function<bool()> on)
 {
-  int k = _sequence.size();
+  bool on_opt = true;
+  int k = _builder->size();
 
-  for(int i = 0; i < k; i++)
+  for(int i = 0; i < k && on_opt; i++)
   {
     set_reader(i);
 
-    _base->optimize_eval(count / k, on);
+    _base->optimize_eval(count / k,  [&on_opt, &on]()
+    {
+      on_opt = on();
+      return on_opt;
+    });
+
   }
 }
 
@@ -84,35 +105,23 @@ solution* continuation::get_best()
 
 void continuation::init()
 {
-  _sequence = _builder->build(_reader);
-  _generator = generators::uniform::make(-1, 1);
-  _r = new float[get_solutions()->get_dim()];
+
 }
 
 void continuation::set_reader(int index)
 {
   for(int i = 0; i < _network_solutions->size(); i++)
   {
-    _network_solutions->get(i)->set_reader(_sequence.at(index));
+    _network_solutions->get(i)->set_reader(_builder->get(index));
   }
 }
 
 void continuation::set_params(std::vector<float> &params)
 {
-  if(params.size() != 1)
-  {
-    std::invalid_argument("algorithms::continuation set_params expect 1 value");
-  }
-
-  set_radio_decrease(params.at(0));
+  _base->set_params(params);
 }
 
-void continuation::set_radio_decrease(float radio_decrease)
-{
-  _radio_decrease = radio_decrease;
-}
-
-continuation::continuation(algorithm* base, builder* builder)
+continuation::continuation(algorithm* base, seq* builder)
 : algorithm(base->get_solutions())
 {
   _base = base;
@@ -124,41 +133,120 @@ continuation::continuation(algorithm* base, builder* builder)
 continuation::~continuation()
 {
   delete _network_solutions;
-  delete _generator;
+  delete _builder;
+}
 
-  for(int i = 0; i < _sequence.size() - 1; i++)
+continuation::descent* continuation::descent::make(reader* dataset, int k, float beta)
+{
+  auto* result  = new descent(dataset, k, beta);
+
+  result->build();
+
+  return result;
+}
+
+void continuation::descent::build()
+{
+  int k = size();
+
+  _sequence.push_back(_dataset);
+
+  for(int i = 1; i < k; i++)
   {
-    delete _sequence.at(i);
+    reader* prior = _sequence.back();
+    _sequence.push_back(proxy_sampler::make(prior, _beta * prior->size()));
   }
 
-  delete[] _r;
+  std::reverse(_sequence.begin(), _sequence.end());
 }
 
-continuation::random_builder* continuation::random_builder::make(unsigned int k, float beta)
+reader* continuation::descent::get(int idx)
 {
-  return new random_builder(k, beta);
+  // TODO: Check idx range
+
+  return _sequence.at(idx);
 }
 
-std::vector<reader*> continuation::random_builder::build(reader* dataset)
+float continuation::descent::get_beta()
 {
-  std::vector<reader*> sequence;
-
-  sequence.push_back(dataset);
-
-  for(int i = 1; i < _k; i++)
-  {
-    sequence.push_back(sampler::make(sequence.back(), _beta));
-  }
-
-  std::reverse(sequence.begin(), sequence.end());
-
-  return sequence;
+  return _beta;
 }
 
-continuation::random_builder::random_builder(unsigned int k, float beta)
+int continuation::descent::size()
 {
+  return _k;
+}
+
+continuation::descent::descent(reader* dataset, int k, float beta)
+{
+  _dataset = dataset;
   _k = k;
-  _beta = beta;  
+  _beta = beta;
+}
+
+continuation::descent::~descent()
+{
+  for(auto* item : _sequence)
+  {
+    delete item;
+  }
+}
+
+continuation::fixed* continuation::fixed::make(reader* dataset, int k, float beta)
+{
+  auto* result  = new fixed(dataset, k, beta);
+
+  result->build();
+
+  return result;
+}
+
+void continuation::fixed::build()
+{
+  int k = size();
+  int n = _dataset->size() * get_beta();
+
+  _sequence.push_back(_dataset);
+
+  for(int i = 1; i < k; i++)
+  {
+    reader* prior = _sequence.back();
+    _sequence.push_back(proxy_sampler::make(prior, prior->size() - n));
+  }
+
+  std::reverse(_sequence.begin(), _sequence.end());
+}
+
+reader* continuation::fixed::get(int idx)
+{
+  // TODO: Check idx range
+
+  return _sequence.at(idx);
+}
+
+float continuation::fixed::get_beta()
+{
+  return _beta;
+}
+
+int continuation::fixed::size()
+{
+  return _k;
+}
+
+continuation::fixed::fixed(reader* dataset, int k, float beta)
+{
+  _dataset = dataset;
+  _k = k;
+  _beta = beta;
+}
+
+continuation::fixed::~fixed()
+{
+  for(auto* item : _sequence)
+  {
+    delete item;
+  }
 }
 
 } // namespace algorithms

@@ -53,7 +53,7 @@ class pso : public virtual algorithm
 public:
 
   template<class t_solution>
-  static pso* make(solution_set<t_solution>* solutions);
+  static pso* make(set<t_solution>* solutions);
 
   /**
    * @copydoc algorithm::reset()
@@ -164,18 +164,14 @@ protected:
    * @param solutions a set of individuals.
    */
   template<class t_solution>
-  pso(solution_set<t_solution>* solutions);
+  pso(set<t_solution>* solutions);
 
   /** Hyper-parameter that measures the local best contribution */
   float _local_param;
 
   /** Hyper-parameter that measures the global best contribution */
   float _global_param;
-
-  float _min_speed;
-
-  float _max_speed;
-
+public:
   float _current_speed_param;
 
   float _min_speed_param;
@@ -183,10 +179,10 @@ protected:
   float _max_speed_param;
 
   /** The best-so-far solutions */
-  solution_set<>* _best_so_far;
+  set<>* _best_so_far;
 
   /** The speed of each solution */
-  solution_set<>* _speed;
+  set<>* _speed;
 
   /** Array to store random values for the @ref update_speed() operation */
   float* _r;
@@ -204,7 +200,7 @@ protected:
 /* templated function implementations */
 
 template<class t_solution>
-pso* pso::make(solution_set<t_solution> *solutions)
+pso* pso::make(set<t_solution> *solutions)
 {
   auto* result = new pso(solutions);
   result->init();
@@ -212,7 +208,7 @@ pso* pso::make(solution_set<t_solution> *solutions)
 }
 
 template<class t_solution>
-pso::pso(solution_set<t_solution>* solutions)
+pso::pso(set<t_solution>* solutions)
 : algorithm(solutions)
 {
 

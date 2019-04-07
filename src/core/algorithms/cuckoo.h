@@ -52,7 +52,7 @@ class cuckoo : public virtual algorithm
 public:
 
   template<class t_solution>
-  static cuckoo* make(solution_set<t_solution>* solutions);
+  static cuckoo* make(set<t_solution>* solutions);
 
   /**
    * @copydoc core::algorithm::reset
@@ -106,7 +106,7 @@ protected:
   void generate_new_cuckoo(int cuckoo_idx);
 
   template<class t_solution>
-  cuckoo(solution_set<t_solution>* solutions);
+  cuckoo(set<t_solution>* solutions);
 
   /** the scale of the optimization problem */
   float _scale;
@@ -118,7 +118,7 @@ protected:
   float _replacement;
 
   /** The solutions optimized by this algorithm */
-  solution_set<>* _solutions;
+  set<>* _solutions;
 
   /** Array of random numbers to store random variations in generation steep */
   float* _r;
@@ -138,7 +138,7 @@ protected:
 };
 
 template<class t_solution>
-cuckoo* cuckoo::make(solution_set<t_solution>* solutions)
+cuckoo* cuckoo::make(set<t_solution>* solutions)
 {
   auto result = new cuckoo(solutions);
 
@@ -148,7 +148,7 @@ cuckoo* cuckoo::make(solution_set<t_solution>* solutions)
 }
 
 template<class t_solution>
-cuckoo::cuckoo(solution_set<t_solution>* solutions)
+cuckoo::cuckoo(set<t_solution>* solutions)
 : algorithm(solutions)
 {
   

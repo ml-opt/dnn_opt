@@ -1,5 +1,6 @@
 #include <stdexcept>
 #include <core/algorithms/pso.h>
+#include <iostream>
 
 namespace dnn_opt
 {
@@ -12,14 +13,12 @@ void pso::optimize()
 {
   unsigned int n = get_solutions()->size();
 
+  algorithm::optimize();
+
   for(int i = 0; i < n; i++)
   {
     update_speed(i);
     update_position(i);
-  }
-
-  for(int i = 0; i < n; i++)
-  {
     update_local(i);
   }
 
@@ -36,7 +35,7 @@ solution* pso::get_best()
 
 void pso::update_speed(int idx)
 {
-  unsigned int dim =  get_solutions()->get_dim();
+  int dim = get_solutions()->get_dim();
 
   float* current = get_solutions()->get(idx)->get_params();
   float* best_so_far = _best_so_far->get(idx)->get_params();
@@ -51,13 +50,11 @@ void pso::update_speed(int idx)
     speed[i] += get_local_param() * _r[2 * i] * (best_so_far[i] - current[i]);
     speed[i] += get_global_param() * _r[2 * i + 1] * (best[i] - current[i]);
   }
-
-  _speed->get(idx)->set_constrains();
 }
 
 void pso::update_position(int idx)
 {
-  unsigned int dim =  get_solutions()->get_dim();
+  int dim =  get_solutions()->get_dim();
 
   float* current = get_solutions()->get(idx)->get_params();
   float* speed = _speed->get(idx)->get_params();
@@ -150,8 +147,8 @@ void pso::set_min_speed_param(float value)
 void pso::reset()
 {
   _current_speed_param = _max_speed_param;
-
   _speed->generate();
+
   get_solutions()->generate();
 
   for(int i = 0; i < get_solutions()->size(); i++)
@@ -166,24 +163,23 @@ void pso::init()
 {
   // delete created things...
 
+  float max_speed = 0.1f * get_solutions()->get(0)->get_generator()->get_ext();
+  float min_speed = -1.0f * max_speed;
+
   _global_param = 0.8f;
   _local_param = 0.6f;
   _max_speed_param = 0.8;
-  _min_speed_param= 0.1;
+  _min_speed_param = 0.1;
   _current_speed_param = _max_speed_param;
-
-  _max_speed = 0.1f * (get_solutions()->get(0)->get_generator()->get_max() -
-                       get_solutions()->get(0)->get_generator()->get_min());
-  _min_speed = -1.0f * _max_speed;
 
   _best_so_far = get_solutions()->clone();
   _g_best = _best_so_far->get_best_index(is_maximization());
 
   _generator = generators::uniform::make(0.0f, 1.0f);
-  _speed_generator = generators::constant::make(0.0f, _min_speed, _max_speed);
+  _speed_generator = generators::constant::make(0.0f, min_speed, max_speed);
 
   _r = new float[2 * get_solutions()->get_dim()];
-  _speed = solution_set<>::make(get_solutions()->size());
+  _speed = set<>::make(get_solutions()->size());
 
   for(int i = 0; i < get_solutions()->size(); i++)
   {

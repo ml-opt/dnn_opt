@@ -16,14 +16,18 @@ void cuckoo::reset()
 
 void cuckoo::optimize()
 {
-  int source_idx = static_cast<int>(_selector->generate());
-  auto source = get_solutions()->get(source_idx);
+  int n = get_solutions()->size();
 
-  generate_new_cuckoo(source_idx);
-
-  if(_updated->is_better_than(source, is_maximization()))
+  for(int i = 0; i < n; i++)
   {
-    get_solutions()->get(source_idx)->assign(_updated);
+    auto source = get_solutions()->get(i);
+
+    generate_new_cuckoo(i);
+
+    if(_updated->is_better_than(source, is_maximization()))
+    {
+      get_solutions()->get(i)->assign(_updated);
+    }
   }
 
   get_solutions()->sort(!is_maximization());

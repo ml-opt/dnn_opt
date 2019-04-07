@@ -32,7 +32,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <memory>
 #include <functional>
 #include <core/base/algorithm.h>
-#include <core/base/solution_set.h>
+#include <core/base/set.h>
 #include <core/solutions/wrapper.h>
 #include <core/generators/uniform.h>
 
@@ -51,10 +51,10 @@ public:
    * Shorthand for the lambda function which creates wrapped algorithms that
    * operates in partitions.
    */
-  typedef std::function<algorithm* (solution_set<>*)> wa;
+  typedef std::function<algorithm* (set<>*)> wa;
 
   template<class t_solution>
-  static opwa* make(int count, const solution_set<t_solution>* solutions, wa builder);
+  static opwa* make(int count, const set<t_solution>* solutions, wa builder);
 
   virtual void reset() override;
 
@@ -77,10 +77,10 @@ public:
 protected:
 
   template<class t_solution>
-  opwa(int count, const solution_set<t_solution>* solutions, wa builder);
+  opwa(int count, const set<t_solution>* solutions, wa builder);
 
   template<class t_solution>
-  opwa(int count, const solution_set<t_solution>* solutions);
+  opwa(int count, const set<t_solution>* solutions);
 
 protected:
 
@@ -101,7 +101,7 @@ protected:
 };
 
 template<class t_solution>
-opwa* opwa::make(int count, const solution_set<t_solution>* solutions, wa builder)
+opwa* opwa::make(int count, const set<t_solution>* solutions, wa builder)
 {
   auto* result = new opwa(count, solutions, builder);
 
@@ -111,7 +111,7 @@ opwa* opwa::make(int count, const solution_set<t_solution>* solutions, wa builde
 }
 
 template<class t_solution>
-opwa::opwa(int count, const solution_set<t_solution>* solutions, wa builder)
+opwa::opwa(int count, const set<t_solution>* solutions, wa builder)
 : algorithm(solutions)
 {
   _builder = builder;
@@ -119,7 +119,7 @@ opwa::opwa(int count, const solution_set<t_solution>* solutions, wa builder)
 }
 
 template<class t_solution>
-opwa::opwa(int count, const solution_set<t_solution>* solutions)
+opwa::opwa(int count, const set<t_solution>* solutions)
 : algorithm(solutions)
 {
   _count = count;

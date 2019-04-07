@@ -29,7 +29,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define DNN_OPT_CORE_ALGORITHMS_FIREFLY
 
 #include <core/base/solution.h>
-#include <core/base/solution_set.h>
+#include <core/base/set.h>
 #include <core/base/algorithm.h>
 #include <core/generators/uniform.h>
 
@@ -62,7 +62,7 @@ public:
    * optimize.
    */
   template<class t_solution>
-  static firefly* make(const solution_set<t_solution>* solutions);
+  static firefly* make(const set<t_solution>* solutions);
 
   /**
    * @copydoc algorithm::reset()
@@ -174,7 +174,7 @@ protected:
    * optimize.
    */
   template<class t_solution>
-  firefly(const solution_set<t_solution>* solutions);
+  firefly(const set<t_solution>* solutions);
 
   /** The light decay hyper-parameter */
   float _light_decay;
@@ -184,6 +184,8 @@ protected:
 
   /** The random influence hyper-parameter */
   float _rand_influence;
+
+  float _current_rand_influence;
 
   /** The random decay hyper-parameter */
   float _rand_decay;
@@ -199,7 +201,7 @@ protected:
 /* templated function implementations */
 
 template<class t_solution>
-firefly* firefly::make(const solution_set<t_solution>* solutions)
+firefly* firefly::make(const set<t_solution>* solutions)
 {
   auto* result = new firefly(solutions);
 
@@ -209,7 +211,7 @@ firefly* firefly::make(const solution_set<t_solution>* solutions)
 }
 
 template<class t_solution>
-firefly::firefly(const solution_set<t_solution>* solutions)
+firefly::firefly(const set<t_solution>* solutions)
 : algorithm(solutions)
 {
   _generator = 0;

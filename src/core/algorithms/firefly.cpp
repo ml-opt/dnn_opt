@@ -10,6 +10,7 @@ namespace algorithms
 
 void firefly::reset()
 {
+  _current_rand_influence = get_rand_influence();
   get_solutions()->generate();
 }
 
@@ -35,9 +36,9 @@ void firefly::optimize()
     }
   }
 
-  _rand_influence *= _rand_decay;
-  _generator->set_min(-0.5 * get_rand_influence());
-  _generator->set_max(0.5 * get_rand_influence());
+  _current_rand_influence *= _rand_decay;
+  _generator->set_min(-0.5 * _current_rand_influence);
+  _generator->set_max(0.5 * _current_rand_influence);
 }
 
 solution* firefly::get_best()
@@ -51,6 +52,7 @@ void firefly::init()
 
   _light_decay = 1;
   _rand_influence = 0.2;
+  _current_rand_influence = 0.2;
   _rand_decay = 0.98;
   _init_bright = 1;
 
@@ -146,8 +148,7 @@ void firefly::set_init_bright(float value)
 void firefly::set_rand_influence(float value)
 {
   _rand_influence = value;
-  _generator->set_min(-0.5 * value);
-  _generator->set_max(0.5 * value);
+  _current_rand_influence = value;
 }
 
 void firefly::set_rand_decay(float rand_decay)

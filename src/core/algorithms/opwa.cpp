@@ -45,7 +45,7 @@ void opwa::init()
   {
     // TODO: Re-use the container <part> multiple times instead delete it
 
-    auto* part = solution_set<>::make(get_solutions()->size());
+    auto* part = set<>::make(get_solutions()->size());
 
     for( int j = 0; j < get_solutions()->size(); j++ )
     {

@@ -25,14 +25,15 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DNN_OPT_CORE_ALGORITHMS_CONTINUATION
-#define DNN_OPT_CORE_ALGORITHMS_CONTINUATION
+#ifndef DNN_OPT_CORE_ALGORITHMS_EARLY_STOP
+#define DNN_OPT_CORE_ALGORITHMS_EARLY_STOP
 
 #include <vector>
 #include <functional>
 #include <core/base/algorithm.h>
-#include <core/base/proxy_sampler.h>
+#include <core/base/sampler.h>
 #include <core/base/reader.h>
+#include <core/base/shufler.h>
 #include <core/base/set.h>
 #include <core/solutions/network.h>
 #include <core/generators/uniform.h>
@@ -44,19 +45,15 @@ namespace core
 namespace algorithms
 {
 
-class continuation : public virtual algorithm
+class early_stop : public virtual algorithm
 {
 public:
 
-  /** Forward declaration of the builder seq of subsets of training patterns */
-  class seq;
+  class stopper;
 
-  /** Forward declaration of a descent builder */
-  class descent;
+  class test_increase;
 
-  class fixed;
-
-  static continuation* make(algorithm* base, seq* builder);
+  static early_stop* make(algorithm* base, stopper* stopper, reader* reader);
 
   virtual void reset() override;
 
@@ -78,11 +75,17 @@ public:
 
   using algorithm::set_params;
 
-  virtual ~continuation() override;
+  virtual float get_p();
+
+  virtual void set_p(float p);
+
+  virtual ~early_stop() override;
 
 protected:
 
-  continuation(algorithm* base, seq* builder);
+  virtual void set_reader();
+
+  early_stop(algorithm* base, dnn_opt::core::algorithms::early_stop::stopper *stopper, reader* reader);
 
   /** The base algorithm that performs optimization */
   algorithm* _base;
@@ -90,104 +93,41 @@ protected:
   /** A pointer of @ref get_solutions() that do not degrade to core::solution */
   set<solutions::network>* _network_solutions;
 
-  /** The dataset reader extracted from the first network solution */
+  float _p;
+
   reader* _reader;
-
-  /** The builder of the sequence of subsets of training patterns */
-  seq* _builder;
-
-private:
-
-  void set_reader(int index);
+  stopper* _stopper;
+  reader* _train_set;
+  reader* _test_set;
+  shufler* _shufler;
 
 };
 
-/**
- * @brief The continuation::builder class is an abstract class to implement
- * custom ways of selecting the representative subset of training patterns.
- *
- * @author Jairo Rojas-Delgado<jrdelgado@uci.cu>
- * @date january, 2018
- * @version 1.0
- */
-class continuation::seq
+
+class early_stop::stopper
 {
 public:
 
-  virtual void build() = 0;
-
-  virtual reader* get(int idx) = 0;
-
-  virtual int size() = 0;
+  virtual bool stop(float train, float test) = 0;
 
 };
 
-class continuation::descent : public virtual continuation::seq
+class early_stop::test_increase : public virtual early_stop::stopper
 {
 public :
 
-  static descent* make(reader* dataset, int k, float beta);
+  static test_increase* make(int count, bool is_maximization);
 
-  virtual void build() override;
-
-  virtual reader* get(int idx) override;
-
-  virtual float get_beta();
-
-  virtual int size() override;
-
-  virtual ~descent();
+  virtual bool stop(float train, float test) override;
 
 protected:
 
-  descent(reader* dataset, int k, float beta);
+  test_increase(int count, bool is_maximization);
 
-private:
-
-  /** Amount of subsets of training patterns */
-  int _k;
-
-  /** Proportion of the i-th subset respect to the (i+1)-th subset*/
-  float _beta;
-
-  reader* _dataset;
-
-  std::vector<reader*> _sequence;
-
-};
-
-
-class continuation::fixed : public virtual continuation::seq
-{
-public :
-
-  static fixed* make(reader* dataset, int k, float beta);
-
-  virtual void build() override;
-
-  virtual reader* get(int idx) override;
-
-  virtual float get_beta();
-
-  virtual int size() override;
-
-  virtual ~fixed();
-
-protected:
-
-  fixed(reader* dataset, int k, float beta);
-
-private:
-
-  /** Amount of subsets of training patterns */
-  int _k;
-
-  /** Proportion of the i-th subset respect to the (i+1)-th subset*/
-  float _beta;
-
-  reader* _dataset;
-
-  std::vector<reader*> _sequence;
+  int _current;
+  int _count;
+  bool _is_maximization;
+  float _prior_test;
 
 };
 

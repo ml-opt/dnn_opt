@@ -86,18 +86,18 @@ float tt::get_bias()
 
 void tt::init()
 {
-  k_fold::init();
+  cv::init();
 
-  k_fold::on_fold([this](reader* train, reader* val)
-  {
-    auto* best = dynamic_cast<solutions::network*>(this->get_base()->get_best());
+//  cv::on_fold([this](reader* train, reader* val)
+//  {
+//    auto* best = dynamic_cast<solutions::network*>(this->get_base()->get_best());
 
-    this->_results.push_back(best->test(val));
-  });
+//    this->_results.push_back(best->test(val));
+//  });
 }
 
 tt::tt(int k, algorithm* base, reader* reader)
-: k_fold(k, base, reader),
+: cv(k, base, reader),
   algorithm(base->get_solutions())
 {
 

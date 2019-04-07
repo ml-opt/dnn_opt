@@ -29,7 +29,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define DNN_OPT_CORE_STATICS_TT
 
 #include <vector>
-#include <core/statics/k_fold.h>
+#include <core/statics/cv.h>
 
 namespace dnn_opt
 {
@@ -38,7 +38,7 @@ namespace core
 namespace statics
 {
 
-class tt : public virtual k_fold
+class tt : public virtual cv
 {
 public:
 

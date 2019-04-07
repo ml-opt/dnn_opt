@@ -25,38 +25,73 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DNN_OPT_COPT_SHUFLER
-#define DNN_OPT_COPT_SHUFLER
+#ifndef DNN_OPT_COPT_STATICS_CV
+#define DNN_OPT_COPT_STATICS_CV
 
-#include <core/base/shufler.h>
-#include <copt/base/reader.h>
-#include <copt/generators/uniform.h>
+#include <vector>
+#include <functional>
+#include <copt/solutions/network.h>
+#include <copt/base/algorithm.h>
+#include <copt/base/proxy_sampler.h>
+#include <copt/base/shufler.h>
+#include <core/statics/cv.h>
 
 namespace dnn_opt
 {
 namespace copt
 {
+namespace statics
+{
 
-class shufler : public virtual reader,
-                public virtual core::shufler
+/**
+ * @brief The algorithm class provides basic functionalities to define and
+ * implement custom meta-heuristic algorithms used for optimization. In order
+ * to extend the library, new algorithms shuold derive from this class.
+ *
+ * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
+ * @date June, 2016
+ * @version 1.0
+ */
+class cv : public virtual algorithm,
+           public virtual core::statics::cv
 {
 public:
 
-  static shufler* make(reader* reader);
+  static cv* make(int k, algorithm* base, reader* reader);
+
+  virtual void init() override;
+
+  virtual algorithm* get_base() const override;
+
+  virtual reader* get_reader() const override;
+
+  virtual reader* get_fold(int idx) const override;
+
+virtual reader* get_train_data() const;
 
   /**
-   * @brief Fisher-Yates shuffle.
+   * The basic destructor of this class.
    */
-  virtual void shufle();
+  virtual ~cv();
 
 protected:
 
-  void swap(int i, int j);
+  virtual shufler* get_shufler() const override;
 
-  shufler(reader* reader);
+  cv(int k, algorithm* base, reader* reader);
+
+private:
+
+  algorithm* _copt_base;
+  reader* _copt_reader;
+  shufler* _copt_shufler;
+  reader* _copt_train_data;
+
+  proxy_sampler** _copt_fold_containers;
 
 };
 
+} // namespace statics
 } // namespace copt
 } // namespace dnn_opt
 

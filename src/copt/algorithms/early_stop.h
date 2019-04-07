@@ -25,81 +25,89 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DNN_OPT_COPT_SOLUTION_SET
-#define DNN_OPT_COPT_SOLUTION_SET
+#ifndef DNN_OPT_COPT_ALGORITHMS_EARLY_STOP
+#define DNN_OPT_COPT_ALGORITHMS_EARLY_STOP
 
 #include <vector>
-#include <algorithm>
-#include <stdexcept>
-#include <core/base/solution_set.h>
-#include <copt/base/solution.h>
-
-using namespace std;
+#include <functional>
+#include <core/algorithms/early_stop.h>
+#include <copt/base/algorithm.h>
+#include <copt/base/sampler.h>
+#include <copt/base/reader.h>
+#include <copt/base/shufler.h>
+#include <copt/base/set.h>
+#include <copt/solutions/network.h>
+#include <copt/generators/uniform.h>
 
 namespace dnn_opt
 {
 namespace copt
 {
-
-/**
- * @brief The solution_set class is intended to manage a set of optimization
- * solutions for a determined optimization problem.
- *
- * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
- * @date June, 2016
- * @version 1.0
- */
-template<class t_solution = solution>
-class solution_set : public core::solution_set<t_solution>
+namespace algorithms
 {
 
-static_assert(true, "t_solution must derive from copt::solution");
-
+class early_stop : public virtual algorithm,
+                   public virtual core::algorithms::early_stop
+{
 public:
 
-  static solution_set<t_solution>* make(unsigned int size = 10);
+  class stopper;
 
-  static solution_set<t_solution>* make(unsigned int size, solution* s);
+  class test_increase;
+
+  static early_stop* make(algorithm* base, stopper* stopper, reader* reader);
+
+  virtual void init() override;
+
+  using core::algorithms::early_stop::set_params;
+
+  virtual void set_p(float p);
+
+  virtual ~early_stop() override;
 
 protected:
 
-  /**
-   * @brief The basic constructor for a solution_set.
-   *
-   * @param size the number of solutions of this container.
-   */
-  solution_set(unsigned int size = 10);
+  virtual void set_reader();
+
+  early_stop(algorithm* base, stopper *stopper, reader* reader);
+
+  algorithm* _copt_base;
+
+  float _p;
+
+  reader* _copt_reader;
+  stopper* _copt_stopper;
+  reader* _copt_train_set;
+  reader* _copt_test_set;
+  shufler* _copt_shufler;
 
 };
 
-template<class t_solution>
-solution_set<t_solution>* solution_set<t_solution>::make(unsigned int size)
+
+class early_stop::stopper : public virtual core::algorithms::early_stop::stopper
 {
-  return new solution_set<t_solution>(size);
-}
+public:
 
-template<class t_solution>
-solution_set<t_solution>* solution_set<t_solution>::make(unsigned int size, solution* s)
+  virtual bool stop(float train, float test) = 0;
+
+};
+
+class early_stop::test_increase : public virtual early_stop::stopper,
+                                  public virtual core::algorithms::early_stop::test_increase
 {
-  auto* set = new solution_set<t_solution>(size);
+public :
 
-  set->add(s);
+  static test_increase* make(int count, bool is_maximization);
 
-  for(int i = 1; i < size; i++)
-  {
-    set->add(s->clone());
-  }
+  virtual bool stop(float train, float test) override;
 
-  return set;
-}
+protected:
 
-template<class t_solution>
-solution_set<t_solution>::solution_set(unsigned int size)
-: core::solution_set<t_solution>(size)
-{
+  test_increase(int count, bool is_maximization);
 
-}
+};
 
+} // namespace algorithms
 } // namespace copt
 } // namespace dnn_opt
 

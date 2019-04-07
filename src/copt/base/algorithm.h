@@ -31,7 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <vector>
 #include <functional>
 #include <core/base/algorithm.h>
-#include <copt/base/solution_set.h>
+#include <copt/base/set.h>
 
 namespace dnn_opt
 {
@@ -53,19 +53,19 @@ protected:
    * @brief The basic contructor for an optimization algorithm.
    */
   template<class t_solution>
-  algorithm(const solution_set<t_solution>* solutions);
+  algorithm(const set<t_solution>* solutions);
 
 private:
 
   /** The optimization operation performed by this algorithm */
   bool _maximization;
 
-  solution_set<>* _solutions;
+  set<>* _solutions;
 
 };
 
 template<class t_solution>
-algorithm::algorithm(const solution_set<t_solution>* solutions)
+algorithm::algorithm(const set<t_solution>* solutions)
 : core::algorithm(solutions)
 {
 

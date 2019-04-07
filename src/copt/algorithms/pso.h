@@ -53,9 +53,7 @@ class pso : public virtual algorithm,
 public:
 
   template<class t_solution>
-  static pso* make(solution_set<t_solution>* solutions);
-
-  virtual void optimize() override;
+  static pso* make(set<t_solution>* solutions);
 
   using algorithm::optimize;
 
@@ -77,14 +75,14 @@ protected:
    * @param solutions a set of individuals.
    */
   template<class t_solution>
-  pso(solution_set<t_solution>* solutions);
+  pso(set<t_solution>* solutions);
 
 };
 
 /* templated function implementations */
 
 template<class t_solution>
-pso* pso::make(solution_set<t_solution> *solutions)
+pso* pso::make(set<t_solution> *solutions)
 {
   auto* result = new pso(solutions);
   result->init();
@@ -92,7 +90,7 @@ pso* pso::make(solution_set<t_solution> *solutions)
 }
 
 template<class t_solution>
-pso::pso(solution_set<t_solution>* solutions)
+pso::pso(set<t_solution>* solutions)
 : algorithm(solutions),
   core::algorithm(solutions),
   core::algorithms::pso(solutions)

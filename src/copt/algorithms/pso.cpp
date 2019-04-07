@@ -9,29 +9,6 @@ namespace copt
 namespace algorithms
 {
 
-void pso::optimize()
-{
-  unsigned int n = get_solutions()->size();
-
-  #pragma omp parallel for shared(n)
-  for(int i = 0; i < n; i++)
-  {
-    update_speed(i);
-    update_position(i);
-  }
-
-  #pragma omp parallel for shared(n)
-  for(int i = 0; i < n; i++)
-  {
-    update_local(i);
-  }
-
-  if(_current_speed_param > get_min_speed_param())
-  {
-    _current_speed_param *= 0.99;
-  }
-}
-
 void pso::update_speed(int idx)
 {
   const unsigned int dim =  get_solutions()->get_dim();
@@ -47,7 +24,7 @@ void pso::update_speed(int idx)
   
   _generator->generate(2 * dim, _r);
 
-  #pragma omp simd
+  #pragma omp parallel for simd
   for(int i = 0; i < dim; i++)
   {
     speed[i] *= current_param;
@@ -65,7 +42,7 @@ void pso::update_position(int idx)
   float* current = get_solutions()->get(idx)->get_params();
   float* speed = _speed->get(idx)->get_params();
 
-  #pragma omp simd
+  #pragma omp parallel for simd
   for(int i = 0; i < dim; i++)
   {
     current[i] += speed[i];

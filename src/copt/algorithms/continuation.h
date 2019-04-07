@@ -32,6 +32,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <functional>
 #include <core/algorithms/continuation.h>
 #include <copt/base/algorithm.h>
+#include <copt/base/reader.h>
 
 namespace dnn_opt
 {
@@ -45,11 +46,74 @@ class continuation : public virtual algorithm,
 {
 public:
 
-  static continuation* make(algorithm* base, builder* builder);
+  /** Forward declaration of the builder seq of subsets of training patterns */
+  class seq;
+
+  /** Forward declaration of a descent builder */
+  class descent;
+
+  class fixed;
+
+  static continuation* make(algorithm* base, seq* builder);
 
 protected:
 
-  continuation(algorithm* base, builder* builder);
+  continuation(algorithm* base, seq* builder);
+
+};
+
+class continuation::seq : public virtual core::algorithms::continuation::seq
+{
+
+};
+
+class continuation::descent : public virtual continuation::seq,
+                              public virtual core::algorithms::continuation::descent
+{
+public :
+
+  static descent* make(reader* dataset, int k, float beta);
+
+  virtual void build() override;
+
+  virtual reader* get(int idx) override;
+
+  virtual ~descent();
+
+protected:
+
+  descent(reader* dataset, int k, float beta);
+
+private:
+
+  reader* _copt_dataset;
+
+  std::vector<reader*> _copt_sequence;
+
+};
+
+class continuation::fixed : public virtual continuation::seq,
+                              public virtual core::algorithms::continuation::fixed
+{
+public :
+
+  static fixed* make(reader* dataset, int k, float beta);
+
+  virtual void build() override;
+
+  virtual reader* get(int idx) override;
+
+  virtual ~fixed();
+
+protected:
+
+  fixed(reader* dataset, int k, float beta);
+
+private:
+
+  reader* _copt_dataset;
+
+  std::vector<reader*> _copt_sequence;
 
 };
 

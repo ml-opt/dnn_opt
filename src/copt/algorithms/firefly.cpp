@@ -11,11 +11,32 @@ namespace algorithms
 
 void firefly::optimize()
 {
+  this->get_solutions()->sort(this->is_maximization());
+
+  /** move the fireflies */
+  for(int i = 0; i < this->get_solutions()->size(); i++)
+  {
+    for(int j = 0; j < this->get_solutions()->size(); j++)
+    {
+      auto* source = this->get_solutions()->get(i);
+      auto* target = this->get_solutions()->get(j);
+
+      if(target->is_better_than(source, this->is_maximization()))
+      {
+        move(i, j);
+      }
+    }
+  }
+
+  _current_rand_influence *= _rand_decay;
+  _generator->set_min(-0.5 * _current_rand_influence);
+  _generator->set_max(0.5 * _current_rand_influence);
+
+  /*
   unsigned int n = get_solutions()->size();
 
   get_solutions()->sort(this->is_maximization());
 
-  /** move the fireflies */
   for(int i = 0; i < n; i++)
   {
     auto* target = this->get_solutions()->get(i);
@@ -35,6 +56,8 @@ void firefly::optimize()
   _rand_influence *= _rand_decay;
   _generator->set_min(-0.5 * get_rand_influence());
   _generator->set_max(0.5 * get_rand_influence());
+
+  */
 }
 
 void firefly::move(int m, int t)

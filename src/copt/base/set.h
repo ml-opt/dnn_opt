@@ -25,37 +25,78 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DNN_OPT_COPT_SHUFLER
-#define DNN_OPT_COPT_SHUFLER
+#ifndef DNN_OPT_COPT_SET
+#define DNN_OPT_COPT_SET
 
-#include <core/base/shufler.h>
-#include <copt/base/reader.h>
-#include <copt/generators/uniform.h>
+#include <vector>
+#include <algorithm>
+#include <stdexcept>
+#include <core/base/set.h>
+#include <copt/base/solution.h>
 
 namespace dnn_opt
 {
 namespace copt
 {
 
-class shufler : public virtual reader,
-                public virtual core::shufler
+/**
+ * @brief The set class is intended to manage a set of optimization
+ * solutions for a determined optimization problem.
+ *
+ * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
+ * @date June, 2016
+ * @version 1.0
+ */
+template<class t_solution = solution>
+class set : public core::set<t_solution>
 {
+
+static_assert(true, "t_solution must derive from copt::solution");
+
 public:
 
-  static shufler* make(reader* reader);
+  static set<t_solution>* make(unsigned int size = 10);
 
-  /**
-   * @brief Fisher-Yates shuffle.
-   */
-  virtual void shufle();
+  static set<t_solution>* make(unsigned int size, solution* s);
 
 protected:
 
-  void swap(int i, int j);
-
-  shufler(reader* reader);
+  /**
+   * @brief The basic constructor for a set.
+   *
+   * @param size the number of solutions of this container.
+   */
+  set(unsigned int size = 10);
 
 };
+
+template<class t_solution>
+set<t_solution>* set<t_solution>::make(unsigned int size)
+{
+  return new set<t_solution>(size);
+}
+
+template<class t_solution>
+set<t_solution>* set<t_solution>::make(unsigned int size, solution* s)
+{
+  auto* result = new set<t_solution>(size);
+
+  result->add(s);
+
+  for(int i = 1; i < size; i++)
+  {
+    result->add(s->clone());
+  }
+
+  return result;
+}
+
+template<class t_solution>
+set<t_solution>::set(unsigned int size)
+: core::set<t_solution>(size)
+{
+
+}
 
 } // namespace copt
 } // namespace dnn_opt

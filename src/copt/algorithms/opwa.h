@@ -32,7 +32,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <functional>
 #include <core/algorithms/opwa.h>
 #include <copt/base/algorithm.h>
-#include <copt/base/solution_set.h>
+#include <copt/base/set.h>
 #include <copt/solutions/wrapper.h>
 #include <copt/generators/uniform.h>
 
@@ -49,20 +49,20 @@ class opwa : public virtual algorithm,
 public:
 
   template<class t_solution>
-  static opwa* make(int count, const solution_set<t_solution>* solutions, wa builder);
+  static opwa* make(int count, const set<t_solution>* solutions, wa builder);
 
 protected:
 
   template<class t_solution>
-  opwa(int count, const solution_set<t_solution>* solutions, wa builder);
+  opwa(int count, const set<t_solution>* solutions, wa builder);
 
   template<class t_solution>
-  opwa(int count, const solution_set<t_solution>* solutions);
+  opwa(int count, const set<t_solution>* solutions);
 
 };
 
 template<class t_solution>
-opwa* opwa::make(int count, const solution_set<t_solution>* solutions, wa builder)
+opwa* opwa::make(int count, const set<t_solution>* solutions, wa builder)
 {
   auto* result = new opwa(count, solutions, builder);
 
@@ -72,7 +72,7 @@ opwa* opwa::make(int count, const solution_set<t_solution>* solutions, wa builde
 }
 
 template<class t_solution>
-opwa::opwa(int count, const solution_set<t_solution>* solutions, wa builder)
+opwa::opwa(int count, const set<t_solution>* solutions, wa builder)
 : algorithm(solutions),
   core::algorithm(solutions),
   core::algorithms::opwa(count, solutions, builder)
@@ -81,7 +81,7 @@ opwa::opwa(int count, const solution_set<t_solution>* solutions, wa builder)
 }
 
 template<class t_solution>
-opwa::opwa(int count, const solution_set<t_solution>* solutions)
+opwa::opwa(int count, const set<t_solution>* solutions)
 : algorithm(solutions),
   core::algorithm(solutions),
   core::algorithms::opwa(count, solutions)

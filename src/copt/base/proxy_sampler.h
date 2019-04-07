@@ -25,35 +25,34 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DNN_OPT_COPT_SHUFLER
-#define DNN_OPT_COPT_SHUFLER
+#ifndef DNN_OPT_COPT_PROXY_SAMPLER
+#define DNN_OPT_COPT_PROXY_SAMPLER
 
-#include <core/base/shufler.h>
+#include <string>
+#include <core/base/proxy_sampler.h>
 #include <copt/base/reader.h>
-#include <copt/generators/uniform.h>
 
 namespace dnn_opt
 {
 namespace copt
 {
 
-class shufler : public virtual reader,
-                public virtual core::shufler
+class proxy_sampler : public virtual reader,
+                      public virtual core::proxy_sampler
 {
 public:
 
-  static shufler* make(reader* reader);
+  static proxy_sampler* make(reader* reader, int limit, int offset = 0);
 
-  /**
-   * @brief Fisher-Yates shuffle.
-   */
-  virtual void shufle();
+  static proxy_sampler** make_fold(reader* reader, int folds = 10, int overlap = 0);
+
+  static proxy_sampler** make_fold_prop(reader* reader, int folds = 10, float overlap = 0);
+
+  virtual ~proxy_sampler();
 
 protected:
 
-  void swap(int i, int j);
-
-  shufler(reader* reader);
+  proxy_sampler(reader* reader, int limit, int offset = 0);
 
 };
 

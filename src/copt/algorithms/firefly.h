@@ -30,7 +30,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <core/algorithms/firefly.h>
 #include <copt/base/solution.h>
-#include <copt/base/solution_set.h>
+#include <copt/base/set.h>
 #include <copt/base/algorithm.h>
 #include <copt/generators/uniform.h>
 
@@ -60,7 +60,7 @@ public:
    * optimize.
    */
   template<class t_solution>
-  static firefly* make(const solution_set<t_solution>* solutions);
+  static firefly* make(const set<t_solution>* solutions);
 
   /**
    * @copydoc core::algorithms::firefly::optimize
@@ -95,14 +95,14 @@ protected:
    * optimize.
    */
   template<class t_solution>
-  firefly(const solution_set<t_solution>* solutions);
+  firefly(const set<t_solution>* solutions);
 
 };
 
 /* templated function implementations */
 
 template<class t_solution>
-firefly* firefly::make(const solution_set<t_solution>* solutions)
+firefly* firefly::make(const set<t_solution>* solutions)
 {
   auto* result = new firefly(solutions);
 
@@ -112,7 +112,7 @@ firefly* firefly::make(const solution_set<t_solution>* solutions)
 }
 
 template<class t_solution>
-firefly::firefly(const solution_set<t_solution>* solutions)
+firefly::firefly(const set<t_solution>* solutions)
 : algorithm(solutions),
   core::algorithm(solutions),
   core::algorithms::firefly(solutions)

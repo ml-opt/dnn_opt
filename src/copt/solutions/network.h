@@ -55,6 +55,8 @@ public:
 
   virtual bool assignable(const dnn_opt::core::solution* s) const override;
 
+  virtual void set_reader(core::reader* reader) override;
+
   virtual reader* get_reader() const override;
 
   virtual error* get_error() const override;
@@ -71,6 +73,13 @@ protected:
 
   network(generator* generator, reader* reader, error* error);
 
+  network(generator* generator);
+
+private:
+
+  reader* _copt_reader;
+  error* _copt_error;
+
 };
 
 class network::linked : public virtual network,
@@ -78,11 +87,21 @@ class network::linked : public virtual network,
 {
 friend class network;
 
+public:
+
+  using core::solutions::network::linked::fitness;
+
+  virtual void set_reader(core::reader* reader) override;
+
   virtual reader* get_reader() const override;
+
+  using core::solutions::network::linked::set_reader;
+
+  virtual error* get_error() const override;
 
 protected:
 
-  linked(network* source);
+  linked(network* base);
 
 };
 

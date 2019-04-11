@@ -1,6 +1,6 @@
 #include <cassert>
 #include <math.h>
-#include <core/errors//mse.h>
+#include <core/errors/mse.h>
 
 namespace dnn_opt
 {
@@ -18,12 +18,12 @@ void mse::ff(int size, int dim, const float* out, const float* exp)
 {
   for(int i = 0; i < size; i++)
   {
-    float squared_sum = 0;
+    float squared_sum = 0.0f;
     int p = i * dim;
 
     for(int j = 0; j < dim; j++)
     {
-      squared_sum += pow(exp[p + j] - out[p + j], 2);
+      squared_sum += pow(exp[p + j] - out[p + j], 2.0f);
     }
 
     _accumulation += squared_sum / dim;
@@ -37,7 +37,7 @@ float mse::f()
 
   float result = _accumulation / _size;
 
-  _accumulation = 0;
+  _accumulation = 0.0f;
   _size = 0;
 
   return result;
@@ -45,7 +45,7 @@ float mse::f()
 
 mse::mse()
 {
-  _accumulation = 0;
+  _accumulation = 0.0f;
   _size = 0;
 }
 

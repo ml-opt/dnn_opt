@@ -1,7 +1,7 @@
 #include <vector>
 #include <stdexcept>
 #include <core/algorithms/cuckoo.h>
-
+#include <iostream>
 namespace dnn_opt
 {
 namespace core
@@ -26,7 +26,12 @@ void cuckoo::optimize()
 
     if(_updated->is_better_than(source, is_maximization()))
     {
-      get_solutions()->get(i)->assign(_updated);
+      int evaluations = source->get_evaluations();
+
+      source->assign(_updated);
+
+      source->set_evaluations(evaluations + _updated->get_evaluations());
+      _updated->set_evaluations(0);
     }
   }
 
@@ -38,11 +43,11 @@ void cuckoo::optimize()
   }
 }
 
-
 void cuckoo::generate_new_cuckoo(int cuckoo_idx)
 {
-  auto cuckoo = get_solutions()->get(cuckoo_idx);
-  auto best = get_solutions()->get_best(is_maximization());
+  float* cuckoo = get_solutions()->get(cuckoo_idx)->get_params();
+  float* best = get_solutions()->get_best(is_maximization())->get_params();
+  float* params = _updated->get_params();
 
   float v = _nd_1->generate();
   float u = _nd_o->generate();
@@ -52,10 +57,10 @@ void cuckoo::generate_new_cuckoo(int cuckoo_idx)
 
   for(int i = 0; i < get_solutions()->get_dim(); i++)
   {
-    float diff = best->get(i) - cuckoo->get(i);
-
-    _updated->set(i, cuckoo->get(i) + _scale * levy * diff * _r[i]);
+    params[i] += _scale * levy * (best[i] - cuckoo[i]) * _r[i];
   }
+
+  _updated->set_modified(true);
 }
 
 solution* cuckoo::get_best()

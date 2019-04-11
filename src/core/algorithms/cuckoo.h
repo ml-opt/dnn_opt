@@ -76,6 +76,8 @@ public:
    */
   virtual void set_params(std::vector<float> &params) override;
 
+  using algorithm::set_params;
+
   float get_scale();
 
   float get_levy();
@@ -103,7 +105,7 @@ protected:
    *
    * @param index solution from which the levy flight will be performed.
    */
-  void generate_new_cuckoo(int cuckoo_idx);
+  virtual void generate_new_cuckoo(int cuckoo_idx);
 
   template<class t_solution>
   cuckoo(set<t_solution>* solutions);

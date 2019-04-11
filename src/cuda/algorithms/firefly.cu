@@ -66,6 +66,8 @@ struct move_functor
 
 void firefly::init()
 {
+  cudaFree(_r);
+
   float min = -0.5f * this->get_rand_influence();
   float max = 0.5f * this->get_rand_influence();
 

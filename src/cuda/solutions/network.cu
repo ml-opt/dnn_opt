@@ -54,11 +54,11 @@ void network::init()
 {
   reader* r = get_reader();
 
-//  cudaFree(CURRENT_OUT);
-//  cudaFree(PRIOR_OUT);
+  cudaFree(CURRENT_OUT);
+  cudaFree(PRIOR_OUT);
 
-//  cudaMalloc(&CURRENT_OUT, r->size() * _max_out * sizeof(float));
-//  cudaMalloc(&PRIOR_OUT, r->size() * _max_out * sizeof(float));
+  cudaMalloc(&CURRENT_OUT, r->size() * _max_out * sizeof(float));
+  cudaMalloc(&PRIOR_OUT, r->size() * _max_out * sizeof(float));
 
   solution::init();
 }
@@ -70,14 +70,14 @@ reader* network::get_reader() const
 
 void network::set_reader(core::reader* reader)
 {
-//  if(_r->size() < reader->size())
-//  {
-//    cudaFree(CURRENT_OUT);
-//    cudaFree(PRIOR_OUT);
+  if(_r->size() < reader->size())
+  {
+    cudaFree(CURRENT_OUT);
+    cudaFree(PRIOR_OUT);
 
-//    cudaMalloc(&CURRENT_OUT, _r->size() * _max_out * sizeof(float));
-//    cudaMalloc(&PRIOR_OUT, _r->size() * _max_out * sizeof(float));
-//  }
+    cudaMalloc(&CURRENT_OUT, reader->size() * _max_out * sizeof(float));
+    cudaMalloc(&PRIOR_OUT, reader->size() * _max_out * sizeof(float));
+  }
 
   _r = reader;
   _modified = true;

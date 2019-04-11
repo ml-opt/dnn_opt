@@ -89,6 +89,10 @@ protected:
   /** The std::normal_distribution for getting normalized random numbers */
   std::normal_distribution<float>* _distribution;
 
+  float _mean;
+
+  float _dev;
+
 };
 
 } // namespace generators

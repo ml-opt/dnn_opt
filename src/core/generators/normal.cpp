@@ -38,12 +38,15 @@ void normal::set_constraints(int count, float* params)
   }
 }
 
-normal::normal(float mean, float dev) : generator(mean - dev, mean + dev)
+normal::normal(float mean, float dev)
+: generator(mean - dev, mean + dev)
 {
   std::random_device device;
 
   _generator = new std::mt19937(device());
-  _distribution = new std::normal_distribution<float>(0.5, 0.5);
+  _distribution = new std::normal_distribution<float>(mean, dev);
+  _mean = mean;
+  _dev = dev;
 }
 
 normal::~normal()

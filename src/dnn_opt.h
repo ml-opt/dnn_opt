@@ -11,8 +11,9 @@
   #include <core/base/reader.h>
   #include <core/base/sampler.h>
   #include <core/base/solution.h>
-  #include <core/base/solution_set.h>
+  #include <core/base/set.h>
   #include <core/base/shufler.h>
+  #include <core/base/proxy_sampler.h>
 
   /* algorithms */
   #include <core/algorithms/pso.h>
@@ -20,6 +21,7 @@
   #include <core/algorithms/cuckoo.h>
   #include <core/algorithms/continuation.h>
   #include <core/algorithms/opwa.h>
+  #include <core/algorithms/early_stop.h>
 
   /* errors */
   #include <core/errors/mse.h>
@@ -57,6 +59,9 @@
   /* readers */
   #include <core/readers/file_reader.h>
 
+  /* statics */
+  #include <core/statics/cv.h>
+
 #endif
 
 /*************************** COPT INCLUDES ************************************/
@@ -76,8 +81,9 @@
   #include <copt/base/reader.h>
   #include <copt/base/sampler.h>
   #include <copt/base/solution.h>
-  #include <copt/base/solution_set.h>
+  #include <copt/base/set.h>
   #include <copt/base/shufler.h>
+  #include <copt/base/proxy_sampler.h>
 
   /* algorithms */
   #include <copt/algorithms/pso.h>
@@ -85,6 +91,7 @@
   #include <copt/algorithms/cuckoo.h>
   #include <copt/algorithms/continuation.h>
   #include <copt/algorithms/opwa.h>
+  #include <copt/algorithms/early_stop.h>
 
   /* errors */
   #include <copt/errors/mse.h>
@@ -122,6 +129,9 @@
   /* readers */
   #include <copt/readers/file_reader.h>
 
+  /* statics */
+  #include <copt/statics/cv.h>
+
 #endif
 
 /*************************** CUDA INCLUDES ************************************/
@@ -141,11 +151,13 @@
   #include <cuda/base/reader.h>
   #include <cuda/base/sampler.h>
   #include <cuda/base/solution.h>
-  #include <cuda/base/solution_set.h>
+  #include <cuda/base/set.h>
+  #include <cuda/base/proxy_sampler.h>
 
   /* algorithms */
-//  #include <cuda/algorithms/pso.h>
+  #include <cuda/algorithms/pso.h>
   #include <cuda/algorithms/firefly.h>
+  #include <cuda/algorithms/cuckoo.h>
   #include <cuda/algorithms/continuation.h>
   #include <cuda/algorithms/opwa.h>
 
@@ -154,22 +166,22 @@
 //  #include <cuda/errors/overall.h>
 
   /* generators */
-//  #include <cuda/generators/constant.h>
-//  #include <cuda/generators/normal.h>
+  #include <cuda/generators/constant.h>
+  #include <cuda/generators/normal.h>
   #include <cuda/generators/uniform.h>
 
   /* solutions */
   #include <cuda/solutions/network.h>
-//  #include <cuda/solutions/hyper.h>
-
-//  #include <cuda/solutions/ackley.h>
+  #include <cuda/solutions/step.h>
+  #include <cuda/solutions/alpine.h>
+  #include <cuda/solutions/ackley.h>
   #include <cuda/solutions/de_jung.h>
-//  #include <cuda/solutions/griewangk.h>
-//  #include <cuda/solutions/michalewicz.h>
-//  #include <cuda/solutions/rastrigin.h>
-//  #include <cuda/solutions/rosenbrock.h>
-//  #include <cuda/solutions/schwefel.h>
-//  #include <cuda/solutions/styblinski_tang.h>
+  #include <cuda/solutions/griewangk.h>
+  #include <cuda/solutions/rastrigin.h>
+  #include <cuda/solutions/rosenbrock.h>
+  #include <cuda/solutions/schwefel.h>
+  #include <cuda/solutions/styblinski_tang.h>
+  #include <cuda/solutions/hyper.h>
 
   /* layers */
   #include <cuda/layers/fc.h>

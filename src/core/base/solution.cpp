@@ -100,9 +100,7 @@ float solution::fitness()
 }
 
 void solution::generate()
-{
-  _evaluations = 0;
-  
+{  
   set_modified(true);
   get_generator()->generate(size(), get_params());
 }
@@ -131,6 +129,11 @@ bool solution::is_modified()
 int solution::get_evaluations()
 {
   return _evaluations;
+}
+
+void solution::set_evaluations(int evaluations)
+{
+  _evaluations = evaluations;
 }
 
 void solution::init()

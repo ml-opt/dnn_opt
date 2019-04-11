@@ -174,6 +174,8 @@ public:
    */
   int get_evaluations();
 
+  void set_evaluations(int evaluations);
+
   /**
    * @brief Allocate memory used by this solution. Derived classes should
    * implement factory pattern and call this method before returning.

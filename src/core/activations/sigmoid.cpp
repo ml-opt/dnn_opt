@@ -18,7 +18,7 @@ void sigmoid::f(int size, const float* sum, float* out)
 {
   for(int i = 0; i < size; i++)
   {
-    out[i] = 1 / (1 + exp(- 1 * sum[i]));
+    out[i] = 1.0f / (1.0f + exp(-1.0f * sum[i]));
   }
 }
 

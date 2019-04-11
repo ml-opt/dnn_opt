@@ -64,7 +64,7 @@ int fc::bias_size() const
 
 layer* fc::clone()
 {
-  return fc::make(_in_dim, _out_dim, _activation);
+  return fc::make(_in_dim, _out_dim, get_activation());
 }
 
 fc::fc(int in_dim, int out_dim, activation* activation)

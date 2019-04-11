@@ -14,7 +14,7 @@ uniform* uniform::make(float min, float max)
 
 void uniform::generate(int count, float* params)
 {
-  float ext = _max - _min;
+  float ext = get_ext();
 
   for(int i = 0; i < count; i++)
   {

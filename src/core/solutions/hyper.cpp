@@ -63,8 +63,8 @@ float hyper::calculate_fitness()
 
   solution::calculate_fitness();
 
-  base->reset();
   base->set_params(size(), get_params());
+  base->reset();
 
   _do_optimize(base);
 

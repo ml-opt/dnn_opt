@@ -54,7 +54,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * -n dimension of the target solution, default: 256.
  * -m_n number of hyper-parameters, default: 4.
  * -min minumum value of a parameter, default: -10.
- * -m_min minumum value of a hyper-parameter, default: 0.
+ * -m_min minumum value of a hyper-parameter, default: -3.
  * -max maximum value of a parameter, default: 10.
  * -m_max maximum value of a hyper-parameter, default: 3.
  * -p size of the population, default: 40.
@@ -135,7 +135,7 @@ int main(int argc, char** argv)
   int meta_max = input("-m_max", 3, argc, argv);
   int p = input("-p", 40, argc, argv);
   int meta_p = input("-m_p", 10, argc, argv);
-  int eta = input("-eta", 1000, argc, argv);
+  int eta = input("-eta", 40000, argc, argv);
   int meta_eta = input("-m_eta", 50, argc, argv);
   int solution_type = input("-s", 0, argc, argv);
   int algorithm_type = input("-a", 0, argc, argv);
@@ -145,7 +145,12 @@ int main(int argc, char** argv)
   auto* generator = generators::uniform::make(min, max);
 
   /* set that contains the individuals of the population */
-  auto* solutions = solution_set<>::make(p, create_solution(solution_type, n, generator));
+  auto* solutions = set<>::make(p);
+
+  for (int i = 0; i < p; ++i)
+  {
+    solutions->add(create_solution(solution_type, n, generator));
+  }
 
   solutions->generate();
 
@@ -153,7 +158,7 @@ int main(int argc, char** argv)
   auto* base = create_algorithm(algorithm_type, solutions);
 
   auto* meta_generator = generators::uniform::make(meta_min, meta_max);
-  auto* meta_solutions = solution_set<>::make(meta_p);
+  auto* meta_solutions = set<>::make(meta_p);
 
   for(int i = 0; i < meta_p; i++)
   {
@@ -161,7 +166,10 @@ int main(int argc, char** argv)
 
     solution->set_do_optimize([eta](dnn_opt::core::algorithm* base)
     {
-      base->optimize_eval(eta);
+      base->optimize_eval(eta, []()
+      {
+        return true;
+      });
     });
 
     meta_solutions->add(solution);
@@ -174,12 +182,14 @@ int main(int argc, char** argv)
   /* hyper-parameters, see @ref dnn_opt::core::algorithm::set_params() */
   set_hyper(algorithm_type, meta_base, argc, argv);
 
+  int it = 0;
   /* optimize for eta iterations */
-
   auto start = high_resolution_clock::now();
-
-  meta_base->optimize(meta_eta);
-
+  meta_base->optimize(meta_eta, [&it]()
+  {
+    return true;
+  });
+  
   auto end = high_resolution_clock::now();
 
   /* collect statics */
@@ -187,23 +197,11 @@ int main(int argc, char** argv)
   float time = duration_cast<milliseconds>(end - start).count();
   float fitness = meta_base->get_best()->fitness();
 
-  /* show params in standard output */
-
-  float* params = meta_base->get_best()->get_params();
-
-  for(int i = 0; i < meta_solutions->get_dim(); i++)
-  {
-    cout << params[i] << " ";
-  }
-
-  cout << endl;
-
   /* quality of hyper-parameters */
-
   example_out(output_type, time, fitness);
 
   /* delete allocated memory */
-  /* dnn_opt::core::solution_set::clean() is a helper to delete solutions */
+  /* dnn_opt::core::set::clean() is a helper to delete solutions */
 
   delete meta_solutions->clean();
   delete meta_base;
@@ -211,7 +209,7 @@ int main(int argc, char** argv)
 
   delete solutions->clean();
   delete base;
-  delete generator;  
+  delete generator;
 
   return 0;
 }

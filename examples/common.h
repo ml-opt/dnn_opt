@@ -73,6 +73,36 @@ int input(string param, int default_value, int argc, char** argv)
   return result;
 }
 
+float input_f(string param, float default_value, int argc, char** argv)
+{
+  float result = default_value;
+
+  for(int i = 0; i < argc; i++)
+  {
+    if(std::string(argv[i]) == param)
+    {
+      result = atof(argv[i + 1]);
+    }
+  }
+
+  return result;
+}
+
+std::string input_s(std::string param, std::string default_value, int argc, char** argv)
+{
+std::string result = default_value;
+
+  for(int i = 0; i < argc; i++)
+  {
+    if(std::string(argv[i]) == param)
+    {
+      result = argv[i + 1];
+    }
+  }
+
+  return result;
+}
+
 /**
  * @brief Create a @ref dnn_opt::core::solution that can be optimized.
  *
@@ -132,13 +162,14 @@ solution* create_solution(int type, int n, generator* generator)
  * 1 - @ref dnn_opt::core::algorithms::firefly
  *
  * @param type the algorithm to be created.
- * @param solutions an instance of dnn_opt::core::solution_set to be optimized.
+ * @param solutions an instance of dnn_opt::core::set to be optimized.
  *
  * @throw invalid_argument if the provided type can not be created.
  *
  * @return a pointer of the created algorithm.
  */
-algorithm* create_algorithm(int type, solution_set<>* solutions)
+template<class t_solution>
+algorithm* create_algorithm(int type, set<t_solution>* solutions)
 {
   switch(type)
   {
@@ -146,6 +177,8 @@ algorithm* create_algorithm(int type, solution_set<>* solutions)
     return algorithms::pso::make(solutions);
   case 1 :
     return algorithms::firefly::make(solutions);
+  case 2 :
+    return algorithms::cuckoo::make(solutions);
   default:
     throw invalid_argument("algorithm type not found");
   }
@@ -174,19 +207,27 @@ void set_hyper(int type, algorithm* algorithm, int argc, char** argv)
   switch(type)
   {
   case 0 :
-    ha = input("-ha", 0.8, argc, argv);
-    hb = input("-hb", 0.6, argc, argv);
-    hc = input("-hc", 2.5, argc, argv);
-    hd = input("-hd", 0.01, argc, argv);
+    ha = input_f("-ha", 0.8f, argc, argv);
+    hb = input_f("-hb", 0.6f, argc, argv);
+    hc = input_f("-hc", 2.5f, argc, argv);
+    hd = input_f("-hd", 0.01f, argc, argv);
 
     params = {ha, hb, hc, hd};
     break;
   case 1 :
-    ha = input("-ha", 0.8, argc, argv);
-    hb = input("-hb", 0.6, argc, argv);
-    hc = input("-hc", 0.3, argc, argv);
+    ha = input_f("-ha", 0.8f, argc, argv);
+    hb = input_f("-hb", 0.6f, argc, argv);
+    hc = input_f("-hc", 0.3f, argc, argv);
 
-    params = {ha, hb, hc, hd};
+    params = {ha, hb, hc};
+    break;
+    
+    case 2 :
+    ha = input_f("-ha", 0.8f, argc, argv);
+    hb = input_f("-hb", 0.6f, argc, argv);
+    hc = input_f("-hc", 0.3f, argc, argv);
+
+    params = {ha, hb, hc};
     break;
   default:
     throw invalid_argument("algorithm type not found");

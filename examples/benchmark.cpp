@@ -125,7 +125,12 @@ int main(int argc, char** argv)
   auto* generator = generators::uniform::make(-10.0f, 10.0f);
 
   /* set that contains the individuals of the population */
-  auto* solutions = solution_set<>::make(p, create_solution(solution_type, n, generator));
+  auto* solutions = set<>::make(p);
+
+  for (int i = 0; i < p; ++i)
+  {
+    solutions->add(create_solution(solution_type, n, generator));
+  }
 
   /* random generation of initial population according the generator */
   solutions->generate();
@@ -139,7 +144,11 @@ int main(int argc, char** argv)
   /* optimize for eta iterations */
 
   auto start = high_resolution_clock::now();
-  algorithm->optimize_eval(eta);
+  algorithm->optimize_eval(eta, []()
+  {
+    return true;
+  });
+
   auto end = high_resolution_clock::now();
 
   /* collect statics */
@@ -150,7 +159,7 @@ int main(int argc, char** argv)
   example_out(output_type, time, fitness);
 
   /* delete allocated memory */
-  /* dnn_opt::core::solution_set::clean() is a helper to delete solutions */
+  /* dnn_opt::core::set::clean() is a helper to delete solutions */
 
   delete solutions->clean();
   delete algorithm;

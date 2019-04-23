@@ -1,6 +1,6 @@
 # Development guidelines
 
-This section contains general development guidelines for the dnn_opt library. Plase read carefully the following items to grasp a general idea of the structure and function of the library before contributing.
+This section contains general development guidelines for the dnn_opt library. Please read carefully the following items to grasp a general idea of the structure and function of the library before contributing.
 
 ## Library structure
 

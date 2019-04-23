@@ -33,7 +33,12 @@ int main(int argc, char** argv)
   auto* generator = generators::uniform::make(-10.0f, 10.0f);
 
   /* set that contains the individuals of the population */
-  auto* solutions = solution_set<>::make(40, solutions::de_jung::make(generator, 256));
+  auto* solutions = set<>::make(40);
+
+  for(int i = 0; i < 40; i++)
+  {
+    solutions->add(solutions::de_jung::make(generator, 256));
+  }
 
   /* random generation of initial population according the generator */
   solutions->generate();
@@ -42,7 +47,13 @@ int main(int argc, char** argv)
   auto* algorithm = algorithms::pso::make(solutions);
 
   /* optimize for 1000 iterations */
-  algorithm->optimize(1000);
+  algorithm->optimize_eval(1000, []()
+  {
+    /* this lamda is triggered at every iteration */
+    /* return false any time to stop optimization */
+
+    return true;
+  });
 
   /* collect statics */
   cout << "Fitness: " << algorithm->get_best()->fitness() << endl;
@@ -116,7 +127,7 @@ dnn_opt provides several activation functions that can be used by the processing
 
 Common dnn applications make use of several types of layers. dnn_opt provides several of them. All layers derive from a base class called `::layer` and reside under the namespace `::layers::`. You can use:
 
-1. `::layers::fully_connected`
+1. `::layers::fc`
 
 Extending new layers is straight-forward. I'll include more documentation about the currently implemented layers and how to create new layers in the future. If you have any question please refer to the documentation in the code, everything is in there.
 
@@ -139,4 +150,4 @@ Extending new readers is straight-forward. I'll include more documentation about
 
 # How to contribute
 
-Please take a look to the code stadard and development guidelines in the documentation. You can take a look to the examples and read the documentation in the code. We'll be happy to hear from you!
+Please take a look to the code standard and development guidelines in the documentation. You can take a look to the examples and read the documentation in the code. We'll be happy to hear from you!

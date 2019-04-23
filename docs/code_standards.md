@@ -1,5 +1,3 @@
-# Code standards
-
 This section specifies the code standards for the development of new functionalities in the dnn_opt library.
 
 ## Variables, identifiers and indentation
@@ -39,4 +37,4 @@ This section specifies the code standards for the development of new functionali
   4.3. Use a space to separate operators and operands. Do not use space to separate parenthesis.
   4.4. Always specify virtual modifier in derived classes.
   4.5. Include headers that do not belong to the library first and then include the headers that belong to the library.
-  4.6. In .cpp files implement the most important methods of the class first, then implement trivial methods (e.g. getters and setters) and finally implement the contructor and destructor of the class.
+  4.6. In .cpp files implement the most important methods of the class first, then implement trivial methods (e.g. getters and setters) and finally implement the constructor and destructor of the class.

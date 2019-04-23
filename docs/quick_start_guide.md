@@ -1,5 +1,3 @@
-# Quick start guide
-
 This section provides a general overview for new users who wants to use the 
 library
 
@@ -54,20 +52,20 @@ is presented.
 
 Each layer have several packages that in general should be decoupled from one
 another. An exception to this rule is the `base` package, that contains classes
-that traverses all packages, for example: `solution` or `algorithm` classess.
+that traverses all packages, for example: `solution` or `algorithm` classes.
 
 The class `solution` is the base class for all solutions that are implemented in
 the `solutions` package and the class `algorithm` is the base class for each
 meta-heuristic algorithm implemented in the package `algorithms`. In general,
 each package has its own namespace as well named in the same way. For example, to
 use the sequential PSO algorithm you need to use the following namespace 
-resulution: `dnn_opt::core::algorithms::pso`.
+resolution: `dnn_opt::core::algorithms::pso`.
 
 ## Basic usage
 
 Once you compile the library one or several libraries binaries are generated. In
 your main file you need to include the header `dnn_opt.h` that at the same time
-will include all necesary headers.
+will include all necessary headers.
 
 We recommend to solve the library namespace until the layers name, for example,
 `using namespace dnn_opt::core`. Then use the library functionality at free
@@ -86,7 +84,7 @@ int main()
 ````
 
 That way, the code becomes less verbose and you won't make the mistake of
-mixing classes from several layers. Althrough, it may be possible to do such
+mixing classes from several layers. Although, it may be possible to do such
 mix the library is not intended to do so. Hence, is highly discouraged.
 
 Functionality is provided through the same clean and transparent API for every 
@@ -97,7 +95,7 @@ layer, then, you know everything!
 
 ### Basic concepts
 
-The library has a small number of basic concepts. The **solutions** are classess to
+The library has a small number of basic concepts. The **solutions** are classes to
 hold a list of parameters and a fitness function to evaluate the quality of such
 parameters. An **algorithm** is a procedure to change the solution/s parameters
 in order to improve the fitness function of such solution/s.
@@ -129,6 +127,6 @@ initial population randomly
 
 ## Examples
 
-Please take a look at the examples folder. There you can find sevaral non-trivial
+Please take a look at the examples folder. There you can find several non-trivial
 examples of the library usage.
 

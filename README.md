@@ -11,6 +11,14 @@ The library will support sequential, multicore and GPU implementations for all t
 
 Keep reading to find out what you can currently do.
 
+# Resources
+
+The following resources are available for you:
+
+- Quick start guide [see](docs/quick_start_guide.md)
+- Development guidelines [see](docs/development_guidelines.md)
+- Code standards [see](docs/code_standards.md)
+
 # Examples
 
 We feel that the best way of introduce our library features is by showing some examples. Please take a look at the following subsections. Additionally, feel free to take a look at our examples folder.

@@ -25,10 +25,10 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DNN_OPT_CUDA_READERS_FILE_READER
-#define DNN_OPT_CUDA_READERS_FILE_READER
+#ifndef DNN_OPT_CUDA_READERS_CSV_READER
+#define DNN_OPT_CUDA_READERS_CSV_READER
 
-#include <core/readers/file_reader.h>
+#include <core/readers/csv_reader.h>
 #include <cuda/base/reader.h>
 
 namespace dnn_opt
@@ -39,25 +39,25 @@ namespace readers
 {
 
 /**
- * @copydoc core::readers::file_reader
+ * @copydoc core::readers::csv_reader
  *
  * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
  * @version 1.0
  * @date June, 2016
  */
-class file_reader : public virtual reader,
-                    public virtual core::readers::file_reader
+class csv_reader : public virtual reader,
+                   public virtual core::readers::csv_reader
 {
 public:
 
   /**
-   * @brief Create a new instance of the file_reader class.
+   * @brief Create a new instance of the csv_reader class.
    *
    * @param file_name the location of the file containing training patterns.
    *
    * @return an instance of this class.
    */
-  static file_reader* make(std::string file_name, int batches = 1);
+  static csv_reader* make(std::string file_name, int in_dim, int out_dim, char sep = ',', bool header = false);
 
   virtual float* in_data() override;
 
@@ -66,18 +66,18 @@ public:
   /**
    * @brief Destroys each loaded training pattern from memory.
    */
-  virtual ~file_reader();
+  virtual ~csv_reader();
 
 protected:
 
   /**
-   * @brief The basic contructor for file_reader class.
+   * @brief The basic contructor for csv_reader class.
    *
    * @param file_name the file location of the training database file.
    *
    * @throws assertion if the file_name provided is incorrect.
    */
-  file_reader(std::string file_name, int batches = 1);
+  csv_reader(std::string file_name, int in_dim, int out_dim, char sep = ',', bool header = false);
 
   /** The loaded in training data from file */
   float*  _dev_in_data;

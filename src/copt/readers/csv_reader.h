@@ -25,15 +25,15 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DNN_OPT_CORE_READERS_FILE_READER
-#define DNN_OPT_CORE_READERS_FILE_READER
+#ifndef DNN_OPT_COPT_READERS_CSV_READER
+#define DNN_OPT_COPT_READERS_CSV_READER
 
-#include <fstream>
-#include <core/base/reader.h>
+#include <copt/base/reader.h>
+#include <core/readers/csv_reader.h>
 
 namespace dnn_opt
 {
-namespace core
+namespace copt
 {
 namespace readers
 {
@@ -53,75 +53,37 @@ namespace readers
  * @version 1.0
  * @date June, 2016
  */
-class file_reader : public virtual reader
+class csv_reader : public virtual reader,
+                   public virtual core::readers::csv_reader
 {
 public:
 
   /**
-   * @brief Create a new instance of the file_reader class.
-   * 
-   * @param file_name the location of the file containing training patterns.
-   *
-   * @return an instance of this class.
+   * @copydoc core::readers::csv_reader::make
    */
-  static file_reader* make(std::string file_name, int batches = 1);
-
-  virtual float* in_data() override;
-
-  virtual float* out_data() override;
-
-  virtual int get_in_dim() const override;
-
-  virtual int get_out_dim() const override;
-
-  virtual int size() const override;
+  static csv_reader* make(std::string file_name, int in_dim, int out_dim, char sep = ',', bool header = false);
 
   /**
-   * @brief Destroys each loaded training pattern from memory.
+   * @copydoc core::readers::csv_reader
    */
-  ~file_reader();
+  ~csv_reader();
 
 protected:
 
   /**
-   * @brief Load the next batch from file.
+   * @brief Load from file.
    */
   void load();
 
   /**
-   * @brief The basic contructor for file_reader class.
-   *
-   * @param file_name the file location of the training database file.
-   *
-   * @throws assertion if the file_name provided is incorrect.
+   * @copydoc core::readers::csv_reader
    */
-  file_reader(std::string file_name, int batches = 1);
-
-  /** The number of dimensions in the in training signal */
-  int _in_dim;
-
-  /** The number of dimensions in the out training signal */
-  int _out_dim;
-
-  /** The amount of training patterns */
-  int _size;
-
-  /** The loaded in training data from file */
-  float*  _in_data;
-
-  /** The loaded out training data from file */
-  float*  _out_data;
-
-  /** The amount of training patterns loaded from file in each next_batch() */
-  int _batch_size;
-
-  /** File input stream */
-  std::ifstream _file;
+  csv_reader(std::string file_name, int in_dim, int out_dim, char sep = ',', bool header = false);
 
 };
 
 } // namespace readers
-} // namespace core
+} // namespace copt
 } // namespace dnn_opt
 
 #endif

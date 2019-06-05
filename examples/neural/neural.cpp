@@ -31,8 +31,8 @@ int main(int argc, char** argv)
 
   /* generator that defines the search space */
   auto* generator = generators::uniform::make(-1.0f, 1.0f);
-  auto* train = readers::file_reader::make(db_train);
-  auto* test = readers::file_reader::make(db_test);
+  auto* train = readers::csv_reader::make(db_train, 20, 1, ' ', true);
+  auto* test = readers::csv_reader::make(db_test, 20, 1, ' ', true);
   auto* act = activations::sigmoid::make();
 
   /* set that contains the individuals of the population */

@@ -25,46 +25,45 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DNN_OPT_COPT_READERS_FILE_READER
-#define DNN_OPT_COPT_READERS_FILE_READER
+#ifndef DNN_OPT_CORE_READERS_CSV_READER
+#define DNN_OPT_CORE_READERS_CSV_READER
 
 #include <fstream>
-#include <copt/base/reader.h>
+#include <core/base/reader.h>
 
 namespace dnn_opt
 {
-namespace copt
+namespace core
 {
 namespace readers
 {
 
 /**
  * @brief
- * This class is intended to fetch training patterns from a file.
- * The file must have the following structure:
- *
- *      - In the first line three integers separated by a space: number 
- *      of training patterns p, in dimension n and out dimension m.
- *      - In the following p lines, each line represents a pattern 
- *      containing n floats separated by a space as in, followed by m 
- *      floats as expected out.
+ * This class is intended to fetch training patterns from a CSV file.
  *
  * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
  * @version 1.0
  * @date June, 2016
  */
-class file_reader : public virtual reader
+class csv_reader : public virtual reader
 {
 public:
 
   /**
-   * @brief Create a new instance of the file_reader class.
+   * @brief Create a new instance of the csv_reader class.
    * 
    * @param file_name the location of the file containing training patterns.
+   * @param in_dim number of input dimensions.
+   * @param out_dim number of output dimensions.
+   * @param sep separator character, default is a colon.
+   * @param header if the csv file contains a header with column's name or not.
+   * @param batches number of training patterns to load at once, use when the
+   *        number of training patterns is too large to fit in memory.
    *
    * @return an instance of this class.
    */
-  static file_reader* make(std::string file_name);
+  static csv_reader* make(std::string file_name, int in_dim, int out_dim, char sep = ',', bool header = false);
 
   virtual float* in_data() override;
 
@@ -79,23 +78,31 @@ public:
   /**
    * @brief Destroys each loaded training pattern from memory.
    */
-  ~file_reader();
+  ~csv_reader();
 
 protected:
 
   /**
-   * @brief Load from file.
+   * @brief Load the next batch from file.
    */
   void load();
 
+  int get_line_count();
+
   /**
-   * @brief The basic contructor for file_reader class.
+   * @brief The basic contructor for csv_reader class.
    *
-   * @param file_name the file location of the training database file.
+   * @param file_name the location of the file containing training patterns.
+   * @param in_dim number of input dimensions.
+   * @param out_dim number of output dimensions.
+   * @param sep separator character, default is a colon.
+   * @param header if the csv file contains a header with column's name or not.
+   * @param batches number of training patterns to load at once, use when the
+   *        number of training patterns is too large to fit in memory.
    *
    * @throws assertion if the file_name provided is incorrect.
    */
-  file_reader(std::string file_name);
+  csv_reader(std::string file_name, int in_dim, int out_dim, char sep = ',', bool header = false);
 
   /** The number of dimensions in the in training signal */
   int _in_dim;
@@ -112,13 +119,17 @@ protected:
   /** The loaded out training data from file */
   float*  _out_data;
 
+  char _sep;
+
+  bool _header;
+
   /** File input stream */
   std::ifstream _file;
 
 };
 
 } // namespace readers
-} // namespace copt
+} // namespace core
 } // namespace dnn_opt
 
 #endif

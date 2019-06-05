@@ -57,7 +57,7 @@
   #include <core/activations/tan_h.h>
 
   /* readers */
-  #include <core/readers/file_reader.h>
+  #include <core/readers/csv_reader.h>
 
   /* statics */
   #include <core/statics/cv.h>
@@ -127,7 +127,7 @@
   #include <copt/activations/tan_h.h>
 
   /* readers */
-  #include <copt/readers/file_reader.h>
+  #include <copt/readers/csv_reader.h>
 
   /* statics */
   #include <copt/statics/cv.h>
@@ -195,6 +195,6 @@
   #include <cuda/activations/tan_h.h>
 
   /* readers */
-  #include <cuda/readers/file_reader.h>
+  #include <cuda/readers/csv_reader.h>
 
 #endif

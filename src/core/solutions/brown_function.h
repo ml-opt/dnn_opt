@@ -87,7 +87,7 @@ namespace solutions
    * @return a pointer to an instance of the brown_function class.
    */
         
-        static brown_function* make(generator* generator, unsigned int size=5);
+        static brown_function* make(generator* generator, unsigned int size = 5);
         
         virtual ~brown_function();
         
@@ -95,7 +95,7 @@ namespace solutions
         
         virtual float calculate_fitness();
         
-        brown_function(generator* generator,unsigned int size=5);
+        brown_function(generator* generator,unsigned int size = 5);
     };
 }//namespace solutions
 }//namespace core

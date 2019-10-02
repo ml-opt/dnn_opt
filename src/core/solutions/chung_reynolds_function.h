@@ -55,7 +55,7 @@ namespace solution
  *
  * The equation for this function is given by:
  *
- * f(x) = {\sum_{i=0}^{n}{{x_i}^2}}^2
+ * f(x) = (\sum_{i=0}^{n}{{x_i}^2})^2
  *
  * Chung-Reynolds function have a global minima in x* = f(0,..., 0) with a value
  * of 0.
@@ -73,7 +73,7 @@ namespace solution
  * @version 1.0
  * @date November, 2016
  */
-    class chung_reynolds_function : public virtual solution
+    class chung_reynolds : public virtual solution
     {
     public:
           /**
@@ -87,15 +87,15 @@ namespace solution
    *
    * @return a pointer to an instance of the chung_reynolds_function class.
    */
-        static chung_reynolds_function* make(generator* generator, 
-        unsigned int size=200);
+        static chung_reynolds* make(generator* generator, 
+        unsigned int size = 200);
         
-        virtual ~chung_reynold_function();
+        virtual ~chung_reynolds();
         
     protected:
         virtual float calculate_fitness();
         
-        chung_reynolds_function(generator* generator, unsigned int size=200);
+        chung_reynolds(generator* generator, unsigned int size = 200);
     };
 }//namespace solution
 }//namespace core

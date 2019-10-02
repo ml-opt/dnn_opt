@@ -85,7 +85,7 @@ namespace solution
    *
    * @return a pointer to an instance of the csendes class.
    */
-        static csendes* make(generator* generator, unsigned int size=2);
+        static csendes* make(generator* generator, unsigned int size = 2);
         
         virtual ~csendes();
         
@@ -93,7 +93,7 @@ namespace solution
         
         virtual float calculate_fitness();
         
-        csendes(generator* generator, unsigned int size=2);
+        csendes(generator* generator, unsigned int size = 2);
     };
 } //namespace solution
 } //namespace core

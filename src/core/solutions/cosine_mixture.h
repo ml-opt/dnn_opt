@@ -87,14 +87,14 @@ namespace solution
    *
    * @return a pointer to an instance of the cosine_mixture class.
    */
-        static cosine_mixture* make(generator* generator, unsigned int size=2);
+        static cosine_mixture* make(generator* generator, unsigned int size = 2);
         
         virtual ~cosine_mixture();
         
     protected:
         virtual float calculate_fitness();
         
-        cosine_mixture(generator* generator, unsigned int size=2);
+        cosine_mixture(generator* generator, unsigned int size = 2);
     };
 }//namespace solution
 }//namespace core

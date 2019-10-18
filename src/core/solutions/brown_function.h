@@ -1,16 +1,4 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   brown_function.h
- * Author: alejandrom247 amadruga@estudiantes.uci.cu
- *
- * Created on 28 de septiembre de 2019, 21:33
- */
-/*
 Copyright (c) 2018, Jairo Rojas-Delgado <jrdelgado@uci.cu>
 All rights reserved.
 
@@ -36,13 +24,12 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
-
-#ifndef BROWN_FUNCTION_H
-#define BROWN_FUNCTION_H
+#ifndef DNN_OPT_CORE_SOLUTIONS_BROWN_FUNCTION
+#define DNN_OPT_CORE_SOLUTIONS_BROWN_FUNCTION
 
 #include <core/base/generator.h>
 #include <core/base/solution.h>
+
 
 namespace dnn_opt
 {
@@ -50,18 +37,19 @@ namespace core
 {
 namespace solutions
 {
-    /**
- * @brief The brown_function class represents an optimization solutions which
- * fitness cost is calculated via Brown Function.
+
+/**
+ * @brief The brown class represents an optimization solutions which
+ * fitness cost is calculated via Brown function.
  *
  * The equation for this function is given by:
  *
- * f(x) = \sum_{i=1}^{n-1}{{{{x_i}^2}^{{{x_i+1}^2}+1}}+{x_i+1}^{{{x_i}^2}+1}}
+ * f(x) = \sum_{i=0}^{n-1}{x_i^{2*{x_i+1}+2}}+{x_i+1}^{2*{{x_i}^2}+2}
  *
- * Brown function have a global minima in x* = f(0,..., 0) with a value of 0.
- * A commonly used search domain for testing is [-1, 4]. Brown Function 
- * is continuous, differentiable, non-separable, scalable and unimodal. 
- * See the following reference [f_25] in:
+ * Brown function have a global minima in {0,..., 0} with a value of 0.
+ * A commonly used search domain for testing is [-1, 4]. Brown is continuous, 
+ * differentiable, non-separable, scalable and unimodal. See the following 
+ * reference [f_25] in:
  * 
  * MOMIN, JAMIL; YANG, Xin-She. A literature survey of benchmark functions for 
  * global optimization problems. Journal of Mathematical Modelling and Numerical 
@@ -72,10 +60,11 @@ namespace solutions
  * @version 1.0
  * @date November, 2016
  */
-    class brown_function : public virtual solution
-    {
-    public:
-          /**
+class brown : public virtual solution
+{
+public:
+
+  /**
    * @brief Returns an instance of this object. This method
    * is an implementation of the factory pattern.
    *
@@ -84,22 +73,28 @@ namespace solutions
    *
    * @param size is the number of parameters for this solution. Default is 5.
    *
-   * @return a pointer to an instance of the brown_function class.
+   * @return a pointer to an instance of the brown class.
    */
-        
-        static brown_function* make(generator* generator, unsigned int size = 5);
-        
-        virtual ~brown_function();
-        
-    protected:
-        
-        virtual float calculate_fitness();
-        
-        brown_function(generator* generator,unsigned int size = 5);
-    };
-}//namespace solutions
-}//namespace core
-}//namespace dnn_opt
+  static brown* make(generator* generator, unsigned int size = 5);
 
-#endif /* BROWN_FUNCTION_H */
+  virtual ~brown();
 
+protected:
+
+  virtual float calculate_fitness();
+
+  /**
+   * @brief This is the basic contructor for this class.
+   * @param generator an instance of a generator class.
+   *
+   * @param size is the number of parameters for this solution. Default is 10.
+   */
+  brown(generator* generator, unsigned int size = 5);
+
+};
+
+} // namespace solutions
+} // namespace core
+} // namespace dnn_opt
+
+#endif

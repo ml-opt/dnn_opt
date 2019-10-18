@@ -24,8 +24,8 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#ifndef DNN_OPT_CORE_SOLUTIONS_CSENDES
-#define DNN_OPT_CORE_SOLUTIONS_CSENDES
+#ifndef DNN_OPT_CORE_SOLUTIONS_CHUNG_REYNOLDS
+#define DNN_OPT_CORE_SOLUTIONS_CHUNG_REYNOLDS
 
 #include <core/base/generator.h>
 #include <core/base/solution.h>
@@ -39,17 +39,17 @@ namespace solutions
 {
 
 /**
- * @brief The csendes class represents an optimization solutions which
- * fitness cost is calculated via Csendes function.
+ * @brief The chung_r class represents an optimization solutions which
+ * fitness cost is calculated via Chung Reynolds function.
  *
  * The equation for this function is given by:
  *
- * f(x) = -0.1 * {\sum_{i=0}^{n}{{x_i}^{6}*(2+sin(1/{x_i}))}
+ * f(x) = \sum_{i=0}^{n}{{{x_i}^2}^2}
  *
- * Csendes function have a global minima in {0,..., 0} with a value of 0.
- * A commonly used search domain for testing is [-1, 1]. Csendes 
- * is continuous, differentiable, separable, scalable and multimodal. 
- * See the following reference [f_40] in:
+ * Chung Reynolds function have a global minima in {0,..., 0} with a value of 0.
+ * A commonly used search domain for testing is [-100, 100]. Chung Reynolds 
+ * is continuous, differentiable, partially-separable, scalable and unimodal. 
+ * See the following reference [f_34] in:
  * 
  * MOMIN, JAMIL; YANG, Xin-She. A literature survey of benchmark functions for 
  * global optimization problems. Journal of Mathematical Modelling and Numerical 
@@ -60,7 +60,7 @@ namespace solutions
  * @version 1.0
  * @date November, 2016
  */
-class csendes : public virtual solution
+class chung_r : public virtual solution
 {
 public:
 
@@ -71,13 +71,13 @@ public:
    * @param generator an instance of a generator class. The
    * generator is used to initialize the parameters of this solution.
    *
-   * @param size is the number of parameters for this solution. Default is 2.
+   * @param size is the number of parameters for this solution. Default is 5.
    *
-   * @return a pointer to an instance of the csendes class.
+   * @return a pointer to an instance of the chung_r class.
    */
-  static csendes* make(generator* generator, unsigned int size = 2);
+  static chung_r* make(generator* generator, unsigned int size = 200);
 
-  virtual ~csendes();
+  virtual ~chung_r();
 
 protected:
 
@@ -87,9 +87,9 @@ protected:
    * @brief This is the basic contructor for this class.
    * @param generator an instance of a generator class.
    *
-   * @param size is the number of parameters for this solution. Default is 2.
+   * @param size is the number of parameters for this solution. Default is 10.
    */
-  csendes(generator* generator, unsigned int size = 2);
+  chung_r(generator* generator, unsigned int size = 200);
 
 };
 

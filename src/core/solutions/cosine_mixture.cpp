@@ -24,17 +24,19 @@ float cosine_m::calculate_fitness()
   float* params = get_params();
 
   solution::calculate_fitness();
+  
+  int length = size();
 
-  for(int i = 0; i < size(); i++)
+  for(int i = 0; i < length; i++)
   {
-    result1 += cos(5 * 3.14f * params[i]);
+    result1 += cos(5.0f * 3.14f * params[i]);
   }
   
   result1 *= -(0.1f);
   
-  for(int j; j < size(); j++)
+  for(int j = 0; j < size(); j++)
   {
-    result2 += pow(params[j], 2);
+    result2 += pow(params[j], 2.0f);
   }
   
   return result1 - result2;

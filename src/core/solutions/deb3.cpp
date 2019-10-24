@@ -1,5 +1,5 @@
 #include <math.h>
-#include <core/solutions/deb1.h>
+#include <core/solutions/deb3.h>
 
 namespace dnn_opt
 {
@@ -8,16 +8,16 @@ namespace core
 namespace solutions
 {
 
-deb1* deb1::make(generator *generator, unsigned int size)
+deb3* deb3::make(generator *generator, unsigned int size)
 {
-  auto* result = new deb1(generator, size);
+  auto* result = new deb3(generator, size);
 
   result->init();
 
   return result;
 }
 
-float deb1::calculate_fitness()
+float deb3::calculate_fitness()
 {
   float result = 0;
   float pos = 0;
@@ -29,22 +29,22 @@ float deb1::calculate_fitness()
 
   for(int i = 0; i < length; i++)
   {
-    pos += sin(5.0f * 3.14f * params[i]);
+    pos += sin(5.0f * 3.14f * (pow(params[i], 0.75f) - 0.05f));
   }
   
   pos = pow(pos, 6.0f);
-  result = -(1.0f / size()) * pos;
+  result = -(1.0f / length) * pos;
   
   return result;
 }
 
-deb1::deb1(generator* generator, unsigned int size)
+deb3::deb3(generator* generator, unsigned int size)
 : solution(generator, size)
 {
 
 }
 
-deb1::~deb1()
+deb3::~deb3()
 {
 
 }

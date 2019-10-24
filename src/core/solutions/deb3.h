@@ -24,8 +24,8 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#ifndef DNN_OPT_CORE_SOLUTIONS_COSINE_MIXTURE
-#define DNN_OPT_CORE_SOLUTIONS_COSINE_MIXTURE
+#ifndef DNN_OPT_CORE_SOLUTIONS_DEB3
+#define DNN_OPT_CORE_SOLUTIONS_DEB3
 
 #include <core/base/generator.h>
 #include <core/base/solution.h>
@@ -38,18 +38,18 @@ namespace solutions
 {
 
 /**
- * @brief The cosine_m class represents an optimization solutions which
- * fitness cost is calculated via Cosine Mixture function.
+ * @brief The deb3 class represents an optimization solutions which
+ * fitness cost is calculated via Deb 3 function.
  *
  * The equation for this function is given by:
  *
- * f(x) = -0.1 * {\sum_{i=0}^{n}{cos(5 * pi * {x_i})}}-\sum_{i=0}^{n}{x_i}^{2}
+ * f(x) = -1/n * {\sum_{i=0}^{n}{sin(5*pi*{{x_i}^3/4-0.05}}^6
  *
- * Cosine Mixture function have a global minima in {0,..., 0} with a value of 
- * 0.2 or 0.4 for n=2 and 4 respectively.
- * A commonly used search domain for testing is [-1, 1]. Cosine Mixture 
- * is discontinuous, non-differentiable, separable, scalable and multimodal. 
- * See the following reference [f_38] in:
+ * Deb 3 function have a global minima in 5^n with a value evely spaced 
+ * in the function landscape, where n represents the dimension of the problem.
+ * A commonly used search domain for testing is [-1, 1]. Deb 3 
+ * is continuous, differentiable, separable, scalable and multimodal. 
+ * See the following reference [f_44] in:
  * 
  * MOMIN, JAMIL; YANG, Xin-She. A literature survey of benchmark functions for 
  * global optimization problems. Journal of Mathematical Modelling and Numerical 
@@ -60,7 +60,7 @@ namespace solutions
  * @version 1.0
  * @date November, 2016
  */
-class cosine_m : public virtual solution
+class deb3 : public virtual solution
 {
 public:
 
@@ -73,11 +73,11 @@ public:
    *
    * @param size is the number of parameters for this solution. Default is 2.
    *
-   * @return a pointer to an instance of the cosine_m class.
+   * @return a pointer to an instance of the deb3 class.
    */
-  static cosine_m* make(generator* generator, unsigned int size = 2);
+  static deb3* make(generator* generator, unsigned int size = 2);
 
-  virtual ~cosine_m();
+  virtual ~deb3();
 
 protected:
 
@@ -89,7 +89,7 @@ protected:
    *
    * @param size is the number of parameters for this solution. Default is 2.
    */
-  cosine_m(generator* generator, unsigned int size = 2);
+  deb3(generator* generator, unsigned int size = 2);
 
 };
 

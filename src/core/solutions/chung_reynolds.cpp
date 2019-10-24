@@ -10,7 +10,7 @@ namespace solutions
 
 chung_r* chung_r::make(generator *generator, unsigned int size)
 {
-  auto* result = new brown(generator, size);
+  auto* result = new chung_r(generator, size);
 
   result->init();
 
@@ -23,13 +23,15 @@ float chung_r::calculate_fitness()
   float* params = get_params();
 
   solution::calculate_fitness();
+  
+  int length = size();
 
-  for(int i = 0; i < size(); i++)
+  for(int i = 0; i < length; i++)
   {
-      result += pow(params[i], 2);
+      result += pow(params[i], 2.0f);
   }
 
-  return pow(result, 2);
+  return pow(result, 2.0f);
 }
 
 chung_r::chung_r(generator* generator, unsigned int size)

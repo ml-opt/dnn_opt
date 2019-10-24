@@ -30,7 +30,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <core/base/generator.h>
 #include <core/base/solution.h>
 
-
 namespace dnn_opt
 {
 namespace core

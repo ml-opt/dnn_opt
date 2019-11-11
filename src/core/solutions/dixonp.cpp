@@ -30,7 +30,7 @@ float dixonp::calculate_fitness()
 
   for(int i = 1; i < length; i++)
   {
-    sum += i * pow((2 * pow(params[i], 2.0f) - params[i - 1]), 2.0f);
+    sum += i * pow(2 * pow(params[i], 2.0f) - params[i - 1], 2.0f);
   }
   
   result = binom + sum;

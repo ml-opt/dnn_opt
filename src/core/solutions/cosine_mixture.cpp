@@ -34,7 +34,7 @@ float cosine_m::calculate_fitness()
   
   result1 *= -(0.1f);
   
-  for(int j = 0; j < size(); j++)
+  for(int j = 0; j < length; j++)
   {
     result2 += pow(params[j], 2.0f);
   }

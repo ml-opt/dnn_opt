@@ -28,10 +28,10 @@ float eggh::calculate_fitness()
   
   int length = size();
 
-  for(int i = 0; i < length - 1.0f; i++)
+  for(int i = 0; i < length - 1; i++)
   {
-    br1 = -(params[i + 1] + 47.0f) * sin(sqrt(abs(params[i + 1] + params[i]/2.0f
-          + 47.0f)));
+    br1 = -(params[i + 1] + 47.0f) * sin(sqrt(abs(params[i + 1] + params[i]
+            / 2.0f + 47.0f)));
     br2 = params[i] * sin(sqrt(abs(params[i] - (params[i + 1] + 47.0f))));
     result += br1 - br2; 
   }

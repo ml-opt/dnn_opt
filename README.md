@@ -158,13 +158,13 @@ Extending new readers is straight-forward. I'll include more documentation about
 
 # Related research papers
 
-- Rojas-Delgado J., Milián Núñez V., Trujillo-Rasúa R., Bello R. (2019) Continuous Hyper-parameter Configuration for Particle Swarm Optimization via Auto-tuning. In: Nyström I., Hernández Heredia Y., Milián Núñez V. (eds) Progress in Pattern Recognition, Image Analysis, Computer Vision, and Applications. CIARP 2019. Lecture Notes in Computer Science, vol 11896. Springer, Cham. URL:  https://link.springer.com/chapter/10.1007/978-3-030-33904-3_43
+- Rojas-Delgado J., Milián Núñez V., Trujillo-Rasúa R., Bello R. (2019) Continuous Hyper-parameter Configuration for Particle Swarm Optimization via Auto-tuning. In: Lecture Notes in Computer Science, vol 11896. Springer, Cham. URL:  https://link.springer.com/chapter/10.1007/978-3-030-33904-3_43
 
-- Rojas-Delgado J., Trujillo-Rasúa R., Bello R., Moya G.E.J. (2019) Video Popularity Forecasting to Improve Cache Miss Rate in Content Delivery Networks. In: Nyström I., Hernández Heredia Y., Milián Núñez V. (eds) Progress in Pattern Recognition, Image Analysis, Computer Vision, and Applications. CIARP 2019. Lecture Notes in Computer Science, vol 11896. Springer, Cham. URL: https://link.springer.com/chapter/10.1007/978-3-030-33904-3_73
+- Rojas-Delgado J., Trujillo-Rasúa R., Bello R., Moya G.E.J. (2019) Video Popularity Forecasting to Improve Cache Miss Rate in Content Delivery Networks. In: Lecture Notes in Computer Science, vol 11896. Springer, Cham. URL: https://link.springer.com/chapter/10.1007/978-3-030-33904-3_73
 
-- Rojas-Delgado J., Trujillo-Rasúa R. y Bello R. A continuation approach for training artificial neural networks with meta-heuristics. Pattern Recognition Letters, 2019, vol. 125, 373 - 380. Elseiver. URL: http://www.sciencedirect.com/science/article/pii/S0167865519301667 DOI: https://doi.org/10.1016/j.patrec.2019.05.017 ISSN: 0167-8655
+- Rojas-Delgado J., Trujillo-Rasúa R. y Bello R. (2019) A continuation approach for training artificial neural networks with meta-heuristics. Pattern Recognition Letters, vol. 125, 373 - 380. Elseiver. URL: http://www.sciencedirect.com/science/article/pii/S0167865519301667
 
-- Rojas-Delgado J., Trujillo-Rasúa R. (2018) Training Neural Networks by Continuation Particle Swarm Optimization. In: Hernández Heredia Y., Milián Núñez V., Ruiz Shulcloper J. (eds) Progress in Artificial Intelligence and Pattern Recognition. IWAIPR 2018. Lecture Notes in Computer Science, vol 11047. Springer, Cham. URL: https://link.springer.com/chapter/10.1007/978-3-030-01132-1_7
+- Rojas-Delgado J., Trujillo-Rasúa R. (2018) Training Neural Networks by Continuation Particle Swarm Optimization. In: Lecture Notes in Computer Science, vol 11047. Springer, Cham. URL: https://link.springer.com/chapter/10.1007/978-3-030-01132-1_7
 
 # How to contribute
 

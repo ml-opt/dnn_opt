@@ -25,13 +25,11 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DNN_OPT_CORE_SOLUTIONS_HYPER
-#define DNN_OPT_CORE_SOLUTIONS_HYPER
+#ifndef DNN_OPT_CORE_SOLUTIONS_BENCH_RASTRIGIN
+#define DNN_OPT_CORE_SOLUTIONS_BENCH_RASTRIGIN
 
-#include <functional>
 #include <core/base/generator.h>
 #include <core/base/solution.h>
-#include <core/base/algorithm.h>
 
 namespace dnn_opt
 {
@@ -39,63 +37,65 @@ namespace core
 {
 namespace solutions
 {
+namespace bench
+{
 
 /**
- * @brief The hyper class represents an optimization algorithm hyper-parameter
- * solution.
+ * @brief The rastrigin class represents an optimization solutions which 
+ * fitness cost is calculated via Rastrigin function.
+ *
+ * The equation for this function is given by:
+ *
+ * f(x) = 10n + \sum_{i=0}^n{x_i^2-10\cos(2\pi x_i)}
+ *
+ * Rastrigin function have a global minima in {0,..., 0} with a value of 0. 
+ * A commonly used search domain for testing is [-5.12, 5.12]. Rastrigin is
+ * continuous, differentiable, separable, scalable and multimodal. See the 
+ * following reference:
+ *
+ * LIANG, Jane-Jing; SUGANTHAN, Ponnuthurai Nagaratnam; DEB, Kalyanmoy. Novel 
+ * composition test functions for numerical global optimization. En Swarm 
+ * Intelligence Symposium, 2005. SIS 2005. Proceedings 2005 IEEE. IEEE, 2005. 
+ * p. 68-75.
+ *
  *
  * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
  * @version 1.0
- * @date November, 2017
+ * @date November, 2016
  */
-class hyper : public virtual solution
+class rastrigin : public virtual solution
 {
 public:
 
-  static hyper* make(generator* generator, algorithm* base, unsigned int size);
+  /**
+   * @brief Returns an instance of the rastrigin class.
+   *
+   * @param generator an instance of a generator class.
+   *
+   * @param size is the number of parameters for this solution. Default is 10.
+   *
+   * @return a pointer to an instance of the rastrigin class.
+   */
+  static rastrigin* make(generator* generator, unsigned int size = 10);
 
-  virtual algorithm* get_algorithm() const;
-
-  void set_do_optimize(std::function<void(algorithm*)> do_optimize);
-
-  virtual hyper* clone() override;
-
-  virtual bool assignable(const solution* s) const override;
-
-  virtual void assign(solution* s) override;
-
-  virtual ~hyper();
+  virtual ~rastrigin();
 
 protected:
 
-   /**
-    * @copydoc solution::calculate_fitness()
-    *
-    * Performs @ref get_iteration_count() optimization steeps of the provided
-    * @ref get_algorithm() and returns its fitness.
-    *
-    * @return the fitness of this solution.
-    */
   virtual float calculate_fitness() override;
 
   /**
-   * @brief The basic contructor for this class.
+   * @brief The basic contructor for the ratrigin class.
    *
    * @param generator an instance of a generator class.
-   * The generator is used to initialize the parameters of this
-   * solution.
    *
    * @param size is the number of parameters for this solution. Default is 10.
    */
-  hyper(generator* generator, algorithm* base, unsigned int size = 10);
-
-  /** The elementary optimization algorithm */
-  algorithm* _base;
-
-  std::function<void(algorithm*)> _do_optimize;
+  rastrigin(generator* generator, unsigned int size );
 
 };
 
+} // namespace bench
 } // namespace solutions
 } // namespace core
 } // namespace dnn_opt

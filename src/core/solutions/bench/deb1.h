@@ -24,14 +24,11 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+#ifndef DNN_OPT_CORE_SOLUTIONS_BENCH_DEB1
+#define DNN_OPT_CORE_SOLUTIONS_BENCH_DEB1
 
-#ifndef DNN_OPT_CORE_SOLUTIONS_HYPER
-#define DNN_OPT_CORE_SOLUTIONS_HYPER
-
-#include <functional>
 #include <core/base/generator.h>
 #include <core/base/solution.h>
-#include <core/base/algorithm.h>
 
 namespace dnn_opt
 {
@@ -39,63 +36,66 @@ namespace core
 {
 namespace solutions
 {
+namespace bench
+{
 
 /**
- * @brief The hyper class represents an optimization algorithm hyper-parameter
- * solution.
+ * @brief The deb1 class represents an optimization solutions which
+ * fitness cost is calculated via Deb 1 function.
+ *
+ * The equation for this function is given by:
+ *
+ * f(x) = -1/n * {\sum_{i=0}^{n}{sin(5*pi*{x_i}}^6
+ *
+ * Deb 1 function have a global minima in 5^n with a value evely spaced 
+ * in the function landscape, where n represents the dimension of the problem.
+ * A commonly used search domain for testing is [-1, 1]. Deb 1 
+ * is continuous, differentiable, separable, scalable and multimodal. 
+ * See the following reference [f_43] in:
+ * 
+ * MOMIN, JAMIL; YANG, Xin-She. A literature survey of benchmark functions for 
+ * global optimization problems. Journal of Mathematical Modelling and Numerical 
+ * Optimisation, 2013, vol. 4, no 2, p. 150-194.
+ *
  *
  * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
  * @version 1.0
- * @date November, 2017
+ * @date November, 2016
  */
-class hyper : public virtual solution
+class deb1 : public virtual solution
 {
 public:
 
-  static hyper* make(generator* generator, algorithm* base, unsigned int size);
+  /**
+   * @brief Returns an instance of this object. This method
+   * is an implementation of the factory pattern.
+   *
+   * @param generator an instance of a generator class. The
+   * generator is used to initialize the parameters of this solution.
+   *
+   * @param size is the number of parameters for this solution. Default is 2.
+   *
+   * @return a pointer to an instance of the deb1 class.
+   */
+  static deb1* make(generator* generator, unsigned int size = 2);
 
-  virtual algorithm* get_algorithm() const;
-
-  void set_do_optimize(std::function<void(algorithm*)> do_optimize);
-
-  virtual hyper* clone() override;
-
-  virtual bool assignable(const solution* s) const override;
-
-  virtual void assign(solution* s) override;
-
-  virtual ~hyper();
+  virtual ~deb1();
 
 protected:
 
-   /**
-    * @copydoc solution::calculate_fitness()
-    *
-    * Performs @ref get_iteration_count() optimization steeps of the provided
-    * @ref get_algorithm() and returns its fitness.
-    *
-    * @return the fitness of this solution.
-    */
-  virtual float calculate_fitness() override;
+  virtual float calculate_fitness();
 
   /**
-   * @brief The basic contructor for this class.
-   *
+   * @brief This is the basic contructor for this class.
    * @param generator an instance of a generator class.
-   * The generator is used to initialize the parameters of this
-   * solution.
    *
-   * @param size is the number of parameters for this solution. Default is 10.
+   * @param size is the number of parameters for this solution. Default is 2.
    */
-  hyper(generator* generator, algorithm* base, unsigned int size = 10);
-
-  /** The elementary optimization algorithm */
-  algorithm* _base;
-
-  std::function<void(algorithm*)> _do_optimize;
+  deb1(generator* generator, unsigned int size = 2);
 
 };
 
+} // namespace bench
 } // namespace solutions
 } // namespace core
 } // namespace dnn_opt

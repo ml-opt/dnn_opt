@@ -84,7 +84,7 @@ hyper::hyper(generator* generator, algorithm* base, unsigned int size)
 hyper::~hyper()
 {
 }
-
+ // namespace bench
 } // namespace solutions
 } // namespace core
 } // namespace dnn_opt

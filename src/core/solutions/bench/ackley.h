@@ -25,13 +25,11 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DNN_OPT_CORE_SOLUTIONS_HYPER
-#define DNN_OPT_CORE_SOLUTIONS_HYPER
+#ifndef DNN_OPT_CORE_SOLUTIONS_BENCH_ACKLEY
+#define DNN_OPT_CORE_SOLUTIONS_BENCH_ACKLEY
 
-#include <functional>
 #include <core/base/generator.h>
 #include <core/base/solution.h>
-#include <core/base/algorithm.h>
 
 namespace dnn_opt
 {
@@ -39,44 +37,53 @@ namespace core
 {
 namespace solutions
 {
+namespace bench
+{
 
 /**
- * @brief The hyper class represents an optimization algorithm hyper-parameter
- * solution.
+ * @brief The ackley class represents an optimization solution which fitness
+ * cost is calculated via Ackley function.
+ *
+ * The equation for this function is given by:
+ * 
+ * f(x) = -20e^{0.02\sqrt{n^-1\sum_{i=0}^n{x_i^2}}} - 
+ *        e^{n^{-1}\sum_{i=0}^n{\cos(2\pi x_i)}} + 20 + e
+ *
+ * Ackley function have a global minima in {0,..., 0} with a value of 0.
+ * A commonly used search domain for testing is [-35, 35]. Ackley is 
+ * continuous, differentiable, non-separable, scalable and multi-modal. See
+ * the following reference [f_1] in:
+ * 
+ * MOMIN, JAMIL; YANG, Xin-She. A literature survey of benchmark functions for 
+ * global optimization problems. Journal of Mathematical Modelling and Numerical 
+ * Optimisation, 2013, vol. 4, no 2, p. 150-194.
+ *
  *
  * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
  * @version 1.0
- * @date November, 2017
+ * @date November, 2016
  */
-class hyper : public virtual solution
+class ackley : public virtual solution
 {
 public:
 
-  static hyper* make(generator* generator, algorithm* base, unsigned int size);
+  /**
+   * @brief Returns an instance of the ackley class.
+   *
+   * @param generator an instance of a generator class. The
+   * generator is used to initialize the parameters of this solution.
+   *
+   * @param size is the number of parameters for this solution. Default is 10.
+   *
+   * @return an instance of ackley class.
+   */
+  static ackley* make(generator* generator, unsigned int size = 10);
 
-  virtual algorithm* get_algorithm() const;
-
-  void set_do_optimize(std::function<void(algorithm*)> do_optimize);
-
-  virtual hyper* clone() override;
-
-  virtual bool assignable(const solution* s) const override;
-
-  virtual void assign(solution* s) override;
-
-  virtual ~hyper();
+  virtual ~ackley();
 
 protected:
 
-   /**
-    * @copydoc solution::calculate_fitness()
-    *
-    * Performs @ref get_iteration_count() optimization steeps of the provided
-    * @ref get_algorithm() and returns its fitness.
-    *
-    * @return the fitness of this solution.
-    */
-  virtual float calculate_fitness() override;
+   virtual float calculate_fitness() override;
 
   /**
    * @brief The basic contructor for this class.
@@ -87,15 +94,11 @@ protected:
    *
    * @param size is the number of parameters for this solution. Default is 10.
    */
-  hyper(generator* generator, algorithm* base, unsigned int size = 10);
-
-  /** The elementary optimization algorithm */
-  algorithm* _base;
-
-  std::function<void(algorithm*)> _do_optimize;
+  ackley(generator* generator, unsigned int size = 10 );
 
 };
 
+} // namespace bench
 } // namespace solutions
 } // namespace core
 } // namespace dnn_opt

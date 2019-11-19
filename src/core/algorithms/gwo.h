@@ -84,7 +84,6 @@ protected:
   template<class t_solution>
   gwo(set<t_solution>* solutions);
 
-
 };
 
 /* templated function implementations */

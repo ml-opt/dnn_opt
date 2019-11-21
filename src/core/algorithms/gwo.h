@@ -40,7 +40,11 @@ namespace algorithms
 {
 
 /**
- *
+ * @brief The GWO class implements an optimization metaheuristic algorithm
+ * called Particle Swarm Optimization (GWO). This is a population based on
+ * collective intelligence, algorithm inspired in the hunting behavior of
+ * gray wolves.
+ * @author Randy Alonso Benitez <rbenitez@estudiantes.uci.cu>
  */
 class gwo : public virtual algorithm
 {

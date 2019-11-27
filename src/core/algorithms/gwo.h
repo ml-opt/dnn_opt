@@ -61,9 +61,13 @@ public:
    */
   virtual void reset() override;
 
+  virtual float objfunc() ;
+
   virtual void optimize() override;
 
   using algorithm::optimize;
+
+  virtual void update_Elite() override;
 
   virtual solution* get_best() override;
 
@@ -80,6 +84,8 @@ protected:
 
   virtual void init() override;
 
+
+
   /**
    * @brief The basic contructor of a gwo class.
    *
@@ -87,7 +93,9 @@ protected:
    */
   template<class t_solution>
   gwo(set<t_solution>* solutions);
-
+  solution* _alpha = get_solutions()->get(0);
+  solution* _beta = get_solutions()->get(1);
+  solution* _delta = get_solutions()->get(2);
 };
 
 /* templated function implementations */

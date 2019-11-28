@@ -41,10 +41,12 @@ namespace algorithms
 
 /**
  * @brief The GWO class implements an optimization metaheuristic algorithm
- * called Particle Swarm Optimization (GWO). This is a population based on
- * collective intelligence, algorithm inspired in the hunting behavior of
- * gray wolves.
+ * called Gray Wolf Optimization (GWO). This is a population based algorithm
+ * inspired in the hunting behavior of gray wolves.
+ *
  * @author Randy Alonso Benitez <rbenitez@estudiantes.uci.cu>
+ * @version 1.0
+ * @date November, 2019
  */
 class gwo : public virtual algorithm
 {
@@ -56,18 +58,18 @@ public:
   /**
    * @copydoc algorithm::reset()
    *
-   * Re-generate the solutions, update the local best solutions and the global
-   * best solution accordingly. Set hyper-parameters to its defaults values.
+   * Re-generate the solutions, set hyper-parameters to its defaults values.
    */
   virtual void reset() override;
-
-  virtual float objfunc() ;
 
   virtual void optimize() override;
 
   using algorithm::optimize;
 
-  virtual void update_Elite() override;
+  /**
+   * @brief Update the values ​​of the three best agents.
+   */
+  virtual void update_elite() override;
 
   virtual solution* get_best() override;
 
@@ -83,9 +85,6 @@ public:
 protected:
 
   virtual void init() override;
-
-
-
   /**
    * @brief The basic contructor of a gwo class.
    *
@@ -93,9 +92,18 @@ protected:
    */
   template<class t_solution>
   gwo(set<t_solution>* solutions);
-  solution* _alpha = get_solutions()->get(0);
-  solution* _beta = get_solutions()->get(1);
-  solution* _delta = get_solutions()->get(2);
+
+  solution* _alpha;
+  solution* _beta ;
+  solution* _delta;
+  float* _a ;
+  float* _r1;
+  float* _r2;
+  float* _A1;
+  float* _C1;
+  float* _r;
+
+
 };
 
 /* templated function implementations */

@@ -44,6 +44,9 @@ namespace algorithms
  * called Gray Wolf Optimization (GWO). This is a population based algorithm
  * inspired in the hunting behavior of gray wolves.
  *
+ * MIRJALILI, Seyedali; MIRJALILI, Seyed Mohammad; LEWIS, Andrew. Grey wolf
+ * optimizer. Advances in engineering software, 2014, vol. 69, p. 46-61.
+ *
  * @author Randy Alonso Benitez <rbenitez@estudiantes.uci.cu>
  * @version 1.0
  * @date November, 2019
@@ -102,8 +105,6 @@ protected:
   float* _A1;
   float* _C1;
   float* _r;
-
-
 };
 
 /* templated function implementations */

@@ -99,12 +99,23 @@ protected:
   solution* _alpha;
   solution* _beta ;
   solution* _delta;
+  float* _dim;
   float* _a ;
   float* _r1;
   float* _r2;
   float* _A1;
   float* _C1;
   float* _r;
+  float* _Da;
+  float* _Db;
+  float* _Dd;
+  float* _X1;
+  float* _X2;
+  float* _X3;
+  float* _X;
+
+  /** A generator of random values for he @ref optimize() operation */
+  generators::uniform* _generator;
 };
 
 /* templated function implementations */
@@ -113,7 +124,12 @@ template<class t_solution>
 gwo* gwo::make(set<t_solution> *solutions)
 {
   auto* result = new gwo(solutions);
+
   result->init();
+  if (get_solutions()->size() < 3)
+  {
+    std::invalid_argument("algorithms::gwo expect as minimun 3 values");
+  }
   return result;
 }
 

@@ -28,12 +28,23 @@ int main(int argc, char** argv)
   int eta = input("-eta", 4000, argc, argv);
   int algorithm_type = input("-a", 0, argc, argv);
   int output_type = input("-o", 3, argc, argv);
+  
+  int in_dim = input("-in-dim", 20, argc, argv);
+  int out_dim = input("-out-dim", 20, argc, argv);
 
   /* generator that defines the search space */
   auto* generator = generators::uniform::make(-1.0f, 1.0f);
-  auto* train = readers::csv_reader::make(db_train, 20, 1, ' ', true);
-  auto* test = readers::csv_reader::make(db_test, 20, 1, ' ', true);
+  auto* train = readers::csv_reader::make(db_train, in_dim, out_dim, ' ', true);
+  auto* test = readers::csv_reader::make(db_test, in_dim, out_dim, ' ', true);
   auto* act = activations::sigmoid::make();
+  
+  float noise = input_f("-noise", 0.05, argc, argv);
+  int count = noise * train->size();
+  
+  for(int i = 0; i < count; i++)
+  {
+    train->out_data()[i] += 0.1f * generator->generate();
+  }
 
   /* set that contains the individuals of the population */
   auto* solutions = set<solutions::network>::make(p);
@@ -56,6 +67,7 @@ int main(int argc, char** argv)
 
   /* creating algorithm */
   auto* algorithm = create_algorithm(algorithm_type, solutions);
+  auto* cont = algorithms::continuation::make(algorithm, algorithms::continuation::fixed::make(train, input("-hf", 4, argc, argv), input_f("-he", 0.2, argc, argv)));
 
   /* hyper-parameters, see @ref dnn_opt::core::algorithm::set_params() */
   set_hyper(algorithm_type, algorithm, argc, argv);
@@ -66,7 +78,7 @@ int main(int argc, char** argv)
   float time = 0;
 
   auto start = high_resolution_clock::now();
-  algorithm->optimize_eval(eta, []()
+  cont->optimize_eval(eta, []()
   {
     return true;
   });
@@ -75,7 +87,7 @@ int main(int argc, char** argv)
   /* collect statics */
 
   time = duration_cast<milliseconds>(end - start).count();
-  fitness = dynamic_cast<solutions::network*>(algorithm->get_best())->test(test);
+  fitness = dynamic_cast<solutions::network*>(cont->get_best())->test(test);
 
   example_out(output_type, time, fitness);
 
@@ -85,7 +97,7 @@ int main(int argc, char** argv)
   delete solutions->clean();
   delete act;
   delete test, train;
-  delete algorithm;
+  delete algorithm, cont;
   delete generator;
 
   return 0;

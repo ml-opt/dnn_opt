@@ -1,4 +1,4 @@
-name: Build core
+name: Build Core
 
 on: [push]
 

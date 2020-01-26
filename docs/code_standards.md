@@ -2,11 +2,11 @@ This section specifies the code standards for the development of new functionali
 
 ## Variables, identifiers and indentation
 
-  1.1. Use lower camel case all the time, even for class names.
+  1.1. Use lower snake case all the time, even for class names (C++ Standard Library convention).
   
   1.2. Variable names and identifiers should be written in English. Avoid the use of contractions.
   
-  1.3. Private and protected members should start with underscore `_`.
+  1.3. Private and protected members should start with `m_`.
   
   1.4. Each line should contain no more than 80 characters.
   
@@ -34,7 +34,7 @@ This section specifies the code standards for the development of new functionali
 
 ## Comments and documentation
 
-  3.1. Prefer using the enclosed form of comment ` /* this is a comment*/ ` instead of other forms.
+  3.1. Prefer using the enclosed form of comment for documentation ` /* this is a comment*/ ` instead of other forms.
   
   3.2. If you need to put some explanatory comment put it in the line above. Leave an empty line if the comment apply for more than one line below. Use this together with 2.5.
   
@@ -61,6 +61,12 @@ This section specifies the code standards for the development of new functionali
   
   4.4. Always specify virtual modifier in derived classes.
   
-  4.5. Include headers that do not belong to the library first and then include the headers that belong to the library.
+  4.5. Include headers that do not belong to the library first using `<>` for non local files and then include the headers that belong to the library using `""` for local files.
   
   4.6. In .cpp files implement the most important methods of the class first, then implement trivial methods (e.g. getters and setters) and finally implement the constructor and destructor of the class.
+  
+  4.7. Use `nullptr` instead of `0`  to indicate a null pointer.
+  
+  4.8. Never use using namespace in a header file. This causes the namespace you are using to be pulled into the namespace of all files that include the header file.
+  
+  4.9. Use include guards in header files.

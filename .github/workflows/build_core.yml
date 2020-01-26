@@ -9,11 +9,7 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
-    - name: mkdir
-      run: mkdir bin
-    - name: cd bin
-      run: cd bin
     - name: cmake
-      run: cmake ..
+      run: cmake
     - name: make
       run: make

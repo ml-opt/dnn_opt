@@ -3,13 +3,7 @@
 
 Welcome to dnn_opt, which states for deep neural network optimization. This is a C++11 library for high dimensional optimization and specifically for deep neural network optimization. However, it can be used for any kind of optimization problem.
 
-The library will support sequential, multicore and GPU implementations for all the features. The current support for each implementation is shown bellow. 
-
-* ![core implementation progress](http://progressed.io/bar/100) core: sequential implementation
-* ![optimized implementation progress](http://progressed.io/bar/89) copt: parallel CPU implementation
-* ![cuda implementation progress](http://progressed.io/bar/90) cuda: parallel GPU implementation
-
-Keep reading to find out what you can currently do.
+The library will support sequential, multicore and GPU implementations for all the features. Keep reading to find out what you can currently do.
 
 # Resources
 

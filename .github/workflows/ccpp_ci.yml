@@ -9,16 +9,11 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
-    - name: configure
-      run: ./configure
+    - name: mkdir
+      run: mkdir bin
+    - name: cd bin
+      run: cd bin
+    - name: cmake
+      run: cmake ..
     - name: make
       run: make
-    - name: make check
-      run: make check
-    - name: make distcheck
-      run: make distcheck
-    - name: clang-format lint
-      uses: DoozyX/clang-format-lint-action@v0.5
-      with:
-        source: ./src
-        clangFormatVersion: 9

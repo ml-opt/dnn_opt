@@ -1,15 +1,10 @@
+![Build Core](https://github.com/jairodelgado/dnn_opt/workflows/BuildCore/badge.svg)
 
 # Welcome to dnn_opt
 
 Welcome to dnn_opt, which states for deep neural network optimization. This is a C++11 library for high dimensional optimization and specifically for deep neural network optimization. However, it can be used for any kind of optimization problem.
 
-The library will support sequential, multicore and GPU implementations for all the features. The current support for each implementation is shown bellow. 
-
-* ![core implementation progress](http://progressed.io/bar/100) core: sequential implementation
-* ![optimized implementation progress](http://progressed.io/bar/89) copt: parallel CPU implementation
-* ![cuda implementation progress](http://progressed.io/bar/90) cuda: parallel GPU implementation
-
-Keep reading to find out what you can currently do.
+The library will support sequential, multicore and GPU implementations for all the features. Keep reading to find out what you can currently do.
 
 # Resources
 
@@ -155,6 +150,16 @@ Training a DNN requires training patterns. dnn_opt load training patterns via cl
 1. `::readers::file_reader` that reads from CSV files, please read the class documentation.
 
 Extending new readers is straight-forward. I'll include more documentation about this but until that, you can refer to the documentation in the code.
+
+# Related research papers
+
+- Rojas-Delgado J., Milián Núñez V., Trujillo-Rasúa R., Bello R. (2019) Continuous Hyper-parameter Configuration for Particle Swarm Optimization via Auto-tuning. In: Lecture Notes in Computer Science, vol 11896. Springer, Cham. URL:  https://link.springer.com/chapter/10.1007/978-3-030-33904-3_43
+
+- Rojas-Delgado J., Trujillo-Rasúa R., Bello R., Moya G.E.J. (2019) Video Popularity Forecasting to Improve Cache Miss Rate in Content Delivery Networks. In: Lecture Notes in Computer Science, vol 11896. Springer, Cham. URL: https://link.springer.com/chapter/10.1007/978-3-030-33904-3_73
+
+- Rojas-Delgado J., Trujillo-Rasúa R. y Bello R. (2019) A continuation approach for training artificial neural networks with meta-heuristics. Pattern Recognition Letters, vol. 125, 373 - 380. Elseiver. URL: http://www.sciencedirect.com/science/article/pii/S0167865519301667
+
+- Rojas-Delgado J., Trujillo-Rasúa R. (2018) Training Neural Networks by Continuation Particle Swarm Optimization. In: Lecture Notes in Computer Science, vol 11047. Springer, Cham. URL: https://link.springer.com/chapter/10.1007/978-3-030-01132-1_7
 
 # How to contribute
 

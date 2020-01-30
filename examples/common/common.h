@@ -108,16 +108,26 @@ std::string result = default_value;
  *
  * Solutions that can be created with this function are listed below:
  *
- * 0 - @ref dnn_opt::core::solutions::de_jung
- * 1 - @ref dnn_opt::core::solutions::ackley
- * 2 - @ref dnn_opt::core::solutions::giewangk
- * 3 - @ref dnn_opt::core::solutions::rastrigin
- * 4 - @ref dnn_opt::core::solutions::rosenbrock
- * 5 - @ref dnn_opt::core::solutions::schwefel
- * 6 - @ref dnn_opt::core::solutions::styblinski_tang
- * 7 - @ref dnn_opt::core::solutions::step
- * 8 - @ref dnn_opt::core::solutions::alpine
- *
+ * 0 - @ref dnn_opt::core::solutions::bench::de_jung
+ * 1 - @ref dnn_opt::core::solutions::bench::ackley
+ * 2 - @ref dnn_opt::core::solutions::bench::giewangk
+ * 3 - @ref dnn_opt::core::solutions::bench::rastrigin
+ * 4 - @ref dnn_opt::core::solutions::bench::rosenbrock
+ * 5 - @ref dnn_opt::core::solutions::bench::schwefel
+ * 6 - @ref dnn_opt::core::solutions::bench::styblinski_tang
+ * 7 - @ref dnn_opt::core::solutions::bench::step
+ * 8 - @ref dnn_opt::core::solutions::bench::alpine
+ * 9 - @ref dnn_opt::core::solutions::bench::brown_function
+ * 10 - @ref dnn_opt::core::solutions::bench::chung_reynolds
+ * 11 - @ref dnn_opt::core::solutions::bench::cosine_mixture
+ * 12 - @ref dnn_opt::core::solutions::bench::csendes
+ * 13 - @ref dnn_opt::core::solutions::bench::deb1
+ * 14 - @ref dnn_opt::core::solutions::bench::deb3
+ * 15 - @ref dnn_opt::core::solutions::bench::dixonp
+ * 16 - @ref dnn_opt::core::solutions::bench::eggh
+ * 17 - @ref dnn_opt::core::solutions::bench::expo
+ * 18 - @ref dnn_opt::core::solutions::bench::giunta
+ * 
  * @param type the type of the solution to be created.
  * @param n the amount of dimensions of the solution.
  * @param generator an pointer of dnn_opt::core::generator for the solution.
@@ -131,23 +141,43 @@ solution* create_solution(int type, int n, generator* generator)
   switch(type)
   {
   case 0 :
-    return solutions::de_jung::make(generator, n);
+    return solutions::bench::de_jung::make(generator, n);
   case 1:
-    return solutions::ackley::make(generator, n);
+    return solutions::bench::ackley::make(generator, n);
   case 2:
-    return solutions::griewangk::make(generator, n);
+    return solutions::bench::griewangk::make(generator, n);
   case 3:
-    return solutions::rastrigin::make(generator, n);
+    return solutions::bench::rastrigin::make(generator, n);
   case 4:
-    return solutions::rosenbrock::make(generator, n);
+    return solutions::bench::rosenbrock::make(generator, n);
   case 5:
-    return solutions::schwefel::make(generator, n);
+    return solutions::bench::schwefel::make(generator, n);
   case 6:
-    return solutions::styblinski_tang::make(generator, n);
+    return solutions::bench::styblinski_tang::make(generator, n);
   case 7:
-    return solutions::step::make(generator, n);
+    return solutions::bench::step::make(generator, n);
   case 8:
-    return solutions::alpine::make(generator, n);
+    return solutions::bench::alpine::make(generator, n);
+  case 9:
+    return solutions::bench::brown::make(generator, n);
+  case 10:
+    return solutions::bench::chung_r::make(generator, n);
+  case 11:
+    return solutions::bench::cosine_m::make(generator, n);
+  case 12:
+    return solutions::bench::csendes::make(generator, n);
+  case 13:
+    return solutions::bench::deb1::make(generator, n);
+  case 14:
+    return solutions::bench::deb3::make(generator, n);
+  case 15:
+    return solutions::bench::dixonp::make(generator, n);
+  case 16:
+    return solutions::bench::eggh::make(generator, n);
+  case 17:
+    return solutions::bench::expo::make(generator, n);
+  case 18:
+    return solutions::bench::giunta::make(generator, n);
   default:
     throw invalid_argument("solution type not found");
   }

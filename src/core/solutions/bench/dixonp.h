@@ -24,9 +24,8 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
-#ifndef DNN_OPT_CORE_SOLUTIONS_ALPINE
-#define DNN_OPT_CORE_SOLUTIONS_ALPINE
+#ifndef DNN_OPT_CORE_SOLUTIONS_BENCH_DIXONP
+#define DNN_OPT_CORE_SOLUTIONS_BENCH_DIXONP
 
 #include <core/base/generator.h>
 #include <core/base/solution.h>
@@ -37,64 +36,66 @@ namespace core
 {
 namespace solutions
 {
+namespace bench
+{
 
 /**
- * @brief The alpine class represents an optimization solution which fitness
- * cost is calculated via alpine function.
+ * @brief The dixonp class represents an optimization solutions which
+ * fitness cost is calculated via Dixon & Price function.
  *
  * The equation for this function is given by:
- * 
- * f(x) = \sum_{i=0}^n{|x_i\sin(x_i) + 0.1\x_i|}
  *
- * Alpine function have a global minima in {0,..., 0} with a value of 0.
- * A commonly used search domain for testing is [-10, 10]. Alpine is 
- * continuous, non-differentiable, separable, non-scalable, multimodal. See
- * the following reference [f_6] in:
+ * f(x) = {({x_1} - 1)}^2 + \sum_{i = 2}^{n}{i{(2{x_i}^2 - x_{i-1})}}
+ *
+ * Dixon & Price function have a global minima in 2(\frac{{2^n} - 2}{2^n}) with 
+ * a value of 0, where n represents the dimension of the problem.
+ * A commonly used search domain for testing is [-10, 10]. Dixon & Price 
+ * is continuous, differentiable, non-separable, scalable and unimodal. 
+ * See the following reference [f_48] in:
  * 
  * MOMIN, JAMIL; YANG, Xin-She. A literature survey of benchmark functions for 
  * global optimization problems. Journal of Mathematical Modelling and Numerical 
  * Optimisation, 2013, vol. 4, no 2, p. 150-194.
  *
  *
- * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
+ * @author Alejandro Ruiz Madruga <amadruga@estudiantes.uci.cu>
  * @version 1.0
- * @date November, 2018
+ * @date November, 2019
  */
-class alpine : public virtual solution
+class dixonp : public virtual solution
 {
 public:
 
   /**
-   * @brief Returns an instance of the alpine class.
+   * @brief Returns an instance of this object. This method
+   * is an implementation of the factory pattern.
    *
    * @param generator an instance of a generator class. The
    * generator is used to initialize the parameters of this solution.
    *
-   * @param size is the number of parameters for this solution. Default is 10.
+   * @param size is the number of parameters for this solution. Default is 20.
    *
-   * @return an instance of alpine class.
+   * @return a pointer to an instance of the dixonp class.
    */
-  static alpine* make(generator* generator, unsigned int size = 10);
+  static dixonp* make(generator* generator, unsigned int size = 20);
 
-  virtual ~alpine();
+  virtual ~dixonp();
 
 protected:
 
-   virtual float calculate_fitness() override;
+  virtual float calculate_fitness();
 
   /**
-   * @brief The basic contructor for this class.
-   *
+   * @brief This is the basic contructor for this class.
    * @param generator an instance of a generator class.
-   * The generator is used to initialize the parameters of this
-   * solution.
    *
-   * @param size is the number of parameters for this solution. Default is 10.
+   * @param size is the number of parameters for this solution. Default is 20.
    */
-  alpine(generator* generator, unsigned int size = 10 );
+  dixonp(generator* generator, unsigned int size = 20);
 
 };
 
+} // namespace bench
 } // namespace solutions
 } // namespace core
 } // namespace dnn_opt

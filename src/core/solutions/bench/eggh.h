@@ -24,9 +24,8 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
-#ifndef DNN_OPT_CORE_SOLUTIONS_STYBLINSKI_TANG
-#define DNN_OPT_CORE_SOLUTIONS_STYBLINSKI_TANG
+#ifndef DNN_OPT_CORE_SOLUTIONS_BENCH_EGG_H
+#define DNN_OPT_CORE_SOLUTIONS_BENCH_EGG_H
 
 #include <core/base/generator.h>
 #include <core/base/solution.h>
@@ -37,61 +36,67 @@ namespace core
 {
 namespace solutions
 {
+namespace bench
+{
 
 /**
- * @brief The styblinski_tang class represents an optimization solution 
- * which fitness cost is calculated via Styblinski-Tang function.
- * 
+ * @brief The eggh class represents an optimization solutions which
+ * fitness cost is calculated via Egg Holder function.
+ *
  * The equation for this function is given by:
  *
- * f(x) = 0.5 * \sum_{i=0}^n{x_i^4 + 16x_i^2 + 5x_i}
+ * f(x) = \sum_{i=1}^{n-1}[-({x_{i+1}}+47)\sin\sqrt{|{{x_{i+1}+{x_i}/2+47}|}}-
+ * {x_i}\sin\sqrt{|{x_i}-({x_{i+1}}+47)|}]
  *
- * Styblinski-Tang function have a global minima in {-2.093,..., 2.9053} with 
- * a value of -78.332. A commonly used search domain for testing is [-5, 5].
- * Styblinski-Tang is continuous, differentiable, non-separable, non-scalable
- * and multimodal.  See the following reference[f_144] in:
- *
+ * Egg Holder function have a global minima in {512, 404.2319} with a near value 
+ * of 959.64.
+ * A commonly used search domain for testing is [-512, 512]. Egg Holder 
+ * is continuous, differentiable, non-separable, scalable and multimodal. 
+ * See the following reference [f_53] in:
+ * 
  * MOMIN, JAMIL; YANG, Xin-She. A literature survey of benchmark functions for 
  * global optimization problems. Journal of Mathematical Modelling and Numerical 
  * Optimisation, 2013, vol. 4, no 2, p. 150-194.
  *
  *
- * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
+ * @author Alejandro Ruiz Madruga <amadruga@estudiantes.uci.cu>
  * @version 1.0
- * @date November, 2016
+ * @date November, 2019
  */
-class styblinski_tang : public virtual solution
+class eggh : public virtual solution
 {
 public:
-  
-  /**
-   * @brief Returns an instance the styblinski_tang class
-   *
-   * @param generator an instance of a generator class. 
-   *
-   * @param size is the number of parameters for this solution. Default is 10.
-   *
-   * @return an instance of styblinski_tang class.
-   */
-  static styblinski_tang* make(generator* generator, unsigned int size = 10);
 
-  virtual ~styblinski_tang();
+  /**
+   * @brief Returns an instance of this object. This method
+   * is an implementation of the factory pattern.
+   *
+   * @param generator an instance of a generator class. The
+   * generator is used to initialize the parameters of this solution.
+   *
+   * @param size is the number of parameters for this solution. Default is 1024.
+   *
+   * @return a pointer to an instance of the eggh class.
+   */
+  static eggh* make(generator* generator, unsigned int size = 1024);
+
+  virtual ~eggh();
 
 protected:
 
-  virtual float calculate_fitness() override;
+  virtual float calculate_fitness();
 
   /**
-   * @brief The basic contructor for this class.
-   *
+   * @brief This is the basic contructor for this class.
    * @param generator an instance of a generator class.
    *
-   * @param size is the number of parameters for this solution. Default is 10.
+   * @param size is the number of parameters for this solution. Default is 1024.
    */
-  styblinski_tang(generator* generator, unsigned int size );
+  eggh(generator* generator, unsigned int size = 1024);
 
 };
 
+} // namespace bench
 } // namespace solutions
 } // namespace core
 } // namespace dnn_opt

@@ -25,13 +25,11 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DNN_OPT_CORE_SOLUTIONS_HYPER
-#define DNN_OPT_CORE_SOLUTIONS_HYPER
+#ifndef DNN_OPT_CORE_SOLUTIONS_BENCH_STYBLINSKI_TANG
+#define DNN_OPT_CORE_SOLUTIONS_BENCH_STYBLINSKI_TANG
 
-#include <functional>
 #include <core/base/generator.h>
 #include <core/base/solution.h>
-#include <core/base/algorithm.h>
 
 namespace dnn_opt
 {
@@ -39,63 +37,64 @@ namespace core
 {
 namespace solutions
 {
+namespace bench
+{
 
 /**
- * @brief The hyper class represents an optimization algorithm hyper-parameter
- * solution.
+ * @brief The styblinski_tang class represents an optimization solution 
+ * which fitness cost is calculated via Styblinski-Tang function.
+ * 
+ * The equation for this function is given by:
+ *
+ * f(x) = 0.5 * \sum_{i=0}^n{x_i^4 + 16x_i^2 + 5x_i}
+ *
+ * Styblinski-Tang function have a global minima in {-2.093,..., 2.9053} with 
+ * a value of -78.332. A commonly used search domain for testing is [-5, 5].
+ * Styblinski-Tang is continuous, differentiable, non-separable, non-scalable
+ * and multimodal.  See the following reference[f_144] in:
+ *
+ * MOMIN, JAMIL; YANG, Xin-She. A literature survey of benchmark functions for 
+ * global optimization problems. Journal of Mathematical Modelling and Numerical 
+ * Optimisation, 2013, vol. 4, no 2, p. 150-194.
+ *
  *
  * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
  * @version 1.0
- * @date November, 2017
+ * @date November, 2016
  */
-class hyper : public virtual solution
+class styblinski_tang : public virtual solution
 {
 public:
+  
+  /**
+   * @brief Returns an instance the styblinski_tang class
+   *
+   * @param generator an instance of a generator class. 
+   *
+   * @param size is the number of parameters for this solution. Default is 10.
+   *
+   * @return an instance of styblinski_tang class.
+   */
+  static styblinski_tang* make(generator* generator, unsigned int size = 10);
 
-  static hyper* make(generator* generator, algorithm* base, unsigned int size);
-
-  virtual algorithm* get_algorithm() const;
-
-  void set_do_optimize(std::function<void(algorithm*)> do_optimize);
-
-  virtual hyper* clone() override;
-
-  virtual bool assignable(const solution* s) const override;
-
-  virtual void assign(solution* s) override;
-
-  virtual ~hyper();
+  virtual ~styblinski_tang();
 
 protected:
 
-   /**
-    * @copydoc solution::calculate_fitness()
-    *
-    * Performs @ref get_iteration_count() optimization steeps of the provided
-    * @ref get_algorithm() and returns its fitness.
-    *
-    * @return the fitness of this solution.
-    */
   virtual float calculate_fitness() override;
 
   /**
    * @brief The basic contructor for this class.
    *
    * @param generator an instance of a generator class.
-   * The generator is used to initialize the parameters of this
-   * solution.
    *
    * @param size is the number of parameters for this solution. Default is 10.
    */
-  hyper(generator* generator, algorithm* base, unsigned int size = 10);
-
-  /** The elementary optimization algorithm */
-  algorithm* _base;
-
-  std::function<void(algorithm*)> _do_optimize;
+  styblinski_tang(generator* generator, unsigned int size );
 
 };
 
+} // namespace bench
 } // namespace solutions
 } // namespace core
 } // namespace dnn_opt

@@ -1,11 +1,13 @@
 #include <math.h>
-#include <core/solutions/de_jung.h>
+#include <core/solutions/bench/de_jung.h>
 
 namespace dnn_opt
 {
 namespace core
 {
 namespace solutions
+{
+namespace bench
 {
 
 de_jung* de_jung::make(generator *generator, unsigned int size)
@@ -26,7 +28,7 @@ float de_jung::calculate_fitness()
 
   for(int i = 0; i < size(); i++)
   {
-    result += pow(params[i], 2);
+    result += pow(params[i], 2.0f);
   }
 
   return result;
@@ -43,6 +45,7 @@ de_jung::~de_jung()
 
 }
 
+} // namespace bench
 } // namespace solutions
 } // namespace core
 } // namespace dnn_opt

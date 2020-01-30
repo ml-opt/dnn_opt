@@ -1,5 +1,5 @@
 #include <math.h>
-#include <core/solutions/styblinski_tang.h>
+#include <core/solutions/bench/schwefel.h>
 
 namespace dnn_opt
 {
@@ -7,17 +7,19 @@ namespace core
 {
 namespace solutions
 {
-
-styblinski_tang* styblinski_tang::make(generator* generator, unsigned int size)
+namespace bench
 {
-  auto* result = new styblinski_tang(generator, size);
+
+schwefel* schwefel::make(generator* generator, unsigned int size)
+{
+  auto* result = new schwefel(generator, size);
 
   result->init();
 
   return result;
 }
 
-float styblinski_tang::calculate_fitness()
+float schwefel::calculate_fitness()
 {
   int n = size();
   float* params = get_params();
@@ -33,17 +35,18 @@ float styblinski_tang::calculate_fitness()
   return result / 2;
 }
 
-styblinski_tang::styblinski_tang(generator* generator, unsigned int size )
+schwefel::schwefel(generator* generator, unsigned int size )
 : solution(generator, size)
 {
 
 }
 
-styblinski_tang::~styblinski_tang()
+schwefel::~schwefel()
 {
 
 }
 
+} // namespace bench
 } // namespace solutions
 } // namespace core
 } // namespace dnn_opt

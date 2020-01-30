@@ -1,11 +1,13 @@
 #include <math.h>
-#include <core/solutions/rastrigin.h>
+#include <core/solutions/bench/rastrigin.h>
 
 namespace dnn_opt
 {
 namespace core
 {
 namespace solutions
+{
+namespace bench
 {
 
 rastrigin* rastrigin::make(generator* generator, unsigned int size)
@@ -44,6 +46,7 @@ rastrigin::~rastrigin()
 
 }
 
+} // namespace bench
 } // namespace solutions
 } // namespace core
 } // namespace dnn_opt

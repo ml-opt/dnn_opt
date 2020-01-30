@@ -1,11 +1,13 @@
 #include <cmath>
-#include <core/solutions/step.h>
+#include <core/solutions/bench/step.h>
 
 namespace dnn_opt
 {
 namespace core
 {
 namespace solutions
+{
+namespace bench
 {
 
 step* step::make(generator* generator, unsigned int size)
@@ -44,6 +46,7 @@ step::~step()
 
 }
 
+} // namespace bench
 } // namespace solutions
 } // namespace core
 } // namespace dnn_opt

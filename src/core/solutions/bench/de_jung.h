@@ -24,12 +24,12 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
-#ifndef DNN_OPT_CORE_SOLUTIONS_GRIEWANGK
-#define DNN_OPT_CORE_SOLUTIONS_GRIEWANGK
+#ifndef DNN_OPT_CORE_SOLUTIONS_BENCH_DE_JUNG
+#define DNN_OPT_CORE_SOLUTIONS_BENCH_DE_JUNG
 
 #include <core/base/generator.h>
 #include <core/base/solution.h>
+
 
 namespace dnn_opt
 {
@@ -37,20 +37,22 @@ namespace core
 {
 namespace solutions
 {
+namespace bench
+{
 
 /**
- * @brief The griewangk class represents an optimization solutions which
- * fitness cost is calculated via Griewangk function.
+ * @brief The de_jung class represents an optimization solutions which
+ * fitness cost is calculated via De'Jung function.
  *
  * The equation for this function is given by:
  *
- * f(x) = \sum_{i=0}^n{x_i^2 / 4000} - \prod_{i=0}^n{\cos(x_i / \sqrt{i})} + 1
+ * f(x) = \sum_{i=0}^{n}{{x_i}^2}
  *
- * Griewangk function have a global minima in {0,..., 0} with a value of 0.
- * A commonly used search domain for testing is [-100, 100]. Griewangk is continuous, 
- * differentiable, non-separable, scalable and multimodal. See the following 
- * reference [f_59] in:
- *
+ * De'Jung function have a global minima in {0,..., 0} with a value of 0.
+ * A commonly used search domain for testing is [0, 10]. De Jung is continuous, 
+ * differentiable, separable, scalable and multimodal. See the following 
+ * reference [f_137] in:
+ * 
  * MOMIN, JAMIL; YANG, Xin-She. A literature survey of benchmark functions for 
  * global optimization problems. Journal of Mathematical Modelling and Numerical 
  * Optimisation, 2013, vol. 4, no 2, p. 150-194.
@@ -60,38 +62,40 @@ namespace solutions
  * @version 1.0
  * @date November, 2016
  */
-class griewangk : public virtual solution
+class de_jung : public virtual solution
 {
 public:
 
   /**
-   * @brief Returns an instance of the griewangk class.
+   * @brief Returns an instance of this object. This method
+   * is an implementation of the factory pattern.
    *
-   * @param generator an instance of a generator class.
+   * @param generator an instance of a generator class. The
+   * generator is used to initialize the parameters of this solution.
    *
    * @param size is the number of parameters for this solution. Default is 10.
    *
-   * @return a pointer to an instance of the griewangk class.
+   * @return a pointer to an instance of the de_jung class.
    */
-  static griewangk* make(generator* generator, unsigned int size = 10);
+  static de_jung* make(generator* generator, unsigned int size = 10);
 
-  virtual ~griewangk();
+  virtual ~de_jung();
 
 protected:
 
   virtual float calculate_fitness() override;
 
   /**
-   * @brief Thhe basic contructor for this class.
-   *
+   * @brief This is the basic contructor for this class.
    * @param generator an instance of a generator class.
    *
    * @param size is the number of parameters for this solution. Default is 10.
    */
-  griewangk(generator* generator, unsigned int size = 10);
+  de_jung(generator* generator, unsigned int size = 10);
 
 };
 
+} // namespace bench
 } // namespace solutions
 } // namespace core
 } // namespace dnn_opt

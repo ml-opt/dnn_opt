@@ -1,11 +1,13 @@
 #include <math.h>
-#include <core/solutions/ackley.h>
+#include <core/solutions/bench/ackley.h>
 
 namespace dnn_opt
 {
 namespace core
 {
 namespace solutions
+{
+namespace bench
 {
 
 ackley* ackley::make(generator* generator, unsigned int size)
@@ -50,6 +52,7 @@ ackley::~ackley()
 
 }
 
+} // namespace bench
 } // namespace solutions
 } // namespace core
 } // namespace dnn_opt

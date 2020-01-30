@@ -24,9 +24,8 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
-#ifndef DNN_OPT_CORE_SOLUTIONS_RASTRIGIN
-#define DNN_OPT_CORE_SOLUTIONS_RASTRIGIN
+#ifndef DNN_OPT_CORE_SOLUTIONS_BENCH_DEB3
+#define DNN_OPT_CORE_SOLUTIONS_BENCH_DEB3
 
 #include <core/base/generator.h>
 #include <core/base/solution.h>
@@ -37,62 +36,66 @@ namespace core
 {
 namespace solutions
 {
+namespace bench
+{
 
 /**
- * @brief The rastrigin class represents an optimization solutions which 
- * fitness cost is calculated via Rastrigin function.
+ * @brief The deb3 class represents an optimization solutions which
+ * fitness cost is calculated via Deb 3 function.
  *
  * The equation for this function is given by:
  *
- * f(x) = 10n + \sum_{i=0}^n{x_i^2-10\cos(2\pi x_i)}
+ * f(x) = -1/n * {\sum_{i=0}^{n}{sin(5*pi*{{x_i}^3/4-0.05}}^6
  *
- * Rastrigin function have a global minima in {0,..., 0} with a value of 0. 
- * A commonly used search domain for testing is [-5.12, 5.12]. Rastrigin is
- * continuous, differentiable, separable, scalable and multimodal. See the 
- * following reference:
+ * Deb 3 function have a global minima in 5^n with a value evely spaced 
+ * in the function landscape, where n represents the dimension of the problem.
+ * A commonly used search domain for testing is [-1, 1]. Deb 3 
+ * is continuous, differentiable, separable, scalable and multimodal. 
+ * See the following reference [f_44] in:
+ * 
+ * MOMIN, JAMIL; YANG, Xin-She. A literature survey of benchmark functions for 
+ * global optimization problems. Journal of Mathematical Modelling and Numerical 
+ * Optimisation, 2013, vol. 4, no 2, p. 150-194.
  *
- * LIANG, Jane-Jing; SUGANTHAN, Ponnuthurai Nagaratnam; DEB, Kalyanmoy. Novel 
- * composition test functions for numerical global optimization. En Swarm 
- * Intelligence Symposium, 2005. SIS 2005. Proceedings 2005 IEEE. IEEE, 2005. 
- * p. 68-75.
  *
- *
- * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
+ * @author Alejandro Ruiz Madruga <amadruga@estudiantes.uci.cu>
  * @version 1.0
- * @date November, 2016
+ * @date November, 2019
  */
-class rastrigin : public virtual solution
+class deb3 : public virtual solution
 {
 public:
 
   /**
-   * @brief Returns an instance of the rastrigin class.
+   * @brief Returns an instance of this object. This method
+   * is an implementation of the factory pattern.
    *
-   * @param generator an instance of a generator class.
+   * @param generator an instance of a generator class. The
+   * generator is used to initialize the parameters of this solution.
    *
-   * @param size is the number of parameters for this solution. Default is 10.
+   * @param size is the number of parameters for this solution. Default is 2.
    *
-   * @return a pointer to an instance of the rastrigin class.
+   * @return a pointer to an instance of the deb3 class.
    */
-  static rastrigin* make(generator* generator, unsigned int size = 10);
+  static deb3* make(generator* generator, unsigned int size = 2);
 
-  virtual ~rastrigin();
+  virtual ~deb3();
 
 protected:
 
-  virtual float calculate_fitness() override;
+  virtual float calculate_fitness();
 
   /**
-   * @brief The basic contructor for the ratrigin class.
-   *
+   * @brief This is the basic contructor for this class.
    * @param generator an instance of a generator class.
    *
-   * @param size is the number of parameters for this solution. Default is 10.
+   * @param size is the number of parameters for this solution. Default is 2.
    */
-  rastrigin(generator* generator, unsigned int size );
+  deb3(generator* generator, unsigned int size = 2);
 
 };
 
+} // namespace bench
 } // namespace solutions
 } // namespace core
 } // namespace dnn_opt

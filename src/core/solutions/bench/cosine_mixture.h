@@ -24,9 +24,8 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
-#ifndef DNN_OPT_CORE_SOLUTIONS_ROSENBROCK
-#define DNN_OPT_CORE_SOLUTIONS_ROSENBROCK
+#ifndef DNN_OPT_CORE_SOLUTIONS_BENCH_COSINE_M
+#define DNN_OPT_CORE_SOLUTIONS_BENCH_COSINE_M
 
 #include <core/base/generator.h>
 #include <core/base/solution.h>
@@ -37,63 +36,66 @@ namespace core
 {
 namespace solutions
 {
+namespace bench
+{
 
 /**
- * @brief The rosenbrock class represents an optimization solution which 
- * fitness cost is calculated via Rosenbrock function.
+ * @brief The cosine_m class represents an optimization solutions which
+ * fitness cost is calculated via Cosine Mixture function.
  *
  * The equation for this function is given by:
  *
- * f(x) = \sum_{i=0}^{n - 1}[100(x_{i+1} - x_i^2)^2 + (x_i - 1)^2] 
+ * f(x) = -0.1 * {\sum_{i=0}^{n}{cos(5 * pi * {x_i})}}-\sum_{i=0}^{n}{x_i}^{2}
  *
- * Rosenbrock function have a global minima in {1,..., 1} with a value of 0. 
- * A commonly used search domain for testing is [-30, 30]. Rosenbrock is
- * continuous, differentiable, non-separable, non-scalable and multimodal.
- * See the following reference[f_105] in:
- *
+ * Cosine Mixture function have a global minima in {0,..., 0} with a value of 
+ * 0.2 or 0.4 for n=2 and 4 respectively.
+ * A commonly used search domain for testing is [-1, 1]. Cosine Mixture 
+ * is discontinuous, non-differentiable, separable, scalable and multimodal. 
+ * See the following reference [f_38] in:
+ * 
  * MOMIN, JAMIL; YANG, Xin-She. A literature survey of benchmark functions for 
  * global optimization problems. Journal of Mathematical Modelling and Numerical 
  * Optimisation, 2013, vol. 4, no 2, p. 150-194.
  *
  *
- * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
+ * @author Alejandro Ruiz Madruga <amadruga@estudiantes.uci.cu>
  * @version 1.0
- * @date November, 2016
+ * @date November, 2019
  */
-class rosenbrock : public virtual solution
+class cosine_m : public virtual solution
 {
 public:
-  
-  /**
-   * @brief Returns an instance of the rosenbrock class.
-   *
-   * @param generator an instance of a generator class. 
-   *
-   * @param size is the number of parameters for this solution. Default is 10.
-   *
-   * @return an instance of rosenbrock class.
-   */
-  static rosenbrock* make(generator* generator, unsigned int size = 10);
 
-  virtual ~rosenbrock();
+  /**
+   * @brief Returns an instance of this object. This method
+   * is an implementation of the factory pattern.
+   *
+   * @param generator an instance of a generator class. The
+   * generator is used to initialize the parameters of this solution.
+   *
+   * @param size is the number of parameters for this solution. Default is 2.
+   *
+   * @return a pointer to an instance of the cosine_m class.
+   */
+  static cosine_m* make(generator* generator, unsigned int size = 2);
+
+  virtual ~cosine_m();
 
 protected:
 
-  virtual float calculate_fitness() override;
+  virtual float calculate_fitness();
 
   /**
-   * @brief The basic contructor for this class.
-   *
+   * @brief This is the basic contructor for this class.
    * @param generator an instance of a generator class.
-   * The generator is used to initialize the parameters of this
-   * solution.
    *
-   * @param size is the number of parameters for this solution. Default is 10.
+   * @param size is the number of parameters for this solution. Default is 2.
    */
-  rosenbrock(generator* generator, unsigned int size );
+  cosine_m(generator* generator, unsigned int size = 2);
 
 };
 
+} // namespace bench
 } // namespace solutions
 } // namespace core
 } // namespace dnn_opt

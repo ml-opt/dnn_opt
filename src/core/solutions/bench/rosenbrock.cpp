@@ -1,5 +1,5 @@
 #include <math.h>
-#include <core/solutions/schwefel.h>
+#include <core/solutions/bench/rosenbrock.h>
 
 namespace dnn_opt
 {
@@ -7,17 +7,19 @@ namespace core
 {
 namespace solutions
 {
-
-schwefel* schwefel::make(generator* generator, unsigned int size)
+namespace bench
 {
-  auto* result = new schwefel(generator, size);
+
+rosenbrock* rosenbrock::make(generator* generator, unsigned int size)
+{
+  auto* result = new rosenbrock(generator, size);
 
   result->init();
 
   return result;
 }
 
-float schwefel::calculate_fitness()
+float rosenbrock::calculate_fitness()
 {
   int n = size();
   float* params = get_params();
@@ -34,17 +36,18 @@ float schwefel::calculate_fitness()
   return -1 * result / n;
 }
 
-schwefel::schwefel(generator* generator, unsigned int size )
+rosenbrock::rosenbrock(generator* generator, unsigned int size )
 : solution(generator, size)
 {
 
 }
 
-schwefel::~schwefel()
+rosenbrock::~rosenbrock()
 {
 
 }
 
+} // namespace brench
 } // namespace solutions
 } // namespace core
 } // namespace dnn_opt

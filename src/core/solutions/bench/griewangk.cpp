@@ -1,11 +1,13 @@
 #include <math.h>
-#include <core/solutions/griewangk.h>
+#include <core/solutions/bench/griewangk.h>
 
 namespace dnn_opt
 {
 namespace core
 {
 namespace solutions
+{
+namespace bench
 {
 
 griewangk* griewangk::make(generator* generator, unsigned int size)
@@ -49,6 +51,7 @@ griewangk::~griewangk()
 
 }
 
+} // namespace bench
 } // namespace solutions
 } // namespace core
 } // namespace dnn_opt

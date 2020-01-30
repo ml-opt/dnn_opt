@@ -24,12 +24,12 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#ifndef DNN_OPT_CORE_SOLUTIONS_DE_JUNG
-#define DNN_OPT_CORE_SOLUTIONS_DE_JUNG
+
+#ifndef DNN_OPT_CORE_SOLUTIONS_BENCH_STEP
+#define DNN_OPT_CORE_SOLUTIONS_BENCH_STEP
 
 #include <core/base/generator.h>
 #include <core/base/solution.h>
-
 
 namespace dnn_opt
 {
@@ -37,19 +37,21 @@ namespace core
 {
 namespace solutions
 {
+namespace bench
+{
 
 /**
- * @brief The de_jung class represents an optimization solutions which
- * fitness cost is calculated via De'Jung function.
+ * @brief The step class represents an optimization solution which fitness
+ * cost is calculated via Step function.
  *
  * The equation for this function is given by:
+ * 
+ * f(x) = \sum_{i=0}^n{(\lflor x_i + 0.5\rfloor)^2}
  *
- * f(x) = \sum_{i=0}^{n}{{x_i}^2}
- *
- * De'Jung function have a global minima in {0,..., 0} with a value of 0.
- * A commonly used search domain for testing is [0, 10]. De Jung is continuous, 
- * differentiable, separable, scalable and multimodal. See the following 
- * reference [f_137] in:
+ * Step function have a global minima in {0,..., 0} with a value of 0.
+ * A commonly used search domain for testing is [-100, 100]. Step is 
+ * discontinuous, non-differentiable, separable, scalable, uni-modal. See
+ * the following reference [f_139] in:
  * 
  * MOMIN, JAMIL; YANG, Xin-She. A literature survey of benchmark functions for 
  * global optimization problems. Journal of Mathematical Modelling and Numerical 
@@ -58,41 +60,44 @@ namespace solutions
  *
  * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
  * @version 1.0
- * @date November, 2016
+ * @date November, 2018
  */
-class de_jung : public virtual solution
+class step : public virtual solution
 {
 public:
 
   /**
-   * @brief Returns an instance of this object. This method
-   * is an implementation of the factory pattern.
+   * @brief Returns an instance of the step class.
    *
    * @param generator an instance of a generator class. The
    * generator is used to initialize the parameters of this solution.
    *
    * @param size is the number of parameters for this solution. Default is 10.
    *
-   * @return a pointer to an instance of the de_jung class.
+   * @return an instance of step class.
    */
-  static de_jung* make(generator* generator, unsigned int size = 10);
+  static step* make(generator* generator, unsigned int size = 10);
 
-  virtual ~de_jung();
+  virtual ~step();
 
 protected:
 
-  virtual float calculate_fitness() override;
+   virtual float calculate_fitness() override;
 
   /**
-   * @brief This is the basic contructor for this class.
+   * @brief The basic contructor for this class.
+   *
    * @param generator an instance of a generator class.
+   * The generator is used to initialize the parameters of this
+   * solution.
    *
    * @param size is the number of parameters for this solution. Default is 10.
    */
-  de_jung(generator* generator, unsigned int size = 10);
+  step(generator* generator, unsigned int size = 10 );
 
 };
 
+} // namespace bench
 } // namespace solutions
 } // namespace core
 } // namespace dnn_opt

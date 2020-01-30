@@ -1,11 +1,13 @@
 #include <cmath>
-#include <core/solutions/alpine.h>
+#include <core/solutions/bench/alpine.h>
 
 namespace dnn_opt
 {
 namespace core
 {
 namespace solutions
+{
+namespace bench
 {
 
 alpine* alpine::make(generator* generator, unsigned int size)
@@ -44,6 +46,7 @@ alpine::~alpine()
 
 }
 
+} // namespace bench
 } // namespace solutions
 } // namespace core
 } // namespace dnn_opt

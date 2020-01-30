@@ -34,15 +34,25 @@
 
   /* solutions */
   #include <core/solutions/network.h>
-  #include <core/solutions/step.h>
-  #include <core/solutions/alpine.h>
-  #include <core/solutions/ackley.h>
-  #include <core/solutions/de_jung.h>
-  #include <core/solutions/griewangk.h>
-  #include <core/solutions/rastrigin.h>
-  #include <core/solutions/rosenbrock.h>
-  #include <core/solutions/schwefel.h>
-  #include <core/solutions/styblinski_tang.h>
+  #include <core/solutions/bench/step.h>
+  #include <core/solutions/bench/brown_function.h>
+  #include <core/solutions/bench/cosine_mixture.h>
+  #include <core/solutions/bench/chung_reynolds.h>
+  #include <core/solutions/bench/csendes.h>
+  #include <core/solutions/bench/deb1.h>
+  #include <core/solutions/bench/deb3.h>
+  #include <core/solutions/bench/dixonp.h>
+  #include <core/solutions/bench/eggh.h>
+  #include <core/solutions/bench/expo.h>
+  #include <core/solutions/bench/giunta.h>
+  #include <core/solutions/bench/alpine.h>
+  #include <core/solutions/bench/ackley.h>
+  #include <core/solutions/bench/de_jung.h>
+  #include <core/solutions/bench/griewangk.h>
+  #include <core/solutions/bench/rastrigin.h>
+  #include <core/solutions/bench/rosenbrock.h>
+  #include <core/solutions/bench/schwefel.h>
+  #include <core/solutions/bench/styblinski_tang.h>
   #include <core/solutions/hyper.h>
 
   /* layers */

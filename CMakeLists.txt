@@ -78,6 +78,7 @@ IF(ENABLE_EXAMPLE)
 
   add_subdirectory(examples/benchmark)
   add_subdirectory(examples/neural)
+  add_subdirectory(examples/mot)
   add_subdirectory(examples/hpo)
 
 ENDIF(ENABLE_EXAMPLE)

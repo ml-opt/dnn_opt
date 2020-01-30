@@ -20,6 +20,7 @@
   #include <core/algorithms/firefly.h>
   #include <core/algorithms/cuckoo.h>
   #include <core/algorithms/continuation.h>
+  #include <core/algorithms/mot.h>
   #include <core/algorithms/opwa.h>
   #include <core/algorithms/early_stop.h>
 

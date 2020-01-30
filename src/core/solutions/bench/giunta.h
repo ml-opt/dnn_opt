@@ -58,9 +58,9 @@ namespace bench
  * Optimisation, 2013, vol. 4, no 2, p. 150-194.
  *
  *
- * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
+ * @author Alejandro Ruiz Madruga <amadruga@estudiantes.uci.cu>
  * @version 1.0
- * @date November, 2016
+ * @date November, 2019
  */
 class giunta : public virtual solution
 {

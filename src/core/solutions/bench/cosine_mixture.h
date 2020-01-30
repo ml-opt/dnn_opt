@@ -24,8 +24,8 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#ifndef DNN_OPT_CORE_SOLUTIONS_BENCH_COSINE_MIXTURE
-#define DNN_OPT_CORE_SOLUTIONS_BENCH_COSINE_MIXTURE
+#ifndef DNN_OPT_CORE_SOLUTIONS_BENCH_COSINE_M
+#define DNN_OPT_CORE_SOLUTIONS_BENCH_COSINE_M
 
 #include <core/base/generator.h>
 #include <core/base/solution.h>
@@ -58,9 +58,9 @@ namespace bench
  * Optimisation, 2013, vol. 4, no 2, p. 150-194.
  *
  *
- * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
+ * @author Alejandro Ruiz Madruga <amadruga@estudiantes.uci.cu>
  * @version 1.0
- * @date November, 2016
+ * @date November, 2019
  */
 class cosine_m : public virtual solution
 {

@@ -96,23 +96,34 @@ protected:
   template<class t_solution>
   gwo(set<t_solution>* solutions);
 
+  /** The best solution */
   solution* _alpha;
+
+  /** The second best solution */
   solution* _beta ;
+
+  /** The third best solution */
   solution* _delta;
+
+  /** Dimension of a vector */
   float* _dim;
+
   float* _a ;
+
+  /** Arrays to store random values for the @ref optimize() operation */
   float* _r1;
   float* _r2;
-  float* _A1;
-  float* _C1;
-  float* _r;
+
+  float* _A;
+  float* _C;
+
   float* _Da;
   float* _Db;
   float* _Dd;
+
   float* _X1;
   float* _X2;
   float* _X3;
-  float* _X;
 
   /** A generator of random values for he @ref optimize() operation */
   generators::uniform* _generator;
@@ -126,10 +137,6 @@ gwo* gwo::make(set<t_solution> *solutions)
   auto* result = new gwo(solutions);
 
   result->init();
-  if (get_solutions()->size() < 3)
-  {
-    std::invalid_argument("algorithms::gwo expect as minimun 3 values");
-  }
   return result;
 }
 
@@ -137,7 +144,10 @@ template<class t_solution>
 gwo::gwo(set<t_solution>* solutions)
 : algorithm(solutions)
 {
-
+  if (get_solutions()->size() < 3)
+  {
+    std::invalid_argument("algorithms::gwo expect a minimun of 3 wolves");
+  }
 }
 
 } // namespace algorithms

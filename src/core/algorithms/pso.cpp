@@ -161,7 +161,17 @@ void pso::reset()
 
 void pso::init()
 {
-  // delete created things...
+  if(_best_so_far != 0)
+  {
+    delete _best_so_far->clean();
+  }
+  if(_speed != 0)
+  {
+    delete _speed->clean();
+  }
+  delete _generator;
+  delete _speed_generator;
+  delete[] _r;
 
   float max_speed = 0.1f * get_solutions()->get(0)->get_generator()->get_ext();
   float min_speed = -1.0f * max_speed;

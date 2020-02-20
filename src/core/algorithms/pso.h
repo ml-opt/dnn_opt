@@ -44,6 +44,22 @@ namespace algorithms
  * called Particle Swarm Optimization (PSO). This is a population based
  * algorithm inspired in the movements of swarms.
  *
+ * This PSO version version is implemented using an inertia weight that
+ * is linearly decreased from @ref get_max_speed_param() to
+ * @ref get_min_speed_param(). The also known as constriction PSO is a special
+ * case of this version.
+ *
+ * In future versions of this implementation, it could be a good idea to explore
+ * further weight decay strategies:
+ *
+ * BANSAL, Jagdish Chand, et al. Inertia weight strategies in particle swarm
+ * optimization. En 2011 Third world congress on nature and biologically
+ * inspired computing. IEEE, 2011. p. 633-640.
+ *
+ * Chauhan, P., Deep, K. & Pant, M. Novel inertia weight strategies for particle
+ * swarm optimization. Memetic Comp. 5, 229–251 (2013). https://doi.org/10.1007/
+ * s12293-013-0111-9.
+ *
  * @author Jairo Rojas-Delgado <jrdelgado@uci.cu>
  * @version 1.0
  * @date July, 2016
@@ -63,12 +79,28 @@ public:
    */
   virtual void reset() override;
 
+  /**
+   * @copydoc algorithm::optimize()
+   *
+   * For each particle in the population @ref get_solutions() calculates its
+   * corresponding speed and update its position based on this speed. Finally,
+   * updates the best-so-far particle and the best-global particle in the
+   * the population.
+   *
+   * The inhertia weight is decreased based on the inertia weight strategy.
+   */
   virtual void optimize() override;
 
   using algorithm::optimize;
 
+  /**
+   * @copydoc algorithm::get_best()
+   */
   virtual solution* get_best() override;
 
+  /**
+   * @copydoc algorithm::set_params()
+   */
   virtual void set_params(std::vector<float> &params) override;
 
   using algorithm::set_params;
@@ -88,12 +120,17 @@ public:
   float get_global_param() const;
 
   /**
-   * @brief Return the inertia hyper-parameter used by this algorithm.
+   * @brief Return the max inertia hyper-parameter used by this algorithm.
    *
    * @return the inertia value.
    */
   float get_max_speed_param() const;
 
+  /**
+   * @brief Return the min inertia hyper-parameter used by this algorithm.
+   *
+   * @return the inertia value.
+   */
   float get_min_speed_param() const;
 
   /**
@@ -111,12 +148,17 @@ public:
   void set_global_param(float value);
 
   /**
-   * @brief Change the value of the inertia hyper-parameter.
+   * @brief Change the value of the max inertia hyper-parameter.
    *
    * @param value the new value of the hyper-parameter.
    */
   void set_max_speed_param(float value);
 
+  /**
+   * @brief Change the value of the min inertia hyper-parameter.
+   *
+   * @param value the new value of the hyper-parameter.
+   */
   void set_min_speed_param(float value);
 
   /**
@@ -126,6 +168,9 @@ public:
 
 protected:
 
+  /**
+   * @copydoc algorithm::init()
+   */
   virtual void init() override;
 
   /**
@@ -171,11 +216,14 @@ protected:
 
   /** Hyper-parameter that measures the global best contribution */
   float _global_param;
-public:
+
+  /** The current inertia weight */
   float _current_speed_param;
 
+  /** The min inertia weight */
   float _min_speed_param;
 
+  /** The max inertia weight */
   float _max_speed_param;
 
   /** The best-so-far solutions */
@@ -190,9 +238,10 @@ public:
   /** The index of the global best solution */
   int _g_best;
 
-  /** A generator of random values for he @ref update_speed() operation */
+  /** A generator of random values for the @ref update_speed() operation */
   generators::uniform* _generator;
 
+  /** A generator of random values for the initial speed */
   generators::constant* _speed_generator;
 
 };

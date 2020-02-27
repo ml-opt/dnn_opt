@@ -32,7 +32,7 @@ int main(int argc, char** argv)
   int out_dim = input("-out-dim", 20, argc, argv);
 
   /* generator that defines the search space */
-  auto* generator = generators::uniform::make(-10.0f, 10.0f);
+  auto* generator = generators::uniform::make(-1.0f, 1.0f);
   auto* train = readers::csv_reader::make(db_train, in_dim, out_dim, ' ', true);
   auto* test = readers::csv_reader::make(db_test, in_dim, out_dim, ' ', true);
   auto* act = activations::sigmoid::make();

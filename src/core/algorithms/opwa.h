@@ -33,8 +33,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <functional>
 #include <core/base/algorithm.h>
 #include <core/base/set.h>
-#include <core/solutions/wrapper.h>
 #include <core/generators/uniform.h>
+#include <core/solutions/network.h>
 
 namespace dnn_opt
 {
@@ -76,6 +76,10 @@ public:
 
 protected:
 
+  class wrapper;
+
+  class window_reader;
+
   template<class t_solution>
   opwa(int count, const set<t_solution>* solutions, wa builder);
 
@@ -93,10 +97,99 @@ protected:
   /** A list of wrapped algorithms */
   std::vector<std::unique_ptr<algorithm>> _algorithms;
 
-  /** The probablity for a partition to gets optimized */
+  /** The probablity for a partition to get optimized */
   float _density;
 
   generators::uniform* _generator;
+
+};
+
+class opwa::wrapper : public virtual solution
+{
+public:
+
+  static wrapper* make(int index, int count, solution* base);
+
+  virtual void init() override;
+
+  virtual float fitness() override;
+
+  virtual void set(unsigned int index, float value) override;
+
+  virtual float get(unsigned int index) const override;
+
+  virtual unsigned int size() const override;
+
+  virtual float* get_params( ) const override;
+
+  virtual solution* clone() override;
+
+  virtual bool assignable(const solution* s) const override;
+
+  virtual ~wrapper();
+
+protected:
+
+  wrapper(int index, int count, solution* base);
+
+  virtual float calculate_fitness() override;
+
+  int _index;
+  int _count;
+
+  int _size;
+  int _padding;
+
+  solution*  _base;
+};
+
+class opwa::window_reader : public virtual reader
+{
+public:
+
+  static window_reader* make(int in_dim, int out_dim, int capacity);
+
+  virtual void push(float* in, float* out);
+
+  virtual bool is_full() const;
+
+  virtual float* in_data();
+
+  virtual float* out_data();
+
+  virtual int get_in_dim() const;
+
+  virtual int get_out_dim() const;
+
+  virtual int size() const;
+
+  virtual int capacity() const;
+
+  virtual void init();
+
+  virtual ~window_reader();
+
+protected:
+
+  window_reader(int in_dim, int out_dim, int capacity);
+
+  /** The number of dimensions in the in training signal */
+  int _in_dim;
+
+  /** The number of dimensions in the out training signal */
+  int _out_dim;
+
+  /** The amount of training patterns currently stored in this reader */
+  int _size;
+
+  /** The total amount of training patterns that can be stored in the reader */
+  int _capacity;
+
+  /** The loaded in training data from file */
+  float*  _in_data;
+
+  /** The loaded out training data from file */
+  float*  _out_data;
 
 };
 

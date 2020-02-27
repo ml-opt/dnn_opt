@@ -30,6 +30,9 @@ int main(int argc, char** argv)
   
   int in_dim = input("-in-dim", 20, argc, argv);
   int out_dim = input("-out-dim", 20, argc, argv);
+  
+  int k = input("-k", 4, argc, argv);
+  float beta = input_f("-beta", 0.8f, argc, argv);
 
   /* generator that defines the search space */
   auto* generator = generators::uniform::make(-1.0f, 1.0f);
@@ -58,6 +61,7 @@ int main(int argc, char** argv)
 
   /* creating algorithm */
   auto* algorithm = create_algorithm(algorithm_type, solutions);
+  auto* cont = algorithms::continuation::make(algorithm, algorithms::continuation::fixed::make(train, k, beta));
 
   /* hyper-parameters, see @ref dnn_opt::core::algorithm::set_params() */
   set_hyper(algorithm_type, algorithm, argc, argv);
@@ -70,7 +74,7 @@ int main(int argc, char** argv)
 
 
   auto start = high_resolution_clock::now();
-  algorithm->optimize_eval(eta, []()
+  cont->optimize_eval(eta, []()
   {
     return true;
   });
@@ -79,8 +83,8 @@ int main(int argc, char** argv)
   /* collect statics */
 
   time = duration_cast<milliseconds>(end - start).count();
-  terror = dynamic_cast<solutions::network*>(algorithm->get_best())->test(train);
-  gerror = dynamic_cast<solutions::network*>(algorithm->get_best())->test(test);
+  terror = dynamic_cast<solutions::network*>(cont->get_best())->test(train);
+  gerror = dynamic_cast<solutions::network*>(cont->get_best())->test(test);
 
   cout << time << " " << terror << " " << gerror << endl;
 
@@ -89,7 +93,7 @@ int main(int argc, char** argv)
   delete solutions->clean();
   delete act;
   delete test, train;
-  delete algorithm;
+  delete algorithm, cont;
   delete generator;
 
   return 0;

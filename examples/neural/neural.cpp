@@ -58,7 +58,7 @@ int main(int argc, char** argv)
 
     /* create perceptron model */
     nn->add_layer(layers::fc::make(train->get_in_dim(), hidden_units[0], act));
-    for(int j = 1; j < hidden_units.size() - 1; j++)
+    for(int j = 1; j < hidden_units.size(); j++)
     {
       nn->add_layer(layers::fc::make(hidden_units[j - 1], hidden_units[j], act));
     }

@@ -1,16 +1,13 @@
 #include <algorithm>
 #include <cassert>
 #include <core/solutions/network.h>
-
+#include <iostream>
 namespace dnn_opt
 {
 namespace core
 {
 namespace solutions
 {
-
-float* network::CURRENT_OUT = 0;
-float* network::PRIOR_OUT = 0;
 
 network* network::make(generator* generator, reader* reader, error* error)
 {
@@ -181,8 +178,8 @@ network::network(generator* generator, reader* reader, error* error)
   _r = reader;
   _e = error;
   _max_out = 0;
-//  CURRENT_OUT = 0;
-//  PRIOR_OUT = 0;
+  CURRENT_OUT = 0;
+  PRIOR_OUT = 0;
 }
 
 network::network(generator* generator)
@@ -191,8 +188,8 @@ network::network(generator* generator)
   _r = 0;
   _e = 0;
   _max_out = 0;
-//  CURRENT_OUT = 0;
-//  PRIOR_OUT = 0;
+  CURRENT_OUT = 0;
+  PRIOR_OUT = 0;
 }
 
 network::~network()
@@ -202,11 +199,11 @@ network::~network()
     delete layer;
   }
 
-//  delete[] CURRENT_OUT;
-//  delete[] PRIOR_OUT;
+  delete[] CURRENT_OUT;
+  delete[] PRIOR_OUT;
 
-//  CURRENT_OUT = 0;
-//  PRIOR_OUT = 0;
+  CURRENT_OUT = 0;
+  PRIOR_OUT = 0;
 
   _layers.clear();
 }

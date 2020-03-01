@@ -140,21 +140,23 @@ protected:
 
   /** Error function used to calculate the fitness of the network */
   error* _e;
-public:////////////////////////////////////////////////////////////////////////
+
+protected:
+
   /** 
    * Output of the layer i that is currently propagating the input signal.
    * This is a flatten array of dimension [_r->batch_size() x _max_out] in 
    * a row by row fashion.
    */
-  static float* CURRENT_OUT;
+  float* CURRENT_OUT;
   
   /** 
    * The output of the layer i - 1.
    * This is a flatten array of dimension [_r->batch_size() x _max_out] in 
    * a row by row fashion.
    */
-  static float* PRIOR_OUT;
-protected://///////////////////////////////////////////////////////////////////
+  float* PRIOR_OUT;
+
   /** The amount of outputs of the layer with the higher amount of units */
   int _max_out;
 

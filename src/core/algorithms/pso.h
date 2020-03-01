@@ -260,7 +260,11 @@ template<class t_solution>
 pso::pso(set<t_solution>* solutions)
 : algorithm(solutions)
 {
-
+  _best_so_far = 0;
+  _speed = 0;
+  _generator = 0;
+  _speed_generator = 0;
+  _r = 0;
 }
 
 } // namespace algorithms

@@ -94,7 +94,6 @@ void continuation::optimize_eval(int count, std::function<bool()> on)
       on_opt = on();
       return on_opt;
     });
-
   }
 }
 

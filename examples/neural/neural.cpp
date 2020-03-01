@@ -63,7 +63,7 @@ int main(int argc, char** argv)
     {
       nn->add_layer(layers::fc::make(hidden_units[j - 1], hidden_units[j], act));
     }
-    nn->add_layer(layers::fc::make(hidden_units.size() - 1, 1, act));
+    nn->add_layer(layers::fc::make(hidden_units[hidden_units.size() - 1], 1, act));
 
     solutions->add(nn);
   }

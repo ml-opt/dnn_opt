@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include <vector>
 #include <chrono>
 
@@ -23,7 +24,19 @@ int main(int argc, char** argv)
   std::string db_train = input_s("-db", "", argc, argv);
   std::string db_test = input_s("-dbt", "", argc, argv);
 
-  int hidden_units = input("-hidden-units", 45, argc, argv);
+  int expected_layers = input("-hidden-layers", 1, argc, argv);
+  vector<int> hidden_units;
+
+  for(int i = 0; i < expected_layers; i++)
+  {
+    int layer_size = input("-layer-" + to_string(i), 10, argc, argv);
+
+    if(layer_size > 0)
+    {
+      hidden_units.push_back(layer_size);
+    }
+  }
+
   int p = input("-p", 40, argc, argv);
   int eta = input("-eta", 4000, argc, argv);
   int algorithm_type = input("-a", 0, argc, argv);
@@ -44,11 +57,13 @@ int main(int argc, char** argv)
   {
     auto* nn = solutions::network::make(generator, train, errors::mse::make());
 
-    nn->add_layer(
+    /* create perceptron model */ 
+    nn->add_layer(layers::fc::make(train->get_in_dim(), hidden_units[0], act));
+    for(int j = 1; j < hidden_units.size() - 1; j++)
     {
-      layers::fc::make(train->get_in_dim(), hidden_units, act),
-      layers::fc::make(hidden_units, 1, act)
-    });
+      nn->add_layer(layers::fc::make(hidden_units[j - 1], hidden_units[j], act));
+    }
+    nn->add_layer(layers::fc::make(hidden_units.size() - 1, 1, act));
 
     solutions->add(nn);
   }

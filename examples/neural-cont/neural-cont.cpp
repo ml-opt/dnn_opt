@@ -72,7 +72,6 @@ int main(int argc, char** argv)
   float gerror = 0;
   float time = 0;
 
-
   auto start = high_resolution_clock::now();
   cont->optimize_eval(eta, []()
   {

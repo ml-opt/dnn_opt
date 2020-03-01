@@ -23,7 +23,6 @@ int main(int argc, char** argv)
 
   std::string db_train = input_s("-db", "", argc, argv);
   std::string db_test = input_s("-dbt", "", argc, argv);
-
   int expected_layers = input("-hidden-layers", 1, argc, argv);
   vector<int> hidden_units;
 
@@ -57,13 +56,15 @@ int main(int argc, char** argv)
   {
     auto* nn = solutions::network::make(generator, train, errors::mse::make());
 
-    /* create perceptron model */ 
+    /* create perceptron model */
     nn->add_layer(layers::fc::make(train->get_in_dim(), hidden_units[0], act));
     for(int j = 1; j < hidden_units.size() - 1; j++)
     {
       nn->add_layer(layers::fc::make(hidden_units[j - 1], hidden_units[j], act));
     }
     nn->add_layer(layers::fc::make(hidden_units[hidden_units.size() - 1], 1, act));
+
+    nn->init();
 
     solutions->add(nn);
   }
@@ -82,7 +83,6 @@ int main(int argc, char** argv)
   float terror = 0;
   float gerror = 0;
   float time = 0;
-
 
   auto start = high_resolution_clock::now();
   algorithm->optimize_eval(eta, []()

@@ -31,7 +31,7 @@ void gwo::optimize()
       _Dd[j] = abs(_C[j] * _delta->get_params()[j] - current[i]);
       _X3[j] = _delta->get_params()[j] - _A[j] * _Da[j];
 
-      current[j] = (_X1[j] + _X2[j] + _X3[j])/3;
+      current[j] = (_X1[j] + _X2[j] + _X3[j]) / 3;
     }
   }
 
@@ -44,7 +44,7 @@ void gwo::optimize()
 
 solution* gwo::get_best()
 {
-
+return _alpha;
 }
 
 void gwo::set_params(std::vector<float> &params)
@@ -54,7 +54,8 @@ void gwo::set_params(std::vector<float> &params)
 
 void gwo::reset()
 {
-
+get_solutions()->generate();
+_a = 2.0;
 }
 
 void gwo::update_elite()
@@ -65,7 +66,6 @@ void gwo::update_elite()
   {
 
     solution* current = get_solutions()->get(i);
-
 
     if (current->is_better_than(_alpha, is_maximization()))
     {
@@ -89,12 +89,17 @@ void gwo::init()
   _beta = get_solutions()->get(1);
   _delta = get_solutions()->get(2);
   _dim = get_solutions()->get_dim();
-  _a, _r1, _r2, _A, _C, _Da, _Db, _Dd, _X1, _X2, _X3 = new float[_dim];
-
-  for (int j = 0; j < _dim; j++)
-  {
-   _a[j] = 2;
-  }
+  _a = 2.0;
+  _r1 = new float[_dim];
+  _r2 = new float[_dim];
+  _A = new float[_dim];
+  _C = new float[_dim];
+  _Da = new float[_dim];
+  _Db = new float[_dim];
+  _Dd = new float[_dim];
+  _X1 = new float[_dim];
+  _X2 = new float[_dim];
+  _X3 = new float[_dim];
 
 }
 

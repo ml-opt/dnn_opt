@@ -100,27 +100,29 @@ protected:
   solution* _alpha;
 
   /** The second best solution */
-  solution* _beta ;
+  solution* _beta;
 
   /** The third best solution */
   solution* _delta;
 
   /** Dimension of a vector */
-  float* _dim;
-
-  float* _a ;
+  int _dim;
 
   /** Arrays to store random values for the @ref optimize() operation */
   float* _r1;
   float* _r2;
 
+  /** Arrays to store the control parameters of the exploration
+   * and exploitation processes.
+   */
   float* _A;
   float* _C;
 
+  /** Auxiliary variables */
+  int _a;
   float* _Da;
   float* _Db;
   float* _Dd;
-
   float* _X1;
   float* _X2;
   float* _X3;

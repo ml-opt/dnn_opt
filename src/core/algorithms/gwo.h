@@ -72,7 +72,7 @@ public:
   /**
    * @brief Update the values ​​of the three best agents.
    */
-  virtual void update_elite() override;
+  virtual void update_elite();
 
   virtual solution* get_best() override;
 
@@ -108,6 +108,9 @@ protected:
   /** Dimension of a vector */
   int _dim;
 
+  /** A generator of random values for he @ref optimize() operation */
+  generators::uniform* _generator;
+
   /** Arrays to store random values for the @ref optimize() operation */
   float* _r1;
   float* _r2;
@@ -119,7 +122,7 @@ protected:
   float* _C;
 
   /** Auxiliary variables */
-  int _a;
+  float* _a;
   float* _Da;
   float* _Db;
   float* _Dd;
@@ -127,8 +130,6 @@ protected:
   float* _X2;
   float* _X3;
 
-  /** A generator of random values for he @ref optimize() operation */
-  generators::uniform* _generator;
 };
 
 /* templated function implementations */

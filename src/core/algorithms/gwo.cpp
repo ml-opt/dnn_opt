@@ -14,7 +14,7 @@ void gwo::optimize()
   _generator->generate(_dim, _r2);
   for (int j = 0; j < _dim; j++)
   {
-   _A[j] = 2 * _a * _r1 - _a;
+   _A[j] = 2 * _a[j] * _r1[j] - _a[j];
    _C[j] = 2 * _r2[j];
   }
   for (int i = 0; i < get_solutions()->size(); i++)
@@ -24,17 +24,16 @@ void gwo::optimize()
     for (int j = 0; j < _dim; j++)
     {
 
-      _Da[j] = abs(_C[j] * _alpha->get_params()[j] - current[i]);
+      _Da[j] = abs(_C[j] * _alpha->get_params()[j] - current[j]);
       _X1[j] = _alpha->get_params()[j] - _A[j] * _Da[j];
-      _Db[j] = abs(_C[j] * _beta->get_params()[j] - current[i]);
+      _Db[j] = abs(_C[j] * _beta->get_params()[j] - current[j]);
       _X2[j] = _beta->get_params()[j] - _A[j] * _Db[j];
-      _Dd[j] = abs(_C[j] * _delta->get_params()[j] - current[i]);
+      _Dd[j] = abs(_C[j] * _delta->get_params()[j] - current[j]);
       _X3[j] = _delta->get_params()[j] - _A[j] * _Da[j];
 
       current[j] = (_X1[j] + _X2[j] + _X3[j]) / 3;
     }
   }
-
   for (int j = 0; j < _dim; j++)
   {
    _a[j] -= 0.01;
@@ -55,7 +54,10 @@ void gwo::set_params(std::vector<float> &params)
 void gwo::reset()
 {
 get_solutions()->generate();
-_a = 2.0;
+for (int j = 0; j < _dim; j++)
+{
+ _a[j] = 2.0;
+}
 }
 
 void gwo::update_elite()
@@ -89,7 +91,7 @@ void gwo::init()
   _beta = get_solutions()->get(1);
   _delta = get_solutions()->get(2);
   _dim = get_solutions()->get_dim();
-  _a = 2.0;
+  _a = new float[_dim];
   _r1 = new float[_dim];
   _r2 = new float[_dim];
   _A = new float[_dim];
@@ -101,11 +103,26 @@ void gwo::init()
   _X2 = new float[_dim];
   _X3 = new float[_dim];
 
+  for (int j = 0; j < _dim; j++)
+  {
+   _a[j] = 2.0;
+  }
 }
 
 gwo::~gwo()
 {
-
+ delete _generator;
+ delete[] _r1;
+ delete[] _r2;
+ delete[] _A;
+ delete[] _C;
+ delete[] _Da;
+ delete[] _Db;
+ delete[] _Dd;
+ delete[] _X1;
+ delete[] _X2;
+ delete[] _X3;
+ delete[] _a;
 }
 
 } // namespace algorithms

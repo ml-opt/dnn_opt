@@ -177,9 +177,9 @@ algorithm* create_algorithm(int type, set<t_solution>* solutions)
     return algorithms::pso::make(solutions);
   case 1 :
     return algorithms::firefly::make(solutions);
-  case 3 :
-    return algorithms::cuckoo::make(solutions);
   case 2 :
+    return algorithms::cuckoo::make(solutions);
+  case 3 :
     return algorithms::gwo::make(solutions);
   default:
     throw invalid_argument("algorithm type not found");

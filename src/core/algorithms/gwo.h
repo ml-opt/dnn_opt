@@ -74,6 +74,10 @@ public:
    */
   virtual void update_elite();
 
+  virtual void update_positions(int idx);
+
+  virtual void update_params();
+
   virtual solution* get_best() override;
 
   virtual void set_params(std::vector<float> &params) override;

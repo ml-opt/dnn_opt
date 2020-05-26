@@ -10,7 +10,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: blas
-      run: apt-get install libblas-dev liblapack-dev
+      run: sudo apt-get install libblas-dev liblapack-dev
     - name: cmake
       run: cmake -DENABLE_COPT=ON ./
     - name: make

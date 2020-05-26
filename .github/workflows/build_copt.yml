@@ -1,0 +1,17 @@
+name: BuildCopt
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: blas
+      run: apt-get install libblas-dev liblapack-dev
+    - name: cmake
+      run: cmake -DENABLE_COPT=ON ./
+    - name: make
+      run: make

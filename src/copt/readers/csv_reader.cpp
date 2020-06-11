@@ -6,7 +6,7 @@ namespace dnn_opt
 namespace copt
 {
 namespace readers
-{  
+{
 
 csv_reader* csv_reader::make(std::string file_name, int in_dim, int out_dim, char sep, bool header)
 {
@@ -15,6 +15,11 @@ csv_reader* csv_reader::make(std::string file_name, int in_dim, int out_dim, cha
 
 csv_reader::csv_reader(std::string file_name, int in_dim, int out_dim, char sep, bool header)
 : core::readers::csv_reader(file_name, in_dim, out_dim, sep, header)
+{
+
+}
+
+csv_reader::~csv_reader()
 {
 
 }

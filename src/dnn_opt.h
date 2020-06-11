@@ -114,16 +114,26 @@
 
   /* solutions */
   #include <copt/solutions/network.h>
-  #include <copt/solutions/step.h>
-  #include <copt/solutions/alpine.h>
-  #include <copt/solutions/ackley.h>
-  #include <copt/solutions/de_jung.h>
-  #include <copt/solutions/griewangk.h>
-  #include <copt/solutions/rastrigin.h>
-  #include <copt/solutions/rosenbrock.h>
-  #include <copt/solutions/schwefel.h>
-  #include <copt/solutions/styblinski_tang.h>
+  #include <copt/solutions/bench/step.h>
+  #include <copt/solutions/bench/alpine.h>
+  #include <copt/solutions/bench/ackley.h>
+  #include <copt/solutions/bench/de_jung.h>
+  #include <copt/solutions/bench/griewangk.h>
+  #include <copt/solutions/bench/rastrigin.h>
+  #include <copt/solutions/bench/rosenbrock.h>
+  #include <copt/solutions/bench/schwefel.h>
+  #include <copt/solutions/bench/styblinski_tang.h>
   #include <copt/solutions/hyper.h>
+  #include <copt/solutions/bench/brown_function.h>
+  #include <copt/solutions/bench/chung_reynolds.h>
+  #include <copt/solutions/bench/cosine_mixture.h>
+  #include <copt/solutions/bench/csendes.h>
+  #include <copt/solutions/bench/deb1.h>
+  #include <copt/solutions/bench/deb3.h>
+  #include <copt/solutions/bench/dixonp.h>
+  #include <copt/solutions/bench/eggh.h>
+  #include <copt/solutions/bench/expo.h>
+  #include <copt/solutions/bench/giunta.h>
 
   /* layers */
   #include <copt/layers/fc.h>

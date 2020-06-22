@@ -209,6 +209,8 @@ algorithm* create_algorithm(int type, set<t_solution>* solutions)
     return algorithms::firefly::make(solutions);
   case 2 :
     return algorithms::cuckoo::make(solutions);
+  case 3 :
+    return algorithms::gwo::make(solutions);
   default:
     throw invalid_argument("algorithm type not found");
   }
@@ -252,12 +254,14 @@ void set_hyper(int type, algorithm* algorithm, int argc, char** argv)
     params = {ha, hb, hc};
     break;
     
-    case 2 :
+  case 2 :
     ha = input_f("-ha", 0.8f, argc, argv);
     hb = input_f("-hb", 0.6f, argc, argv);
     hc = input_f("-hc", 0.3f, argc, argv);
 
     params = {ha, hb, hc};
+    break;
+  case 3 :
     break;
   default:
     throw invalid_argument("algorithm type not found");

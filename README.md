@@ -1,4 +1,4 @@
-![Build Core](https://github.com/jairodelgado/dnn_opt/workflows/BuildCore/badge.svg)
+![Build Core](https://github.com/jairodelgado/dnn_opt/workflows/BuildCore/badge.svg) ![Build Copt](https://github.com/jairodelgado/dnn_opt/workflows/BuildCopt/badge.svg)
 
 # Welcome to dnn_opt
 

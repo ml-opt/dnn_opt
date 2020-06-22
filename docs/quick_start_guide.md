@@ -4,7 +4,7 @@
 
 ## Installation
 
-dnn_opt is currently available only from the sources. To install, clone the repo and fallow the next instructions.
+dnn_opt is currently available only from the sources. To install, clone the repo and follow the next instructions.
 
 ````bash
 git clone https://github.com/jairodelgado/dnn_opt

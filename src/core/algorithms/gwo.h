@@ -76,8 +76,6 @@ public:
 
   virtual void update_positions(int idx);
 
-  virtual void update_params();
-
   virtual solution* get_best() override;
 
   virtual void set_params(std::vector<float> &params) override;
@@ -101,39 +99,23 @@ protected:
   gwo(set<t_solution>* solutions);
 
   /** The best solution */
-  solution* _alpha;
+  solution* m_alpha;
 
   /** The second best solution */
-  solution* _beta;
+  solution* m_beta;
 
   /** The third best solution */
-  solution* _delta;
-
-  /** Dimension of a vector */
-  int _dim;
+  solution* m_delta;
 
   /** A generator of random values for he @ref optimize() operation */
-  generators::uniform* _generator;
+  generators::uniform* m_generator;
 
   /** Arrays to store random values for the @ref optimize() operation */
-  float* _r1;
-  float* _r2;
-
-  /** Arrays to store the control parameters of the exploration
-   * and exploitation processes.
-   */
-  float* _A;
-  float* _C;
+  float* m_r1;
+  float* m_r2;
 
   /** Auxiliary variables */
-  float* _a;
-  float* _Da;
-  float* _Db;
-  float* _Dd;
-  float* _X1;
-  float* _X2;
-  float* _X3;
-
+  float m_a;
 };
 
 /* templated function implementations */

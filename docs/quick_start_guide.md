@@ -1,9 +1,10 @@
-This section provides a general overview for new users who wants to use the 
-library
+###############
+# Getting Started
+###############
 
 ## Installation
 
-The library can be installed from the sources:
+dnn_opt is currently available only from the sources. To install, clone the repo and fallow the next instructions.
 
 ````bash
 git clone https://github.com/jairodelgado/dnn_opt

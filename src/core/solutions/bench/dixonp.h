@@ -78,6 +78,8 @@ public:
    * @return a pointer to an instance of the dixonp class.
    */
   static dixonp* make(generator* generator, unsigned int size = 20);
+  
+  virtual solution* clone() override;
 
   virtual ~dixonp();
 

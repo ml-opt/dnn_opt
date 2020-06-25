@@ -111,31 +111,28 @@ protected:
   cuckoo(set<t_solution>* solutions);
 
   /** the scale of the optimization problem */
-  float _scale;
+  float m_scale;
 
   /** the levy steep size for the random walk */
-  float _levy;
+  float m_levy;
 
   /** the fraction of worse solutions to be replaced by the algorithm */
-  float _replacement;
-
-  /** The solutions optimized by this algorithm */
-  set<>* _solutions;
+  float m_replacement;
 
   /** Array of random numbers to store random variations in generation steep */
-  float* _r;
+  float* m_r;
 
   /** generated params of new cuckoo */
-  solution* _updated;
+  solution* m_updated;
 
   /** normal generator of mean = 0 and std. dev. = 1 */
-  generators::normal* _nd_1;
+  generators::normal* m_nd_1;
 
   /** normal generator of mean = 0 and std. dev. = omega*/
-  generators::normal*  _nd_o;
+  generators::normal*  m_nd_o;
 
   /** uniform generator to select random individuals from the population */
-  generators::uniform* _selector;
+  generators::uniform* m_selector;
 
 };
 

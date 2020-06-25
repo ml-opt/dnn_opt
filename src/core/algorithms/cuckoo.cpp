@@ -11,7 +11,13 @@ namespace algorithms
 
 void cuckoo::reset()
 {
+  /** mantegna algorithm to calculate levy steep size */
 
+  float aux1 = tgamma(1.0f + m_levy) * sin(3.14159265f * m_levy * 0.5f);
+  float aux2 = tgamma((1.0f + m_levy) * 0.5f) * m_levy;
+  float aux3 = pow(2.0f , (m_levy - 1.0f) * 0.5f);
+
+  m_nd_o->set_max(pow(aux1 / (aux2 * aux3) , 1.0f / m_levy));
 }
 
 void cuckoo::optimize()
@@ -24,20 +30,20 @@ void cuckoo::optimize()
 
     generate_new_cuckoo(i);
 
-    if(_updated->is_better_than(source, is_maximization()))
+    if(m_updated->is_better_than(source, is_maximization()))
     {
       int evaluations = source->get_evaluations();
 
-      source->assign(_updated);
+      source->assign(m_updated);
 
-      source->set_evaluations(evaluations + _updated->get_evaluations());
-      _updated->set_evaluations(0);
+      source->set_evaluations(evaluations + m_updated->get_evaluations());
+      m_updated->set_evaluations(0);
     }
   }
 
-  get_solutions()->sort(!is_maximization());
+  get_solutions()->sort(is_maximization());
 
-  for(int i = 0; i < _replacement * get_solutions()->size(); i++)
+  for(int i = n * (1.0f - m_replacement); i < n; i++)
   {
     get_solutions()->get(i)->generate();
   }
@@ -45,22 +51,22 @@ void cuckoo::optimize()
 
 void cuckoo::generate_new_cuckoo(int cuckoo_idx)
 {
+  int dim = get_solutions()->get_dim();
+
   float* cuckoo = get_solutions()->get(cuckoo_idx)->get_params();
-  float* best = get_solutions()->get_best(is_maximization())->get_params();
-  float* params = _updated->get_params();
+  float* params = m_updated->get_params();
+  m_nd_1->generate(dim, m_r);
 
-  float v = _nd_1->generate();
-  float u = _nd_o->generate();
-  float levy = u / powf(fabs(v), 1 / _levy);
-
-  _nd_1->generate(get_solutions()->get_dim(), _r);
-
-  for(int i = 0; i < get_solutions()->get_dim(); i++)
+  for(int i = 0; i < dim; i++)
   {
-    params[i] += _scale * levy * (best[i] - cuckoo[i]) * _r[i];
+    float v = m_nd_1->generate();
+    float u = m_nd_o->generate();
+    float levy = u / powf(fabs(v), 1.0f / m_levy);
+
+    params[i] = cuckoo[i] + m_scale * levy;
   }
 
-  _updated->set_modified(true);
+  m_updated->set_modified(true);
 }
 
 solution* cuckoo::get_best()
@@ -82,61 +88,55 @@ void cuckoo::set_params(std::vector<float> &params)
 
 float cuckoo::get_scale()
 {
-  return _scale;
+  return m_scale;
 }
 
 float cuckoo::get_levy()
 {
-  return _levy;
+  return m_levy;
 }
 
 float cuckoo::get_replacement()
 {
-  return _replacement;
+  return m_replacement;
 }
 
 void cuckoo::set_scale(float scale)
 {
-  _scale = scale;
+  m_scale = scale;
 }
 
 void cuckoo::set_levy(float levy)
 {
-  _levy = levy;
+  m_levy = levy;
 }
 
 void cuckoo::set_replacement(float replacement)
 {
-  _replacement = replacement;
+  m_replacement = replacement;
 }
 
 void cuckoo::init()
 {
-  _scale = 0.8;
-  _levy = 0.8;
-  _replacement = 0.3;
+  m_scale = 0.8f;
+  m_levy = 0.8f;
+  m_replacement = 0.3f;
 
-  /** mantegna algorithm to calculate levy steep size */
-
-  float dividend = tgamma(1 + _levy) * sin(3.14159265f * _levy / 2);
-  float divisor = tgamma((1 + _levy) / 2) * _levy * pow(2, (_levy - 1) / 2);
-  float omega = pow(dividend / divisor , 1 / _levy);
-
-  _nd_1 = generators::normal::make(0, 1);
-  _nd_o = generators::normal::make(0, omega);
-  _selector = generators::uniform::make(0, get_solutions()->size());
-  _r = new float[get_solutions()->get_dim()];
-  _updated = get_solutions()->get(0)->clone();
+  m_nd_1 = generators::normal::make(0.0f, 1.0f);
+  m_nd_o = generators::normal::make(0.0f, 1.0f);
+  m_selector = generators::uniform::make(0, get_solutions()->size());
+  m_updated = get_solutions()->get(0)->clone();
+  m_r = new float[get_solutions()->get_dim()];
 }
 
 cuckoo::~cuckoo()
 {
-  delete _updated;
-  delete _nd_o;
-  delete _nd_1;
-  delete _selector;
+  delete m_updated;
+  delete m_nd_o;
+  delete m_nd_1;
+  delete m_selector;
 
-  delete[] _r;
+  delete[] m_r;
 }
 
 } // namespace algorithms

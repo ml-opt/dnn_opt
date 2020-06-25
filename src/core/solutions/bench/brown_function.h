@@ -77,6 +77,8 @@ public:
    * @return a pointer to an instance of the brown class.
    */
   static brown* make(generator* generator, unsigned int size = 5);
+  
+  virtual solution* clone() override;
 
   virtual ~brown();
 

@@ -1,4 +1,5 @@
 #include <math.h>
+#include <algorithm>
 #include <core/solutions/bench/chung_reynolds.h>
 
 namespace dnn_opt
@@ -34,6 +35,15 @@ float chung_r::calculate_fitness()
   }
 
   return pow(result, 2.0f);
+}
+
+solution* chung_r::clone()
+{
+  chung_r* clon = make(get_generator(), size());
+
+  std::copy_n(get_params(), size(), clon->get_params());
+
+  return clon;
 }
 
 chung_r::chung_r(generator* generator, unsigned int size)

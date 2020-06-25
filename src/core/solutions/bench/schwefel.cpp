@@ -1,4 +1,5 @@
 #include <math.h>
+#include <algorithm>
 #include <core/solutions/bench/schwefel.h>
 
 namespace dnn_opt
@@ -33,6 +34,15 @@ float schwefel::calculate_fitness()
   }
 
   return result / 2;
+}
+
+solution* schwefel::clone()
+{
+  schwefel* clon = make(get_generator(), size());
+
+  std::copy_n(get_params(), size(), clon->get_params());
+
+  return clon;
 }
 
 schwefel::schwefel(generator* generator, unsigned int size )

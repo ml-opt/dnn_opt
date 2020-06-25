@@ -1,4 +1,5 @@
 #include <math.h>
+#include <algorithm>
 #include <core/solutions/bench/rastrigin.h>
 
 namespace dnn_opt
@@ -33,6 +34,15 @@ float rastrigin::calculate_fitness()
   }
 
   return result;
+}
+
+solution* rastrigin::clone()
+{
+  rastrigin* clon = make(get_generator(), size());
+
+  std::copy_n(get_params(), size(), clon->get_params());
+
+  return clon;
 }
 
 rastrigin::rastrigin(generator* generator, unsigned int size )

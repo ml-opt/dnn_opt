@@ -77,6 +77,8 @@ public:
    * @return a pointer to an instance of the rastrigin class.
    */
   static rastrigin* make(generator* generator, unsigned int size = 10);
+  
+  virtual solution* clone() override;
 
   virtual ~rastrigin();
 

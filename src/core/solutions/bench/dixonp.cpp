@@ -1,4 +1,5 @@
 #include <math.h>
+#include <algorithm>
 #include <core/solutions/bench/dixonp.h>
 
 namespace dnn_opt
@@ -38,6 +39,15 @@ float dixonp::calculate_fitness()
   result = binom + sum;
   
   return result;
+}
+
+solution* dixonp::clone()
+{
+  dixonp* clon = make(get_generator(), size());
+
+  std::copy_n(get_params(), size(), clon->get_params());
+
+  return clon;
 }
 
 dixonp::dixonp(generator* generator, unsigned int size)

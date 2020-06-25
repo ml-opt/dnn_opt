@@ -1,4 +1,5 @@
 #include <math.h>
+#include <algorithm>
 #include <core/solutions/bench/cosine_mixture.h>
 
 namespace dnn_opt
@@ -42,6 +43,15 @@ float cosine_m::calculate_fitness()
   }
   
   return result1 - result2;
+}
+
+solution* cosine_m::clone()
+{
+  cosine_m* clon = make(get_generator(), size());
+
+  std::copy_n(get_params(), size(), clon->get_params());
+
+  return clon;
 }
 
 cosine_m::cosine_m(generator* generator, unsigned int size)

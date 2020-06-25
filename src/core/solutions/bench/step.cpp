@@ -1,4 +1,5 @@
 #include <cmath>
+#include <algorithm>
 #include <core/solutions/bench/step.h>
 
 namespace dnn_opt
@@ -33,6 +34,15 @@ float step::calculate_fitness()
   }
 
   return result;
+}
+
+solution* step::clone()
+{
+  step* clon = make(get_generator(), size());
+
+  std::copy_n(get_params(), size(), clon->get_params());
+
+  return clon;
 }
 
 step::step(generator* generator, unsigned int size)

@@ -77,6 +77,8 @@ public:
    * @return a pointer to an instance of the chung_r class.
    */
   static chung_r* make(generator* generator, unsigned int size = 200);
+  
+  virtual solution* clone() override;
 
   virtual ~chung_r();
 

@@ -1,4 +1,5 @@
 #include <math.h>
+#include <algorithm>
 #include <core/solutions/bench/deb3.h>
 
 namespace dnn_opt
@@ -38,6 +39,15 @@ float deb3::calculate_fitness()
   result = -(1.0f / length) * pos;
   
   return result;
+}
+
+solution* deb3::clone()
+{
+  deb3* clon = make(get_generator(), size());
+
+  std::copy_n(get_params(), size(), clon->get_params());
+
+  return clon;
 }
 
 deb3::deb3(generator* generator, unsigned int size)

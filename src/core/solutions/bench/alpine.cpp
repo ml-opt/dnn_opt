@@ -1,4 +1,5 @@
 #include <cmath>
+#include <algorithm>
 #include <core/solutions/bench/alpine.h>
 
 namespace dnn_opt
@@ -33,6 +34,15 @@ float alpine::calculate_fitness()
   }
 
   return result;
+}
+
+solution* alpine::clone()
+{
+  alpine* clon = make(get_generator(), size());
+
+  std::copy_n(get_params(), size(), clon->get_params());
+
+  return clon;
 }
 
 alpine::alpine(generator* generator, unsigned int size)

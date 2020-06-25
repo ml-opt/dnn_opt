@@ -1,4 +1,5 @@
 #include <math.h>
+#include <algorithm>
 #include <core/solutions/bench/ackley.h>
 
 namespace dnn_opt
@@ -39,6 +40,15 @@ float ackley::calculate_fitness()
   result += -exp(summatory_2 / n) + 20 + 2.718281828f;
 
   return result;
+}
+
+solution* ackley::clone()
+{
+  ackley* clon = make(get_generator(), size());
+
+  std::copy_n(get_params(), size(), clon->get_params());
+
+  return clon;
 }
 
 ackley::ackley(generator* generator, unsigned int size)

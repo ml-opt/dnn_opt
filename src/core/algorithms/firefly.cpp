@@ -11,7 +11,6 @@ namespace algorithms
 void firefly::reset()
 {
   _current_rand_influence = get_rand_influence();
-  get_solutions()->generate();
 }
 
 void firefly::optimize()

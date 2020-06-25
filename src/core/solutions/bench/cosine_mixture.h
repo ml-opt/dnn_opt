@@ -78,6 +78,8 @@ public:
    * @return a pointer to an instance of the cosine_m class.
    */
   static cosine_m* make(generator* generator, unsigned int size = 2);
+  
+  virtual solution* clone() override;
 
   virtual ~cosine_m();
 

@@ -1,4 +1,5 @@
 #include <math.h>
+#include <algorithm>
 #include <core/solutions/bench/styblinski_tang.h>
 
 namespace dnn_opt
@@ -33,6 +34,15 @@ float styblinski_tang::calculate_fitness()
   }
 
   return result / 2;
+}
+
+solution* styblinski_tang::clone()
+{
+  styblinski_tang* clon = make(get_generator(), size());
+
+  std::copy_n(get_params(), size(), clon->get_params());
+
+  return clon;
 }
 
 styblinski_tang::styblinski_tang(generator* generator, unsigned int size )

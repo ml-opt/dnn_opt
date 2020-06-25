@@ -1,4 +1,5 @@
 #include <math.h>
+#include <algorithm>
 #include <core/solutions/bench/eggh.h>
 
 namespace dnn_opt
@@ -39,6 +40,15 @@ float eggh::calculate_fitness()
   }
   
   return result;
+}
+
+solution* eggh::clone()
+{
+  eggh* clon = make(get_generator(), size());
+
+  std::copy_n(get_params(), size(), clon->get_params());
+
+  return clon;
 }
 
 eggh::eggh(generator* generator, unsigned int size)

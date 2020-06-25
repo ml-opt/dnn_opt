@@ -9,6 +9,19 @@ namespace core
 namespace algorithms
 {
 
+void pso::reset()
+{
+  _current_speed_param = _max_speed_param;
+  _speed->generate();
+
+  for(int i = 0; i < get_solutions()->size(); i++)
+  {
+    _best_so_far->get(i)->assign(get_solutions()->get(i));
+  }
+
+  _g_best = _best_so_far->get_best_index(is_maximization());
+}
+
 void pso::optimize()
 {
   unsigned int n = get_solutions()->size();
@@ -142,21 +155,6 @@ void pso::set_max_speed_param(float value)
 void pso::set_min_speed_param(float value)
 {
   _min_speed_param = value;
-}
-
-void pso::reset()
-{
-  _current_speed_param = _max_speed_param;
-  _speed->generate();
-
-  get_solutions()->generate();
-
-  for(int i = 0; i < get_solutions()->size(); i++)
-  {
-    _best_so_far->get(i)->assign(get_solutions()->get(i));
-  }
-
-  _g_best = _best_so_far->get_best_index(is_maximization());
 }
 
 void pso::init()

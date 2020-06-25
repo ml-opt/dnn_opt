@@ -1,4 +1,5 @@
 #include <math.h>
+#include <algorithm>
 #include <core/solutions/bench/giunta.h>
 
 namespace dnn_opt
@@ -40,6 +41,15 @@ float giunta::calculate_fitness()
   }
   
   return 0.6f + result;
+}
+
+solution* giunta::clone()
+{
+  giunta* clon = make(get_generator(), size());
+
+  std::copy_n(get_params(), size(), clon->get_params());
+
+  return clon;
 }
 
 giunta::giunta(generator* generator, unsigned int size)

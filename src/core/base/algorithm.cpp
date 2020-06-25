@@ -15,6 +15,8 @@ void algorithm::optimize(int count, std::function<bool()> on)
 {
   bool on_opt = true;
 
+  reset();
+
   for(int i = 0; i < count && on_opt; i++)
   {
     optimize();
@@ -27,6 +29,8 @@ void algorithm::optimize_idev(int count, float dev, std::function<bool()> on)
   float last = 0;
   float current = get_best()->fitness();
   bool on_opt = true;
+
+  reset();
 
   do
   {
@@ -43,6 +47,8 @@ void algorithm::optimize_idev(int count, float dev, std::function<bool()> on)
 
 void algorithm::optimize_dev(float dev, std::function<bool()> on)
 {
+  reset();
+
   while(get_solutions()->fitness_dev() > dev)
   {
     optimize();
@@ -52,6 +58,8 @@ void algorithm::optimize_dev(float dev, std::function<bool()> on)
 
 void algorithm::optimize_eval(int count, std::function<bool()> on)
 {
+  reset();
+
   bool on_opt = true;
   long start = get_solutions()->get_evaluations();
 

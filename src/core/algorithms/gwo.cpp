@@ -8,6 +8,11 @@ namespace core
 namespace algorithms
 {
 
+void gwo::reset()
+{
+  m_a = 2.0;
+}
+
 void gwo::optimize()
 {
   algorithm::optimize();
@@ -33,11 +38,6 @@ solution* gwo::get_best()
 void gwo::set_params(std::vector<float> &params)
 {
 
-}
-
-void gwo::reset()
-{
-  m_a = 2.0;
 }
 
 void gwo::update_positions(int idx)

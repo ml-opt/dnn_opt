@@ -1,4 +1,5 @@
 #include <math.h>
+#include <algorithm>
 #include <core/solutions/bench/rosenbrock.h>
 
 namespace dnn_opt
@@ -34,6 +35,15 @@ float rosenbrock::calculate_fitness()
   }
 
   return -1 * result / n;
+}
+
+solution* rosenbrock::clone()
+{
+  rosenbrock* clon = make(get_generator(), size());
+
+  std::copy_n(get_params(), size(), clon->get_params());
+
+  return clon;
 }
 
 rosenbrock::rosenbrock(generator* generator, unsigned int size )

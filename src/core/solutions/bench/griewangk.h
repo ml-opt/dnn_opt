@@ -76,6 +76,8 @@ public:
    * @return a pointer to an instance of the griewangk class.
    */
   static griewangk* make(generator* generator, unsigned int size = 10);
+  
+  virtual solution* clone() override;
 
   virtual ~griewangk();
 

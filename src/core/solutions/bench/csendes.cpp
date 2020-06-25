@@ -1,4 +1,5 @@
 #include <math.h>
+#include <algorithm>
 #include <core/solutions/bench/csendes.h>
 
 namespace dnn_opt
@@ -34,6 +35,15 @@ float csendes::calculate_fitness()
   }
   
   return result;
+}
+
+solution* csendes::clone()
+{
+  csendes* clon = make(get_generator(), size());
+
+  std::copy_n(get_params(), size(), clon->get_params());
+
+  return clon;
 }
 
 csendes::csendes(generator* generator, unsigned int size)

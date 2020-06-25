@@ -1,4 +1,5 @@
 #include <math.h>
+#include <algorithm>
 #include <core/solutions/bench/de_jung.h>
 
 namespace dnn_opt
@@ -32,6 +33,15 @@ float de_jung::calculate_fitness()
   }
 
   return result;
+}
+
+solution* de_jung::clone()
+{
+  de_jung* clon = make(get_generator(), size());
+
+  std::copy_n(get_params(), size(), clon->get_params());
+
+  return clon;
 }
 
 de_jung::de_jung(generator* generator, unsigned int size)

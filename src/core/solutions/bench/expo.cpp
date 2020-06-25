@@ -1,4 +1,5 @@
 #include <math.h>
+#include <algorithm>
 #include <core/solutions/bench/expo.h>
 
 namespace dnn_opt
@@ -35,6 +36,15 @@ float expo::calculate_fitness()
   
   
   return -exp(-0.5f * result);
+}
+
+solution* expo::clone()
+{
+  expo* clon = make(get_generator(), size());
+
+  std::copy_n(get_params(), size(), clon->get_params());
+
+  return clon;
 }
 
 expo::expo(generator* generator, unsigned int size)

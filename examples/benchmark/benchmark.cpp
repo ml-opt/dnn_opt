@@ -117,7 +117,7 @@ int main(int argc, char** argv)
   int n = input("-n", 100, argc, argv);
   int p = input("-p", 40, argc, argv);
   int eta = input("-eta", 1000, argc, argv);
-  int solution_type = input("-s", 8, argc, argv);
+  int solution_type = input("-s", 0, argc, argv);
   int algorithm_type = input("-a", 0, argc, argv);
   int output_type = input("-o", 3, argc, argv);
 

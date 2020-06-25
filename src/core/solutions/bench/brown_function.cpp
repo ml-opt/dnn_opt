@@ -1,4 +1,5 @@
 #include <math.h>
+#include <algorithm>
 #include <core/solutions/bench/brown_function.h>
 
 namespace dnn_opt
@@ -36,6 +37,15 @@ float brown::calculate_fitness()
   }
 
   return result;
+}
+
+solution* brown::clone()
+{
+  brown* clon = make(get_generator(), size());
+
+  std::copy_n(get_params(), size(), clon->get_params());
+
+  return clon;
 }
 
 brown::brown(generator* generator, unsigned int size)

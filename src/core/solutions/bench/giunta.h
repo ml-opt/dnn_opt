@@ -78,6 +78,8 @@ public:
    * @return a pointer to an instance of the giunta class.
    */
   static giunta* make(generator* generator, unsigned int size = 2);
+  
+  virtual solution* clone() override;
 
   virtual ~giunta();
 

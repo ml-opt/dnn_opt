@@ -78,6 +78,8 @@ public:
    * @return an instance of ackley class.
    */
   static ackley* make(generator* generator, unsigned int size = 10);
+  
+  virtual solution* clone() override;
 
   virtual ~ackley();
 

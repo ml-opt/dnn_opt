@@ -77,6 +77,8 @@ public:
    * @return an instance of alpine class.
    */
   static alpine* make(generator* generator, unsigned int size = 10);
+  
+  virtual solution* clone() override;
 
   virtual ~alpine();
 

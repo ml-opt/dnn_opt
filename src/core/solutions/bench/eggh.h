@@ -79,6 +79,8 @@ public:
    * @return a pointer to an instance of the eggh class.
    */
   static eggh* make(generator* generator, unsigned int size = 1024);
+  
+  virtual solution* clone() override;
 
   virtual ~eggh();
 

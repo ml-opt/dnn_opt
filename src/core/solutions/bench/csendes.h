@@ -77,6 +77,8 @@ public:
    * @return a pointer to an instance of the csendes class.
    */
   static csendes* make(generator* generator, unsigned int size = 2);
+  
+  virtual solution* clone() override;
 
   virtual ~csendes();
 

@@ -1,4 +1,5 @@
 #include <math.h>
+#include <algorithm>
 #include <core/solutions/bench/griewangk.h>
 
 namespace dnn_opt
@@ -38,6 +39,15 @@ float griewangk::calculate_fitness()
   result = summatory - multiplier + 1;
 
   return result;
+}
+
+solution* griewangk::clone()
+{
+  griewangk* clon = make(get_generator(), size());
+
+  std::copy_n(get_params(), size(), clon->get_params());
+
+  return clon;
 }
 
 griewangk::griewangk(generator* generator, unsigned int size)

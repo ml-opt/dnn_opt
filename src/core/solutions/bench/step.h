@@ -77,6 +77,8 @@ public:
    * @return an instance of step class.
    */
   static step* make(generator* generator, unsigned int size = 10);
+  
+  virtual solution* clone() override;
 
   virtual ~step();
 

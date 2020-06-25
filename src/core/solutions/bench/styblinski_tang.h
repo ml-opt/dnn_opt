@@ -76,6 +76,8 @@ public:
    * @return an instance of styblinski_tang class.
    */
   static styblinski_tang* make(generator* generator, unsigned int size = 10);
+  
+  virtual solution* clone() override;
 
   virtual ~styblinski_tang();
 

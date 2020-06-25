@@ -79,6 +79,8 @@ public:
    */
   static de_jung* make(generator* generator, unsigned int size = 10);
 
+  virtual solution* clone() override;
+
   virtual ~de_jung();
 
 protected:

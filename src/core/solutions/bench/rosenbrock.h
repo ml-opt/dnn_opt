@@ -76,6 +76,8 @@ public:
    * @return an instance of rosenbrock class.
    */
   static rosenbrock* make(generator* generator, unsigned int size = 10);
+  
+  virtual solution* clone() override;
 
   virtual ~rosenbrock();
 

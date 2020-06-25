@@ -78,6 +78,8 @@ public:
    * @return a pointer to an instance of the deb3 class.
    */
   static deb3* make(generator* generator, unsigned int size = 2);
+  
+  virtual solution* clone() override;
 
   virtual ~deb3();
 

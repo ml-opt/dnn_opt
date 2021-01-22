@@ -30,10 +30,12 @@ float schwefel::calculate_fitness()
 
   for(int i = 0; i < n; i++)
   {
-    result += pow(params[i], 4) + 16 * pow(params[i], 2) + 5 * params[i];
+    result += params[i] * sin(sqrt(fabs(params[i])));
   }
 
-  return result / 2;
+  result = -1.0f * result / n;
+
+  return result;
 }
 
 solution* schwefel::clone()

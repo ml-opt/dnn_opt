@@ -37,7 +37,8 @@ float ackley::calculate_fitness()
   }
 
   result = -20 * exp(-0.2 * sqrt(summatory_1 / n)) ;
-  result += -exp(summatory_2 / n) + 20 + 2.718281828f;
+  result -= exp(summatory_2 / n) + 20 + 2.718281828f;
+  result += 20 + exp(1.0f);
 
   return result;
 }

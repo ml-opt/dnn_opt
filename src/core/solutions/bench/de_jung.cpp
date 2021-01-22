@@ -24,10 +24,11 @@ float de_jung::calculate_fitness()
 {
   float result = 0;
   float* params = get_params();
+  int n = size();
 
   solution::calculate_fitness();
 
-  for(int i = 0; i < size(); i++)
+  for(int i = 0; i < n; i++)
   {
     result += pow(params[i], 2.0f);
   }

@@ -30,7 +30,7 @@ float alpine::calculate_fitness()
 
   for(int i = 0; i < n; i++)
   {
-    result += std::fabs(params[i] * sin(params[i]) + 0.1 * params[i]);
+    result += std::fabs(params[i] * sin(params[i]) + 0.1f * params[i]);
   }
 
   return result;

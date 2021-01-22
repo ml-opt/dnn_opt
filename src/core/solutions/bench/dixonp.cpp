@@ -22,21 +22,17 @@ dixonp* dixonp::make(generator *generator, unsigned int size)
 
 float dixonp::calculate_fitness()
 {
-  float result = 0;
   float* params = get_params();
-  float sum = 0;
+  float result = pow(params[0] - 1.0f, 2.0f);
+  int n = size();
 
   solution::calculate_fitness();
-  
-  int length = size();
-  float binom = pow(params[0] + 1.0f, 2.0f);
 
-  for(int i = 1; i < length; i++)
+  for(int i = 1; i < n; i++)
   {
-    sum += i * pow(2 * pow(params[i], 2.0f) - params[i - 1], 2.0f);
+    /* Notice the correction in the initial multiplication (i + 1) for cero-based indexing */
+    result += (i + 1) * pow(2.0f * pow(params[i], 2.0f) - params[i - 1], 2.0f);
   }
-  
-  result = binom + sum;
   
   return result;
 }

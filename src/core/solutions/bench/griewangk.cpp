@@ -22,21 +22,21 @@ griewangk* griewangk::make(generator* generator, unsigned int size)
 
 float griewangk::calculate_fitness()
 {
-  int n = size();
   float* params = get_params();
   float summatory = 0;
   float multiplier = 1;
   float result = 0;
+  int n = size();
 
   solution::calculate_fitness();
 
   for(int i = 0; i < n; i++)
   {
-    summatory  += pow(params[i], 2.0) / 4000;
+    summatory  += pow(params[i], 2.0f);
     multiplier *= cos(params[i] / sqrt(i + 1));
   }
 
-  result = summatory - multiplier + 1;
+  result = summatory / 4000.0f - multiplier + 1;
 
   return result;
 }

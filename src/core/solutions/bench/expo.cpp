@@ -24,18 +24,18 @@ float expo::calculate_fitness()
 {
   float result = 0;
   float* params = get_params();
+  int n = size();
   
   solution::calculate_fitness();
-  
-  int length = size();
 
-  for(int i = 0; i < length; i++)
+  for(int i = 0; i < n; i++)
   {
     result += pow(params[i], 2.0f);
   }
   
+  result = -exp(-0.5f * result);
   
-  return -exp(-0.5f * result);
+  return result;
 }
 
 solution* expo::clone()

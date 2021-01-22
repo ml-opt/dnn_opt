@@ -29,12 +29,12 @@ float rosenbrock::calculate_fitness()
 
   float result = 0;
 
-  for(int i = 0; i < n; i++)
+  for(int i = 0; i < n - 1; i++)
   {
-    result += params[i] * sin(sqrt(fabs(params[i])));
+    result += 100.0f * pow(params[i + 1] - pow(params[i], 2.0f), 2.0f) + pow(params[i] - 1.0f, 2.0f);
   }
 
-  return -1 * result / n;
+  return result;
 }
 
 solution* rosenbrock::clone()

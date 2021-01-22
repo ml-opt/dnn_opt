@@ -45,7 +45,7 @@ namespace bench
  *
  * The equation for this function is given by:
  *
- * f(x) = -1/n * {\sum_{i=0}^{n}{sin(5*pi*{x_i}}^6
+ * f(x) = -1/n * \sum_{i=0}^{n}{sin^6(5*pi*x_i)}
  *
  * Deb 1 function have a global minima in 5^n with a value evely spaced 
  * in the function landscape, where n represents the dimension of the problem.

@@ -23,20 +23,17 @@ deb1* deb1::make(generator *generator, unsigned int size)
 float deb1::calculate_fitness()
 {
   float result = 0;
-  float pos = 0;
   float* params = get_params();
+  int n = size();
 
   solution::calculate_fitness();
-  
-  int length = size();
 
-  for(int i = 0; i < length; i++)
+  for(int i = 0; i < n; i++)
   {
-    pos += sin(5.0f * 3.14f * params[i]);
+    result += pow(sin(5.0f * 3.141592653f * params[i]), 6.0f);
   }
   
-  pos = pow(pos, 6.0f);
-  result = -(1.0f / size()) * pos;
+  result = -1.0f * result / n;
   
   return result;
 }

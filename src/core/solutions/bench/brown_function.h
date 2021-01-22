@@ -43,10 +43,6 @@ namespace bench
  * @brief The brown class represents an optimization solutions which
  * fitness cost is calculated via Brown function.
  *
- * The equation for this function is given by:
- *
- * f(x) = \sum_{i=0}^{n-1}{x_i^{2*{x_i+1}+2}}+{x_i+1}^{2*{{x_i}^2}+2}
- *
  * Brown function have a global minima in {0,..., 0} with a value of 0.
  * A commonly used search domain for testing is [-1, 4]. Brown is continuous, 
  * differentiable, non-separable, scalable and unimodal. See the following 

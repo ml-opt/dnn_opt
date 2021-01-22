@@ -34,7 +34,9 @@ float chung_r::calculate_fitness()
       result += pow(params[i], 2.0f);
   }
 
-  return pow(result, 2.0f);
+  result = pow(result, 2.0f);
+
+  return result;
 }
 
 solution* chung_r::clone()

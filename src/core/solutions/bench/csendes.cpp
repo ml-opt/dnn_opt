@@ -24,12 +24,11 @@ float csendes::calculate_fitness()
 {
   float result = 0;
   float* params = get_params();
+  int n = size();
 
   solution::calculate_fitness();
   
-  int length = size();
-
-  for(int i = 0; i < length; i++)
+  for(int i = 0; i < n; i++)
   {
     result += pow(params[i], 6.0f) * (2.0f + sin(1.0f / params[i]));
   }

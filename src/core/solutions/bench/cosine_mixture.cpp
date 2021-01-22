@@ -22,27 +22,23 @@ cosine_m* cosine_m::make(generator *generator, unsigned int size)
 
 float cosine_m::calculate_fitness()
 {
+  float result = 0;
   float result1 = 0;
   float result2 = 0;
   float* params = get_params();
+  int n = size();
 
   solution::calculate_fitness();
-  
-  int length = size();
 
-  for(int i = 0; i < length; i++)
+  for(int i = 0; i < n; i++)
   {
-    result1 += cos(5.0f * 3.14f * params[i]);
+    result1 += cos(5.0f * 3.141592653f * params[i]);
+    result2 += pow(params[i], 2.0f);
   }
-  
-  result1 *= -(0.1f);
-  
-  for(int j = 0; j < length; j++)
-  {
-    result2 += pow(params[j], 2.0f);
-  }
-  
-  return result1 - result2;
+
+  result = -0.1f * result1 + result2;
+
+  return result;
 }
 
 solution* cosine_m::clone()

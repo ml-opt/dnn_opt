@@ -45,7 +45,6 @@
   #include <core/solutions/bench/dixonp.h>
   #include <core/solutions/bench/eggh.h>
   #include <core/solutions/bench/expo.h>
-  #include <core/solutions/bench/giunta.h>
   #include <core/solutions/bench/alpine.h>
   #include <core/solutions/bench/ackley.h>
   #include <core/solutions/bench/de_jung.h>

@@ -87,7 +87,7 @@ set<>* algorithm::get_solutions() const
 
 long algorithm::get_iterations() const
 {
-
+    return 0;
 }
 
 void algorithm::set_params(int n, float* params)

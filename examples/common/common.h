@@ -176,8 +176,6 @@ solution* create_solution(int type, int n, generator* generator)
     return solutions::bench::eggh::make(generator, n);
   case 17:
     return solutions::bench::expo::make(generator, n);
-  case 18:
-    return solutions::bench::giunta::make(generator, n);
   default:
     throw invalid_argument("solution type not found");
   }

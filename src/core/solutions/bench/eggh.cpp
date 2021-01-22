@@ -22,21 +22,18 @@ eggh* eggh::make(generator *generator, unsigned int size)
 
 float eggh::calculate_fitness()
 {
-  float br1 = 0;
-  float br2 = 0;
   float* params = get_params();
   float result = 0;
+  int n = size();
 
   solution::calculate_fitness();
-  
-  int length = size();
 
-  for(int i = 0; i < length - 1; i++)
+  for(int i = 0; i < n - 1; i++)
   {
-    br1 = -(params[i + 1] + 47.0f) * sin(sqrt(abs(params[i + 1] + params[i]
-            / 2.0f + 47.0f)));
-    br2 = params[i] * sin(sqrt(abs(params[i] - (params[i + 1] + 47.0f))));
-    result += br1 - br2; 
+    float br1 = params[i + 1] + 47.0f * sin(sqrt(abs(params[i + 1] + params[i] / 2.0f + 47.0f)));
+    float br2 = params[i] * sin(sqrt(abs(params[i] - (params[i + 1] + 47.0f))));
+
+    result += -(br1 + br2);
   }
   
   return result;

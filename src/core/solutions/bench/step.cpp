@@ -30,7 +30,7 @@ float step::calculate_fitness()
 
   for(int i = 0; i < n; i++)
   {
-    result += std::pow(std::floor(params[i]), 2);
+    result += std::pow(std::floor(params[i] + 0.5f), 2);
   }
 
   return result;

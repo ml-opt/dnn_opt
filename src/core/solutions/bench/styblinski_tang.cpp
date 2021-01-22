@@ -30,10 +30,12 @@ float styblinski_tang::calculate_fitness()
 
   for(int i = 0; i < n; i++)
   {
-    result += pow(params[i], 4) + 16 * pow(params[i], 2) + 5 * params[i];
+    result += pow(params[i], 4.0f) + 16.0f * pow(params[i], 2.0f) + 5.0f * params[i];
   }
 
-  return result / 2;
+  result = 0.5f * result;
+
+  return result;
 }
 
 solution* styblinski_tang::clone()

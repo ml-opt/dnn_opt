@@ -24,15 +24,14 @@ float brown::calculate_fitness()
 {
   float result = 0;
   float* params = get_params();
+  int n = size();
 
   solution::calculate_fitness();
-  
-  int length = size();
 
-  for(int i = 0; i < length - 1; i++)
+  for(int i = 0; i < n - 1; i++)
   {
-    float result1 = pow(params[i], 2.0f * pow(params[i + 1], 2.0f) + 2.0f);
-    float result2 = pow(params[i + 1], 2.0f * pow(params[i], 2.0f) + 2.0f);
+    float result1 = pow(pow(params[i], 2.0f), pow(params[i + 1], 2.0f) + 1.0f);
+    float result2 = pow(pow(params[i + 1], 2.0f), pow(params[i], 2.0f) + 1.0f);
     result += result1 + result2;
   }
 

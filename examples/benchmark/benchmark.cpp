@@ -122,7 +122,7 @@ int main(int argc, char** argv)
   int output_type = input("-o", 3, argc, argv);
 
   /* generator that defines the search space */
-  auto* generator = generators::uniform::make(-10.0f, 10.0f);
+  auto* generator = generators::uniform::make(0.0f, 1.0f);
 
   /* set that contains the individuals of the population */
   auto* solutions = set<>::make(p);

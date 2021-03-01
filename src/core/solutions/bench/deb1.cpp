@@ -30,7 +30,9 @@ float deb1::calculate_fitness()
 
   for(int i = 0; i < n; i++)
   {
-    result += pow(sin(5.0f * 3.141592653f * params[i]), 6.0f);
+    float x = 5.0f * 3.141592653f * params[i];
+    float sin6 = -1.0f / 32.0f * (cos(6.0f * x) - 6.0f * cos(4.0f * x) + 15.0f * cos(2.0f * x) - 10);
+    result += sin6;
   }
   
   result = -1.0f * result / n;
